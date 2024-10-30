@@ -3,7 +3,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOne.Domain", "src\FormulaOne.Core\FormulaOne.Domain.csproj", "{D84F3F07-C7A9-4B83-B1B5-5BA097E7A0A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOne.Application", "src\FormulaOne.Application\FormulaOne.Application.csproj", "{7F5DE355-F47D-4B3F-B7B5-AAFE3A3A3A44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOne.Api", "src\FormulaOne.Api\FormulaOne.Api.csproj", "{6D8D4260-8CA0-4ACD-A592-557B609C3900}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOne.Infrastructure", "src\FormulaOne.Infrastructure\FormulaOne.Infrastructure.csproj", "{F9483D54-1193-4CD6-B83D-942C19EC385A}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D84F3F07-C7A9-4B83-B1B5-5BA097E7A0A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D84F3F07-C7A9-4B83-B1B5-5BA097E7A0A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D84F3F07-C7A9-4B83-B1B5-5BA097E7A0A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D84F3F07-C7A9-4B83-B1B5-5BA097E7A0A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F5DE355-F47D-4B3F-B7B5-AAFE3A3A3A44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F5DE355-F47D-4B3F-B7B5-AAFE3A3A3A44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F5DE355-F47D-4B3F-B7B5-AAFE3A3A3A44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F5DE355-F47D-4B3F-B7B5-AAFE3A3A3A44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D8D4260-8CA0-4ACD-A592-557B609C3900}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D8D4260-8CA0-4ACD-A592-557B609C3900}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D8D4260-8CA0-4ACD-A592-557B609C3900}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D8D4260-8CA0-4ACD-A592-557B609C3900}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9483D54-1193-4CD6-B83D-942C19EC385A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9483D54-1193-4CD6-B83D-942C19EC385A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9483D54-1193-4CD6-B83D-942C19EC385A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9483D54-1193-4CD6-B83D-942C19EC385A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
