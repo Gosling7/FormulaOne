@@ -21,3 +21,8 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=Password1!
+    volumes:
+      - formulaone-mssql-data:/var/opt/mssql
+
+volumes:
+  formulaone-mssql-data:
