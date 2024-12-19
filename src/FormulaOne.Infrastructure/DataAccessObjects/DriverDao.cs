@@ -1,4 +1,4 @@
-﻿namespace FormulaOne.Infrastructure.Data.DataAccessObjects;
+﻿namespace FormulaOne.Infrastructure.DataAccessObjects;
 
 public class DriverDao
 {

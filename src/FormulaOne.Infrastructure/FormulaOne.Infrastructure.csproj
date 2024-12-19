@@ -20,4 +20,9 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FormulaOne.Application\FormulaOne.Application.csproj" />
+    <ProjectReference Include="..\FormulaOne.Core\FormulaOne.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

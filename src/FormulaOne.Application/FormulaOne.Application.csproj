@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FormulaOne.Core\FormulaOne.Domain.csproj" />
-    <ProjectReference Include="..\FormulaOne.Infrastructure\FormulaOne.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

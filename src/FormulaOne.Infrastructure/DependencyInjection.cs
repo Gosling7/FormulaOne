@@ -1,5 +1,4 @@
-﻿using FormulaOne.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FormulaOne.Infrastructure;

@@ -1,7 +1,8 @@
-﻿using FormulaOne.Infrastructure.Data.DataAccessObjects;
+﻿using FormulaOne.Domain.Entities;
+using FormulaOne.Infrastructure.DataAccessObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace FormulaOne.Infrastructure.Data;
+namespace FormulaOne.Infrastructure;
 
 public class FormulaOneDbContext : DbContext
 {
@@ -9,7 +10,7 @@ public class FormulaOneDbContext : DbContext
     {
     }
 
-    public DbSet<TeamDao> Teams { get; set; }
+    public DbSet<Team> Teams { get; set; }
     public DbSet<DriverDao> Drivers { get; set; }
     public DbSet<CircuitDao> Circuits { get; set; }
     public DbSet<DriverStandingDao> DriverStandings { get; set; }
