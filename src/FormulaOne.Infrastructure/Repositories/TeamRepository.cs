@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FormulaOne.Domain.Entities;
+﻿using FormulaOne.Application.Constants;
+using FormulaOne.Application.DataTransferObjects;
 using FormulaOne.Application.Interfaces;
 using FormulaOne.Application.Parameters;
+using FormulaOne.Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using FormulaOne.Application.DataTransferObjects;
 
 namespace FormulaOne.Infrastructure.Repositories;
 
@@ -20,51 +16,65 @@ public class TeamRepository : ITeamRepository
         _context = context;
     }
 
-    public Task<Team?> GetTeamById(Guid id)
-    {
-        return _context.Teams
-            .SingleOrDefaultAsync(t => t.Id == id);
-    }
-
-    public async Task<IEnumerable<Team>> GetTeamsAsync(GetTeamsParameters parameters)
+    public async Task<(int, IEnumerable<TeamDto>)> GetTeamsAsync(GetTeamsParameters parameters)
     {
         IQueryable<Team> query = _context.Teams;
+        query = BuildQueryFilter(parameters, query);
 
-        // Apply NameFilter if provided
-        if (!string.IsNullOrWhiteSpace(parameters.NameFilter))
-        {
-            query = query.Where(d => d.Name.Contains(parameters.NameFilter, StringComparison.CurrentCultureIgnoreCase));
-        }
+        var queryTeamCount = await query.CountAsync();
 
-        if (!string.IsNullOrWhiteSpace(parameters.Id.ToString()))
-        {
-            query = query.Where(t => parameters.Id.Contains(t.Id.ToString());
-        }
-
-        // Apply Pagination
         query = query
-            .OrderBy(t => t.Name) // Apply ordering to ensure consistent results
             .Skip((parameters.Page - 1) * parameters.PageSize)
             .Take(parameters.PageSize);
 
-        return await query.ToListAsync();
+        var teams = await query
+            .Select(t => new TeamDto(
+                t.Id.ToString(),
+                t.Name))
+            .ToListAsync();
+
+        return (queryTeamCount, teams);
     }
 
-    public Task<IEnumerable<TeamStanding>> GetTeamAllStandingsByTeamId(Guid id)
+    private static IQueryable<Team> BuildQueryFilter(GetTeamsParameters parameters, IQueryable<Team> query)
     {
-        throw new NotImplementedException();
-    }    
+        query = ApplyFilters(parameters, query);
+        query = ApplySorting(parameters, query);
 
-    public Task<IEnumerable<RaceResult>> GetTeamRaceResultsByYear(Guid id, int year)
-    {
-        throw new NotImplementedException();
+        return query;
+
+        static IQueryable<Team> ApplyFilters(GetTeamsParameters parameters, IQueryable<Team> query)
+        {
+            if (!string.IsNullOrWhiteSpace(parameters.Name))
+            {
+                query = query.Where(d => d.Name.Contains(parameters.Name.ToLower()));
+            }
+
+            if (!string.IsNullOrWhiteSpace(parameters.Id))
+            {
+                query = query.Where(t => parameters.Id.Contains(t.Id.ToString()));
+            }
+
+            return query;
+        }
+
+        static IQueryable<Team> ApplySorting(GetTeamsParameters parameters, IQueryable<Team> query)
+        {
+            if (!string.IsNullOrWhiteSpace(parameters.SortField))
+            {
+                switch (parameters.SortField)
+                {
+                    case QueryRepositoryConstant.NameField:
+                        query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                            ? query.OrderByDescending(t => t.Name)
+                            : query.OrderBy(t => t.Name);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return query;
+        }
     }
-
-    public Task<IEnumerable<TeamStanding>> GetTeamStandings(int year)
-    {
-        throw new NotImplementedException();
-    }
-
-    public static Task<int> GetTeamsCountAsync(IQueryable<Team> query) 
-        => query.CountAsync();
 }

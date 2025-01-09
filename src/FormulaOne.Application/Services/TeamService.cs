@@ -1,178 +1,115 @@
 ﻿using FormulaOne.Application.DataTransferObjects;
 using FormulaOne.Application.Interfaces;
 using FormulaOne.Application.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FormulaOne.Application.Services;
 
-public enum SortDirection
-{
-    Ascending,
-    Descending
-}
-
 internal class TeamService : ITeamService
 {
+    private readonly IQueryTeamsParameterValidator _validator;
     private readonly ITeamRepository _teamRepository;
+    private readonly ITeamStandingRepository _teamStandingRepository;
+    private readonly IRaceResultRepository _raceResultRepository;
 
-    public TeamService(ITeamRepository teamRepository)
+    public TeamService(IQueryTeamsParameterValidator validator,
+        ITeamRepository teamRepository,
+        ITeamStandingRepository teamStandingRepository,
+        IRaceResultRepository raceResultRepository)
     {
         _teamRepository = teamRepository;
+        _validator = validator;
+        _teamStandingRepository = teamStandingRepository;
+        _raceResultRepository = raceResultRepository;
     }
 
     public async Task<PagedResult<TeamDto>> GetTeams(GetTeamsParameters parameters)
     {
-        // TODO: walidacja parametrów
         var errors = new List<string>();
 
-        // _parametersValidator.Validate(parameters);
-        // if (errors.Count > 0)
-        // {
-        //     return new PagedResult<TeamDto>(
-        //         CurrentPage: 0,
-        //         TotalPages: 0,
-        //         PageSize: 0,
-        //         TotalResults: 0,
-        //         Errors: errors,
-        //         Items: new List<TeamDto>());
-        // }
-
-        /*
-         * var errors = parametersValidator.Validate(parameters)
-         * if (errors.Any())
-         * {
-         *     errors.Add("");
-         * }
-         * 
-         * sortingValidator.Validate()
-         * paginationValidator.Validate()
-         * 
-         * 
-         */
-
-        // Id
-        ValidateId(parameters, errors);
-
-        // Sort
-        ValidateSorting(parameters, errors);
-
-        // Pagination
-        ValidatePagination(parameters, errors);
-
-
-        // _sortingValidator.Validate()
+        errors = _validator.Validate(parameters);
 
         if (errors.Count > 0)
         {
             return new PagedResult<TeamDto>(
-                CurrentPage: 0,
+                CurrentPage: parameters.Page,
                 TotalPages: 0,
-                PageSize: 0,
+                PageSize: parameters.PageSize,
                 TotalResults: 0,
                 Errors: errors,
                 Items: new List<TeamDto>());
         }
 
-        var totalResults = await _teamRepository.GetTeamsCountAsync();
-        var pagedTeams = await _teamRepository.GetTeamsAsync(parameters);
+        var teamsWithCount = await _teamRepository.GetTeamsAsync(parameters);
+        var teamCount = teamsWithCount.Item1;
+        var teams = teamsWithCount.Item2;
+        var totalPages = MathF.Ceiling(Convert.ToSingle(teamCount) / parameters.PageSize);
 
         return new PagedResult<TeamDto>(
-            CurrentPage: 0,
-            TotalPages: 0,
-            PageSize: 0,
-            TotalResults: totalResults,
+            CurrentPage: parameters.Page,
+            TotalPages: (int)totalPages,
+            PageSize: parameters.PageSize,
+            TotalResults: teamCount,
             Errors: errors,
-            Items: pagedTeams.Select(team => new TeamDto(
-                Id: team.Id.ToString(),
-                Name: team.Name)));
+            Items: teams);
     }
 
-    private static void ValidatePagination(GetTeamsParameters parameters, List<string> errors)
+    public async Task<PagedResult<TeamStandingDto>> GetTeamStandings(GetTeamStandingsParameters parameters)
     {
-        if (parameters.Page <= 0)
+        var errors = new List<string>();
+
+        errors = _validator.Validate(parameters);
+        if (errors.Count > 0)
         {
-            errors.Add($"Invalid page number: {parameters.Page}. " +
-                $"Valid values are greater than 0.");
+            return new PagedResult<TeamStandingDto>(
+                CurrentPage: parameters.Page,
+                TotalPages: 0,
+                PageSize: parameters.PageSize,
+                TotalResults: 0,
+                Errors: errors,
+                Items: new List<TeamStandingDto>());
         }
+
+        var teamStandingsWithCount = await _teamStandingRepository.GetTeamStandings(parameters);
+        var teamStandingCount = teamStandingsWithCount.Item1;
+        var teamStandings = teamStandingsWithCount.Item2;
+        var totalPages = MathF.Ceiling(Convert.ToSingle(teamStandingCount) / parameters.PageSize);
+
+        return new PagedResult<TeamStandingDto>(
+            CurrentPage: parameters.Page,
+            TotalPages: (int)totalPages,
+            PageSize: parameters.PageSize,
+            TotalResults: teamStandingCount,
+            Errors: errors,
+            Items: teamStandings);
     }
 
-    private static void ValidateSorting(GetTeamsParameters parameters, List<string> errors)
+    public async Task<PagedResult<RaceResultDto>> GetTeamResults(GetTeamResultsParameters parameters)
     {
-        if (!string.IsNullOrWhiteSpace(parameters.Sort))
-        {
-            var sortStringParts = parameters.Sort.Split(":");
-            if (sortStringParts.Length != 2)
-            {
-                errors.Add($"Invalid sorting format: {parameters.Sort}. " +
-                   $"Valid format: field:direction (e.g., id:asc).");
-            }
-            else
-            {
-                var validSortFields = new[] { "id", "name" };
-                var sortField = sortStringParts[0].ToLower();
-                if (!validSortFields.Contains(sortField))
-                {
-                    errors.Add($"Invalid sorting field: {sortField}. " +
-                        $"Valid values: {string.Join(", ", validSortFields)}.");
-                }
+        var errors = new List<string>();
 
-                var validSortDirections = new[] { "asc", "desc" };
-                var sortDirection = sortStringParts[1].ToLower();
-                if (!validSortDirections.Contains(sortDirection))
-                {
-                    errors.Add($"Invalid sorting direction: {sortDirection}. " +
-                        $"Valid values: {string.Join(", ", validSortDirections)}.");
-                }
-            }
-        }
-    }
-
-    private static void ValidateId(GetTeamsParameters parameters, List<string> errors)
-    {
-        if (!string.IsNullOrWhiteSpace(parameters.Id))
+        errors = _validator.Validate(parameters);
+        if (errors.Count > 0)
         {
-            var ids = parameters.Id.Split(',');
-            foreach (var id in ids)
-            {
-                if (!Guid.TryParse(id, out _))
-                {
-                    errors.Add($"Team Id is not a valid Guid: {id}.");
-                }
-            }
+            return new PagedResult<RaceResultDto>(
+                CurrentPage: parameters.Page,
+                TotalPages: 0,
+                PageSize: parameters.PageSize,
+                TotalResults: 0,
+                Errors: errors,
+                Items: new List<RaceResultDto>());
         }
+
+        var raceResultsWithCount = await _raceResultRepository.GetRaceResultsAsync(parameters);
+        var raceResultCount = raceResultsWithCount.Item1;
+        var raceResults = raceResultsWithCount.Item2;
+        var totalPages = MathF.Ceiling(Convert.ToSingle(raceResultCount) / parameters.PageSize);
+
+        return new PagedResult<RaceResultDto>(
+            CurrentPage: parameters.Page,
+            TotalPages: (int)totalPages,
+            PageSize: parameters.PageSize,
+            TotalResults: raceResultCount,
+            Errors: errors,
+            Items: raceResults);
     }
 }
-
-//if (parameters.Id is not null)
-//{
-//    var ids = parameters.Id?.Split(',').ToList();
-//    if (ids is not null) 
-//    {
-//        // jeden id
-//        // ?id=guid1
-//        if (ids.Count == 1)
-//        {
-//            if (!Guid.TryParse(parameters.Id, out _))
-//            {
-//                errors.Add($"Team Id is not a valid Guid: {parameters.Id}.");
-//            }
-//        }
-
-//        // bulk fetch
-//        // ?id=guid1,guid2
-//        if (ids.Count > 1)
-//        {
-//            foreach (var id in ids)
-//            {
-//                if (!Guid.TryParse(parameters.Id, out _))
-//                {
-//                    errors.Add($"Team Id is not a valid Guid: {parameters.Id}.");
-//                }
-//            }
-//        }
-//    }
-//}

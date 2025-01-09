@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FormulaOne.Application\FormulaOne.Application.csproj" />
+    <ProjectReference Include="..\FormulaOne.Infrastructure\FormulaOne.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

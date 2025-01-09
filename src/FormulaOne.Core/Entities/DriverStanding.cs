@@ -1,8 +1,8 @@
-﻿namespace FormulaOne.Domain.Entities;
+﻿namespace FormulaOne.Core.Entities;
 
 public class DriverStanding
 {
-    public string Id { get; private set; }
+    public Guid Id { get; private set; }
     public int Position { get; private set; }
     public Driver Driver { get; private set; }
     public Team Team { get; private set; }

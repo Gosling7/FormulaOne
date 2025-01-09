@@ -4,6 +4,7 @@ using FormulaOne.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FormulaOne.Infrastructure.Migrations
 {
     [DbContext(typeof(FormulaOneDbContext))]
-    partial class FormulaOneDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250109110035_EfCoreModelCleanup")]
+    partial class EfCoreModelCleanup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,45 @@ namespace FormulaOne.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.Circuit", b =>
+            modelBuilder.Entity("FormulaOne.Domain.Entities.Team", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("FormulaOne.Domain.Entities.TeamStanding", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("Points")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TeamStandings");
+                });
+
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.CircuitDao", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,7 +82,7 @@ namespace FormulaOne.Infrastructure.Migrations
                     b.ToTable("Circuits");
                 });
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.Driver", b =>
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.DriverDao", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +104,7 @@ namespace FormulaOne.Infrastructure.Migrations
                     b.ToTable("Drivers");
                 });
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.DriverStanding", b =>
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.DriverStandingDao", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -93,7 +134,7 @@ namespace FormulaOne.Infrastructure.Migrations
                     b.ToTable("DriverStandings");
                 });
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.RaceResult", b =>
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.RaceResultDao", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,11 +158,14 @@ namespace FormulaOne.Infrastructure.Migrations
                     b.Property<int>("Position")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("TeamId")
+                    b.Property<Guid>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Time")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<TimeSpan>("Time")
+                        .HasColumnType("time");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -134,7 +178,7 @@ namespace FormulaOne.Infrastructure.Migrations
                     b.ToTable("RaceResults");
                 });
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.Team", b =>
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.TeamDao", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -146,10 +190,10 @@ namespace FormulaOne.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams");
+                    b.ToTable("TeamDao");
                 });
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.TeamStanding", b =>
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.TeamStandingDao", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -171,18 +215,18 @@ namespace FormulaOne.Infrastructure.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("TeamStandings");
+                    b.ToTable("TeamStandingDao");
                 });
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.DriverStanding", b =>
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.DriverStandingDao", b =>
                 {
-                    b.HasOne("FormulaOne.Core.Entities.Driver", "Driver")
-                        .WithMany()
+                    b.HasOne("FormulaOne.Infrastructure.DataAccessObjects.DriverDao", "Driver")
+                        .WithMany("DriverStandings")
                         .HasForeignKey("DriverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FormulaOne.Core.Entities.Team", "Team")
+                    b.HasOne("FormulaOne.Infrastructure.DataAccessObjects.TeamDao", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -193,23 +237,25 @@ namespace FormulaOne.Infrastructure.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.RaceResult", b =>
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.RaceResultDao", b =>
                 {
-                    b.HasOne("FormulaOne.Core.Entities.Circuit", "Circuit")
+                    b.HasOne("FormulaOne.Infrastructure.DataAccessObjects.CircuitDao", "Circuit")
                         .WithMany("RaceResults")
                         .HasForeignKey("CircuitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FormulaOne.Core.Entities.Driver", "Driver")
+                    b.HasOne("FormulaOne.Infrastructure.DataAccessObjects.DriverDao", "Driver")
                         .WithMany("RaceResults")
                         .HasForeignKey("DriverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FormulaOne.Core.Entities.Team", "Team")
+                    b.HasOne("FormulaOne.Infrastructure.DataAccessObjects.TeamDao", "Team")
                         .WithMany("RaceResults")
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Circuit");
 
@@ -218,9 +264,9 @@ namespace FormulaOne.Infrastructure.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.TeamStanding", b =>
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.TeamStandingDao", b =>
                 {
-                    b.HasOne("FormulaOne.Core.Entities.Team", "Team")
+                    b.HasOne("FormulaOne.Infrastructure.DataAccessObjects.TeamDao", "Team")
                         .WithMany("TeamStandings")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -229,17 +275,19 @@ namespace FormulaOne.Infrastructure.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.Circuit", b =>
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.CircuitDao", b =>
                 {
                     b.Navigation("RaceResults");
                 });
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.Driver", b =>
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.DriverDao", b =>
                 {
+                    b.Navigation("DriverStandings");
+
                     b.Navigation("RaceResults");
                 });
 
-            modelBuilder.Entity("FormulaOne.Core.Entities.Team", b =>
+            modelBuilder.Entity("FormulaOne.Infrastructure.DataAccessObjects.TeamDao", b =>
                 {
                     b.Navigation("RaceResults");
 

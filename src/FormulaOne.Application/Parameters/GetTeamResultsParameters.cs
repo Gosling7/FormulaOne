@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FormulaOne.Application.Constants;
 
-namespace FormulaOne.Application.Parameters
-{
-    internal record GetTeamResultsParameters(
-        string Id,
-        int Year,
-        string Session,
-        int Page,
-        int PageSize,
-        int MaxPageSize,
-        string NameFilter,
-        string Sort);
-}
+namespace FormulaOne.Application.Parameters;
+
+public record GetTeamResultsParameters(
+    string? Id,
+    string? TeamId,
+    string? TeamName,
+    string? SortField,
+    string? SortOrder,
+    string? Year,
+    int Page = QueryParameterConstant.DefaultPage,
+    int PageSize = QueryParameterConstant.DefaultPageSize);

@@ -1,5 +1,5 @@
 using FormulaOne.Application;
-using FormulaOne.Domain;
+using FormulaOne.Core;
 using FormulaOne.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);

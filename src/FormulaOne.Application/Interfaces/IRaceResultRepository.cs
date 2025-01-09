@@ -3,7 +3,7 @@ using FormulaOne.Application.Parameters;
 
 namespace FormulaOne.Application.Interfaces;
 
-public interface ITeamRepository
+public interface IRaceResultRepository
 {
-    Task<(int, IEnumerable<TeamDto>)> GetTeamsAsync(GetTeamsParameters parameters);
+    Task<(int, IEnumerable<RaceResultDto>)> GetRaceResultsAsync(GetTeamResultsParameters parameters);
 }

@@ -1,4 +1,4 @@
-﻿using FormulaOne.Domain.Entities;
+﻿using FormulaOne.Core.Entities;
 using FormulaOne.Infrastructure.DataAccessObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,38 +10,33 @@ public class FormulaOneDbContext : DbContext
     {
     }
 
+    public DbSet<Driver> Drivers { get; set; }
+    public DbSet<DriverStanding> DriverStandings { get; set; }
     public DbSet<Team> Teams { get; set; }
-    public DbSet<DriverDao> Drivers { get; set; }
-    public DbSet<CircuitDao> Circuits { get; set; }
-    public DbSet<DriverStandingDao> DriverStandings { get; set; }
-    public DbSet<TeamStandingDao> TeamStandings { get; set; }
-    public DbSet<RaceResultDao> RaceResults { get; set; }
+    public DbSet<TeamStanding> TeamStandings { get; set; }
+    public DbSet<RaceResult> RaceResults { get; set; }
+    public DbSet<Circuit> Circuits { get; set; }
 
+    // TODO: ogarnąć czy DataTransferObjects są potrzebne
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<DriverStandingDao>()
-            .HasOne(ds => ds.Driver)
-            .WithMany(d => d.DriverStandings)
-            .HasForeignKey(ds => ds.DriverId);
+        modelBuilder.Entity<Team>()
+           .HasMany(t => t.TeamStandings)
+           .WithOne(ts => ts.Team)
+           .HasForeignKey(ts => ts.TeamId);
+        modelBuilder.Entity<Team>()
+            .HasMany(t => t.RaceResults)
+            .WithOne(rr => rr.Team)
+            .HasForeignKey(rr => rr.TeamId);
 
-        modelBuilder.Entity<TeamStandingDao>()
-            .HasOne(ts => ts.Team)
-            .WithMany(t => t.TeamStandings)
-            .HasForeignKey(ts => ts.TeamId);
-
-        modelBuilder.Entity<RaceResultDao>()
-            .HasOne(rs => rs.Driver)
-            .WithMany(d => d.RaceResults)
+        modelBuilder.Entity<Driver>()
+            .HasMany(d => d.RaceResults)
+            .WithOne(rr => rr.Driver)
             .HasForeignKey(rs => rs.DriverId);
 
-        modelBuilder.Entity<RaceResultDao>()
-            .HasOne(rs => rs.Team)
-            .WithMany(t => t.RaceResults)
-            .HasForeignKey(rs => rs.TeamId);
-
-        modelBuilder.Entity<RaceResultDao>()
-            .HasOne(rs => rs.Circuit)
-            .WithMany(c => c.RaceResults)
-            .HasForeignKey(rs => rs.CircuitId);
+        modelBuilder.Entity<Circuit>()
+            .HasMany(c => c.RaceResults)
+            .WithOne(rr => rr.Circuit)
+            .HasForeignKey(rr => rr.CircuitId);
     }
 }

@@ -5,5 +5,5 @@ public record PagedResult<TDataType>(
     int TotalPages,
     int PageSize,
     int TotalResults,
-    IReadOnlyCollection<string> Errors, // TODO: typ z FluentValidation?
+    IReadOnlyCollection<string> Errors,
     IEnumerable<TDataType> Items);

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FormulaOne.Core\FormulaOne.Domain.csproj" />
+    <ProjectReference Include="..\FormulaOne.Core\FormulaOne.Core.csproj" />
   </ItemGroup>
 
 </Project>
