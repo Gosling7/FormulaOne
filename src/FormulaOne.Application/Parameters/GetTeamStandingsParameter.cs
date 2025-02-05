@@ -11,4 +11,4 @@ public record GetTeamStandingsParameter(
     string? SortOrder,
     string? Year,
     int Page = QueryParameterConstant.DefaultPage,
-    int PageSize = QueryParameterConstant.DefaultPageSize) : IParameters;
+    int PageSize = QueryParameterConstant.DefaultPageSize) : IQueryParameter;

@@ -9,4 +9,4 @@ public record GetTeamsParameter(
     string? SortField,
     string? SortOrder,
     int PageSize = QueryParameterConstant.DefaultPageSize,
-    int Page = QueryParameterConstant.DefaultPage) : IParameters;
+    int Page = QueryParameterConstant.DefaultPage) : IQueryParameter;

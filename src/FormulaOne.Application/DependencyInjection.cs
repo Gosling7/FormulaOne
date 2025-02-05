@@ -1,4 +1,5 @@
-﻿using FormulaOne.Application.Interfaces;
+﻿using FormulaOne.Application.Helpers;
+using FormulaOne.Application.Interfaces;
 using FormulaOne.Application.Services;
 using FormulaOne.Application.Validators;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,8 +13,10 @@ public static class DependencyInjection
         services
             .AddTransient<ITeamService, TeamService>()
             .AddTransient<IDriverService, DriverService>()
+            .AddTransient<IParameterValidatorHelper, ParameterValidatorHelper>()
             .AddTransient<IQueryTeamParameterValidator, QueryTeamsParameterValidator>()
-            .AddTransient<IQueryDriverParameterValidator, QueryDriverParameterValidator>();
+            .AddTransient<IQueryDriverParameterValidator, QueryDriverParameterValidator>()
+            .AddTransient<ServiceHelper>();
 
         return services;
     }

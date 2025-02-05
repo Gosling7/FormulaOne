@@ -4,20 +4,8 @@ using FormulaOne.Application.Interfaces;
 using FormulaOne.Application.Parameters;
 using FormulaOne.Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FormulaOne.Infrastructure.Repositories;
-
-public enum RaceResultFilterType
-{
-    Driver,
-    Team,
-    Circuit
-}
 
 public class RaceResultRepository : IRaceResultRepository
 {
@@ -28,7 +16,7 @@ public class RaceResultRepository : IRaceResultRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<RaceResultDto>)> GetTeamRaceResultsAsync(
+    public async Task<(int, IEnumerable<RaceResultDto>)> GetRaceResultsAsync(
         GetTeamResultsParameter parameters)
     {
         IQueryable<RaceResult> query = _context.RaceResults;
@@ -36,7 +24,7 @@ public class RaceResultRepository : IRaceResultRepository
         query = ApplySorting(parameters, query);
         return await ExecuteQueryAsync(query, parameters.Page, parameters.PageSize);
 
-        IQueryable<RaceResult> ApplyTeamFilters(GetTeamResultsParameter parameters, 
+        IQueryable<RaceResult> ApplyTeamFilters(GetTeamResultsParameter parameters,
             IQueryable<RaceResult> query)
         {
             if (!string.IsNullOrWhiteSpace(parameters.Id))
@@ -45,7 +33,7 @@ public class RaceResultRepository : IRaceResultRepository
             }
             if (!string.IsNullOrWhiteSpace(parameters.TeamId))
             {
-                query = query.Where(rr => parameters.TeamId.Contains(rr.TeamId.ToString()));                
+                query = query.Where(rr => parameters.TeamId.Contains(rr.TeamId.ToString()));
             }
             if (!string.IsNullOrWhiteSpace(parameters.TeamName))
             {
@@ -60,7 +48,7 @@ public class RaceResultRepository : IRaceResultRepository
         }
     }
 
-    public async Task<(int, IEnumerable<RaceResultDto>)> GetDriversRaceResultsAsync(
+    public async Task<(int, IEnumerable<RaceResultDto>)> GetRaceResultsAsync(
         GetDriverResultsParameter parameters)
     {
         IQueryable<RaceResult> query = _context.RaceResults;
@@ -69,7 +57,7 @@ public class RaceResultRepository : IRaceResultRepository
         return await ExecuteQueryAsync(query, parameters.Page, parameters.PageSize);
 
         // TODO: GetDriversRaceResultsAsync() z Chatu - do sprawdzenia
-        IQueryable<RaceResult> ApplyDriverFilters(GetDriverResultsParameter parameters, 
+        IQueryable<RaceResult> ApplyDriverFilters(GetDriverResultsParameter parameters,
             IQueryable<RaceResult> query)
         {
             if (!string.IsNullOrWhiteSpace(parameters.Id))
@@ -110,7 +98,7 @@ public class RaceResultRepository : IRaceResultRepository
         return query;
     }
 
-    private static IQueryable<RaceResult> ApplySorting(IParameters parameters,
+    private static IQueryable<RaceResult> ApplySorting(IQueryParameter parameters,
         IQueryable<RaceResult> query)
     {
         if (string.IsNullOrWhiteSpace(parameters.SortField))
@@ -172,46 +160,46 @@ public class RaceResultRepository : IRaceResultRepository
             .ToListAsync();
 
         return (total, results);
-    }    
-
-    public async Task<(int, IEnumerable<RaceResultDto>)> GetRaceResultsAsync(
-        GetTeamResultsParameter parameters)
-    {
-        IQueryable<RaceResult> query = _context.RaceResults;
-        query = BuildQueryFilter(parameters, query);
-
-        var queryRaceResultCount = await query.CountAsync();
-
-        query = query
-            .Include(rr => rr.Driver)
-            .Include(rr => rr.Team)
-            .Include(rr => rr.Circuit)
-            .Skip((parameters.Page - 1) * parameters.PageSize)
-            .Take(parameters.PageSize);
-
-        // TODO: ogarnąć null w TeamRaceResult
-        var raceResults = await query
-            .Select(rr => new RaceResultDto(
-                rr.Id.ToString(),
-                rr.Position,
-                rr.Date,
-                rr.Circuit.Name,
-                rr.Driver.FirstName + " " + rr.Driver.LastName,
-                rr.Team.Name,
-                rr.Laps,
-                rr.Time,
-                rr.Points))
-            .ToListAsync();
-
-        return (queryRaceResultCount, raceResults);
     }
+
+    //public async Task<(int, IEnumerable<RaceResultDto>)> GetRaceResultsAsync(
+    //    GetTeamResultsParameter parameters)
+    //{
+    //    IQueryable<RaceResult> query = _context.RaceResults;
+    //    query = BuildQueryFilter(parameters, query);
+
+    //    var queryRaceResultCount = await query.CountAsync();
+
+    //    query = query
+    //        .Include(rr => rr.Driver)
+    //        .Include(rr => rr.Team)
+    //        .Include(rr => rr.Circuit)
+    //        .Skip((parameters.Page - 1) * parameters.PageSize)
+    //        .Take(parameters.PageSize);
+
+    //    // TODO: ogarnąć null w TeamRaceResult
+    //    var raceResults = await query
+    //        .Select(rr => new RaceResultDto(
+    //            rr.Id.ToString(),
+    //            rr.Position,
+    //            rr.Date,
+    //            rr.Circuit.Name,
+    //            rr.Driver.FirstName + " " + rr.Driver.LastName,
+    //            rr.Team.Name,
+    //            rr.Laps,
+    //            rr.Time,
+    //            rr.Points))
+    //        .ToListAsync();
+
+    //    return (queryRaceResultCount, raceResults);
+    //}
 
     private static IQueryable<RaceResult> BuildQueryFilter(GetTeamResultsParameter parameters, IQueryable<RaceResult> query)
     {
         query = ApplyFilters(parameters, query);
         query = ApplySorting(parameters, query);
 
-        return query;        
+        return query;
     }
 
     private static IQueryable<RaceResult> ApplyFilters(GetTeamResultsParameter parameters, IQueryable<RaceResult> query)

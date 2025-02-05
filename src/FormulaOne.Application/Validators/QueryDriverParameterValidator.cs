@@ -1,5 +1,4 @@
-﻿using FormulaOne.Application.Helpers;
-using FormulaOne.Application.Interfaces;
+﻿using FormulaOne.Application.Interfaces;
 using FormulaOne.Application.Parameters;
 using FormulaOne.Core.Entities;
 
@@ -7,12 +6,19 @@ namespace FormulaOne.Application.Validators;
 
 internal class QueryDriverParameterValidator : IQueryDriverParameterValidator
 {
+    private readonly IParameterValidatorHelper _validatorHelper;
+
+    public QueryDriverParameterValidator(IParameterValidatorHelper validatorHelper)
+    {
+        _validatorHelper = validatorHelper;
+    }
+
     public List<string> Validate(GetDriversParameter parameter)
     {
         var errors = new List<string>();
 
-        QueryParameterValidatorHelper.ValidateId(parameter.Id, errors);
-        QueryParameterValidatorHelper.ValidatePagination(parameter.Page, errors);
+        _validatorHelper.ValidateId(parameter.Id, errors);
+        _validatorHelper.ValidatePagination(parameter.Page, errors);
         ValidateNationality(parameter.Nationality, errors);
         ValidateDriverSorting(parameter.SortField, parameter.SortOrder, errors);
 
@@ -23,10 +29,10 @@ internal class QueryDriverParameterValidator : IQueryDriverParameterValidator
     {
         var errors = new List<string>();
 
-        QueryParameterValidatorHelper.ValidateYear(parameter.Year, errors);
-        QueryParameterValidatorHelper.ValidateId(parameter.Id, errors);
-        // TODO: dodać walidowanie DriverId i tym podobne w reszcie walidatorów
-        QueryParameterValidatorHelper.ValidatePagination(parameter.Page, errors);
+        _validatorHelper.ValidateYear(parameter.Year, errors);
+        _validatorHelper.ValidateId(parameter.Id, errors);
+        _validatorHelper.ValidateId(parameter.DriverId, errors, nameof(GetDriverStandingsParameter.DriverId));
+        _validatorHelper.ValidatePagination(parameter.Page, errors);
         ValidateDriverStandingsSorting(parameter.SortField, parameter.SortOrder, errors);
 
         return errors;
@@ -36,9 +42,9 @@ internal class QueryDriverParameterValidator : IQueryDriverParameterValidator
     {
         var errors = new List<string>();
 
-        QueryParameterValidatorHelper.ValidateYear(parameter.Year, errors);
-        QueryParameterValidatorHelper.ValidateId(parameter.Id, errors);
-        QueryParameterValidatorHelper.ValidatePagination(parameter.Page, errors);
+        _validatorHelper.ValidateYear(parameter.Year, errors);
+        _validatorHelper.ValidateId(parameter.Id, errors);
+        _validatorHelper.ValidatePagination(parameter.Page, errors);
         ValidateDriverRaceResultsSorting(parameter.SortField, parameter.SortOrder, errors);
 
         return errors;
