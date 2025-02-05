@@ -16,7 +16,7 @@ public class TeamRepository : ITeamRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<TeamDto>)> GetTeamsAsync(GetTeamsParameters parameters)
+    public async Task<(int, IEnumerable<TeamDto>)> GetTeamsAsync(GetTeamsParameter parameters)
     {
         IQueryable<Team> query = _context.Teams;
         query = BuildQueryFilter(parameters, query);
@@ -36,45 +36,45 @@ public class TeamRepository : ITeamRepository
         return (queryTeamCount, teams);
     }
 
-    private static IQueryable<Team> BuildQueryFilter(GetTeamsParameters parameters, IQueryable<Team> query)
+    private static IQueryable<Team> BuildQueryFilter(GetTeamsParameter parameters, IQueryable<Team> query)
     {
         query = ApplyFilters(parameters, query);
         query = ApplySorting(parameters, query);
 
+        return query;        
+    }
+
+    private static IQueryable<Team> ApplyFilters(GetTeamsParameter parameters, IQueryable<Team> query)
+    {
+        if (!string.IsNullOrWhiteSpace(parameters.Name))
+        {
+            query = query.Where(d => d.Name.Contains(parameters.Name.ToLower()));
+        }
+
+        if (!string.IsNullOrWhiteSpace(parameters.Id))
+        {
+            query = query.Where(t => parameters.Id.Contains(t.Id.ToString()));
+        }
+
         return query;
+    }
 
-        static IQueryable<Team> ApplyFilters(GetTeamsParameters parameters, IQueryable<Team> query)
+    private static IQueryable<Team> ApplySorting(GetTeamsParameter parameters, IQueryable<Team> query)
+    {
+        if (!string.IsNullOrWhiteSpace(parameters.SortField))
         {
-            if (!string.IsNullOrWhiteSpace(parameters.Name))
+            switch (parameters.SortField)
             {
-                query = query.Where(d => d.Name.Contains(parameters.Name.ToLower()));
+                case QueryRepositoryConstant.NameField:
+                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(t => t.Name)
+                        : query.OrderBy(t => t.Name);
+                    break;
+                default:
+                    break;
             }
-
-            if (!string.IsNullOrWhiteSpace(parameters.Id))
-            {
-                query = query.Where(t => parameters.Id.Contains(t.Id.ToString()));
-            }
-
-            return query;
         }
 
-        static IQueryable<Team> ApplySorting(GetTeamsParameters parameters, IQueryable<Team> query)
-        {
-            if (!string.IsNullOrWhiteSpace(parameters.SortField))
-            {
-                switch (parameters.SortField)
-                {
-                    case QueryRepositoryConstant.NameField:
-                        query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
-                            ? query.OrderByDescending(t => t.Name)
-                            : query.OrderBy(t => t.Name);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            return query;
-        }
+        return query;
     }
 }

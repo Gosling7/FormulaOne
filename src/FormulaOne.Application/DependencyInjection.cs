@@ -11,7 +11,9 @@ public static class DependencyInjection
     {
         services
             .AddTransient<ITeamService, TeamService>()
-            .AddTransient<IQueryTeamsParameterValidator, QueryTeamsParameterValidator>();
+            .AddTransient<IDriverService, DriverService>()
+            .AddTransient<IQueryTeamParameterValidator, QueryTeamsParameterValidator>()
+            .AddTransient<IQueryDriverParameterValidator, QueryDriverParameterValidator>();
 
         return services;
     }

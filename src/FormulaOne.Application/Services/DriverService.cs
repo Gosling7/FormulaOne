@@ -4,87 +4,86 @@ using FormulaOne.Application.Parameters;
 
 namespace FormulaOne.Application.Services;
 
-internal class TeamService : ITeamService
+internal class DriverService : IDriverService
 {
-    private readonly IQueryTeamParameterValidator _validator;
-    private readonly ITeamRepository _teamRepository;
-    private readonly ITeamStandingRepository _teamStandingRepository;
+    private readonly IQueryDriverParameterValidator _validator;
     private readonly IRaceResultRepository _raceResultRepository;
+    private readonly IDriverRepository _driverRepository;
+    //private readonly IDriverStandingRepository _driverStandingRepository;
 
-    public TeamService(IQueryTeamParameterValidator validator,
-        ITeamRepository teamRepository,
-        ITeamStandingRepository teamStandingRepository,
-        IRaceResultRepository raceResultRepository)
+    public DriverService(IQueryDriverParameterValidator validator,
+        IRaceResultRepository raceResultRepository,
+        IDriverRepository driverRepository
+        )
     {
-        _teamRepository = teamRepository;
-        _validator = validator;
-        _teamStandingRepository = teamStandingRepository;
         _raceResultRepository = raceResultRepository;
+        _driverRepository = driverRepository;
+                _validator = validator;
     }
 
-    public async Task<PagedResult<TeamDto>> GetTeams(GetTeamsParameter parameters)
+    public async Task<PagedResult<DriverDto>> GetDrivers(GetDriversParameter parameters)
     {
         var errors = new List<string>();
 
         errors = _validator.Validate(parameters);
         if (errors.Count > 0)
         {
-            return new PagedResult<TeamDto>(
+            return new PagedResult<DriverDto>(
                 CurrentPage: parameters.Page,
                 TotalPages: 0,
                 PageSize: parameters.PageSize,
                 TotalResults: 0,
                 Errors: errors,
-                Items: new List<TeamDto>());
+                Items: new List<DriverDto>());
         }
 
-        var teamsWithCount = await _teamRepository.GetTeamsAsync(parameters);
-        var teamCount = teamsWithCount.Item1;
-        var teams = teamsWithCount.Item2;
-        var totalPages = MathF.Ceiling(Convert.ToSingle(teamCount) / parameters.PageSize);
+        var driversWithCount = await _driverRepository.GetDriversAsync(parameters);
+        var driverCount = driversWithCount.Item1;
+        var drivers = driversWithCount.Item2;
+        var totalPages = MathF.Ceiling(Convert.ToSingle(driverCount) / parameters.PageSize);
 
-        return new PagedResult<TeamDto>(
+        return new PagedResult<DriverDto>(
             CurrentPage: parameters.Page,
             TotalPages: (int)totalPages,
             PageSize: parameters.PageSize,
-            TotalResults: teamCount,
+            TotalResults: driverCount,
             Errors: errors,
-            Items: teams);
+            Items: drivers);
     }
 
-    public async Task<PagedResult<TeamStandingDto>> GetTeamStandings(
-        GetTeamStandingsParameter parameters)
+    public async Task<PagedResult<DriverStandingDto>> GetDriverStandings(
+        GetDriverStandingsParameter parameters)
     {
         var errors = new List<string>();
 
         errors = _validator.Validate(parameters);
         if (errors.Count > 0)
         {
-            return new PagedResult<TeamStandingDto>(
+            return new PagedResult<DriverStandingDto>(
                 CurrentPage: parameters.Page,
                 TotalPages: 0,
                 PageSize: parameters.PageSize,
                 TotalResults: 0,
                 Errors: errors,
-                Items: new List<TeamStandingDto>());
+                Items: new List<DriverStandingDto>());
         }
 
-        var teamStandingsWithCount = await _teamStandingRepository.GetTeamStandings(parameters);
-        var teamStandingCount = teamStandingsWithCount.Item1;
-        var teamStandings = teamStandingsWithCount.Item2;
-        var totalPages = MathF.Ceiling(Convert.ToSingle(teamStandingCount) / parameters.PageSize);
+        //var driverStandingsWithCount = await _driverStandingRepository.GetDriverStandings(parameters);
+        //var driverStandingCount = driverStandingsWithCount.Item1;
+        //var driverStandings = driverStandingsWithCount.Item2;
+        //var totalPages = MathF.Ceiling(Convert.ToSingle(driverStandingCount) / parameters.PageSize);
 
-        return new PagedResult<TeamStandingDto>(
+        return new PagedResult<DriverStandingDto>(
             CurrentPage: parameters.Page,
-            TotalPages: (int)totalPages,
-            PageSize: parameters.PageSize,
-            TotalResults: teamStandingCount,
+            TotalPages: 0,
+            PageSize: 0,
+            TotalResults: 0,
             Errors: errors,
-            Items: teamStandings);
+            Items: new List<DriverStandingDto>());
     }
 
-    public async Task<PagedResult<RaceResultDto>> GetTeamResults(
-        GetTeamResultsParameter parameters)
+    public async Task<PagedResult<RaceResultDto>> GetDriverResults(
+        GetDriverResultsParameter parameters)
     {
         var errors = new List<string>();
 
@@ -100,7 +99,7 @@ internal class TeamService : ITeamService
                 Items: new List<RaceResultDto>());
         }
 
-        var raceResultsWithCount = await _raceResultRepository.GetRaceResultsAsync(parameters);
+        var raceResultsWithCount = await _raceResultRepository.GetDriversRaceResultsAsync(parameters);
         var raceResultCount = raceResultsWithCount.Item1;
         var raceResults = raceResultsWithCount.Item2;
         var totalPages = MathF.Ceiling(Convert.ToSingle(raceResultCount) / parameters.PageSize);

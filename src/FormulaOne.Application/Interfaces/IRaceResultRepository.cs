@@ -5,5 +5,8 @@ namespace FormulaOne.Application.Interfaces;
 
 public interface IRaceResultRepository
 {
-    Task<(int, IEnumerable<RaceResultDto>)> GetRaceResultsAsync(GetTeamResultsParameters parameters);
+    Task<(int, IEnumerable<RaceResultDto>)> GetRaceResultsAsync(
+        GetTeamResultsParameter parameters);
+    Task<(int, IEnumerable<RaceResultDto>)> GetDriversRaceResultsAsync(
+        GetDriverResultsParameter parameters);
 }

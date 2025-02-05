@@ -3,7 +3,7 @@ using FormulaOne.Application.Parameters;
 
 namespace FormulaOne.Application.Interfaces;
 
-public interface ITeamRepository
+public interface IDriverRepository
 {
-    Task<(int, IEnumerable<TeamDto>)> GetTeamsAsync(GetTeamsParameter parameters);
+    Task<(int, IEnumerable<DriverDto>)> GetDriversAsync(GetDriversParameter parameters);
 }

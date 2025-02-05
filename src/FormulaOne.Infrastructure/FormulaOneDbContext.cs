@@ -1,5 +1,4 @@
 ﻿using FormulaOne.Core.Entities;
-using FormulaOne.Infrastructure.DataAccessObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace FormulaOne.Infrastructure;
@@ -17,7 +16,6 @@ public class FormulaOneDbContext : DbContext
     public DbSet<RaceResult> RaceResults { get; set; }
     public DbSet<Circuit> Circuits { get; set; }
 
-    // TODO: ogarnąć czy DataTransferObjects są potrzebne
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Team>()

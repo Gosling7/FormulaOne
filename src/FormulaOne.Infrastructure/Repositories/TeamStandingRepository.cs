@@ -21,7 +21,7 @@ public class TeamStandingRepository : ITeamStandingRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<TeamStandingDto>)> GetTeamStandings(GetTeamStandingsParameters parameters)
+    public async Task<(int, IEnumerable<TeamStandingDto>)> GetTeamStandings(GetTeamStandingsParameter parameters)
     {
         IQueryable<TeamStanding> query = _context.TeamStandings;
         query = BuildQueryFilter(parameters, query);
@@ -46,14 +46,14 @@ public class TeamStandingRepository : ITeamStandingRepository
         return (queryTeamStandingCount, teamStandings);
     }
 
-    private static IQueryable<TeamStanding> BuildQueryFilter(GetTeamStandingsParameters parameters, IQueryable<TeamStanding> query)
+    private static IQueryable<TeamStanding> BuildQueryFilter(GetTeamStandingsParameter parameters, IQueryable<TeamStanding> query)
     {
         query = ApplyFilters(parameters, query);
         query = ApplySorting(parameters, query);
 
         return query;
 
-        static IQueryable<TeamStanding> ApplyFilters(GetTeamStandingsParameters parameters, IQueryable<TeamStanding> query)
+        static IQueryable<TeamStanding> ApplyFilters(GetTeamStandingsParameter parameters, IQueryable<TeamStanding> query)
         {
             if (!string.IsNullOrWhiteSpace(parameters.Id))
             {
@@ -93,7 +93,7 @@ public class TeamStandingRepository : ITeamStandingRepository
             return query;
         }
 
-        static IQueryable<TeamStanding> ApplySorting(GetTeamStandingsParameters parameters, IQueryable<TeamStanding> query)
+        static IQueryable<TeamStanding> ApplySorting(GetTeamStandingsParameter parameters, IQueryable<TeamStanding> query)
         {
             if (!string.IsNullOrWhiteSpace(parameters.SortField))
             {

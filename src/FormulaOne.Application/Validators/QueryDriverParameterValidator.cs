@@ -5,52 +5,65 @@ using FormulaOne.Core.Entities;
 
 namespace FormulaOne.Application.Validators;
 
-internal class QueryTeamsParameterValidator : IQueryTeamParameterValidator
+internal class QueryDriverParameterValidator : IQueryDriverParameterValidator
 {
-    public List<string> Validate(GetTeamsParameter parameters)
+    public List<string> Validate(GetDriversParameter parameter)
     {
         var errors = new List<string>();
 
-        QueryParameterValidatorHelper.ValidateId(parameters.Id, errors);
-        QueryParameterValidatorHelper.ValidatePagination(parameters.Page, errors);
-        ValidateTeamSorting(parameters.SortField, parameters.SortOrder, errors);
+        QueryParameterValidatorHelper.ValidateId(parameter.Id, errors);
+        QueryParameterValidatorHelper.ValidatePagination(parameter.Page, errors);
+        ValidateNationality(parameter.Nationality, errors);
+        ValidateDriverSorting(parameter.SortField, parameter.SortOrder, errors);
 
         return errors;
     }
 
-    public List<string> Validate(GetTeamStandingsParameter parameters)
+    public List<string> Validate(GetDriverStandingsParameter parameter)
     {
         var errors = new List<string>();
 
-        QueryParameterValidatorHelper.ValidateYear(parameters.Year, errors);
-        QueryParameterValidatorHelper.ValidateId(parameters.Id, errors);
-        QueryParameterValidatorHelper.ValidatePagination(parameters.Page, errors);
-        ValidateTeamStandingsSorting(parameters.SortField, parameters.SortOrder, errors);
+        QueryParameterValidatorHelper.ValidateYear(parameter.Year, errors);
+        QueryParameterValidatorHelper.ValidateId(parameter.Id, errors);
+        // TODO: dodać walidowanie DriverId i tym podobne w reszcie walidatorów
+        QueryParameterValidatorHelper.ValidatePagination(parameter.Page, errors);
+        ValidateDriverStandingsSorting(parameter.SortField, parameter.SortOrder, errors);
 
         return errors;
     }
 
-    public List<string> Validate(GetTeamResultsParameter parameters)
+    public List<string> Validate(GetDriverResultsParameter parameter)
     {
         var errors = new List<string>();
 
-        QueryParameterValidatorHelper.ValidateYear(parameters.Year, errors);
-        QueryParameterValidatorHelper.ValidateId(parameters.Id, errors);
-        QueryParameterValidatorHelper.ValidatePagination(parameters.Page, errors);
-        ValidateTeamRaceResultsSorting(parameters.SortField, parameters.SortOrder, errors);
+        QueryParameterValidatorHelper.ValidateYear(parameter.Year, errors);
+        QueryParameterValidatorHelper.ValidateId(parameter.Id, errors);
+        QueryParameterValidatorHelper.ValidatePagination(parameter.Page, errors);
+        ValidateDriverRaceResultsSorting(parameter.SortField, parameter.SortOrder, errors);
 
         return errors;
     }
 
-    private static void ValidateTeamSorting(string? fieldParameter, string? orderParameter,
+    private static void ValidateNationality(string? nationalityParameter, List<string> errors)
+    {
+        if (!string.IsNullOrWhiteSpace(nationalityParameter))
+        {
+            if (nationalityParameter.Length != 3)
+            {
+                errors.Add($"Invalid nationality filter: {nationalityParameter}. " +
+                    $"Valid values are three-letter codes, e.g. POL.");
+            }
+        }
+    }
+
+    private static void ValidateDriverSorting(string? fieldParameter, string? orderParameter,
         List<string> errors)
     {
         var validSortFields = new[]
         {
-            nameof(TeamStanding.Id),
-            nameof(TeamStanding.Year),
-            nameof(TeamStanding.Position),
-            nameof(TeamStanding.Points),
+            nameof(Driver.Id),
+            nameof(Driver.Nationality),
+            "name"
         };
 
         if (!string.IsNullOrWhiteSpace(fieldParameter))
@@ -79,15 +92,15 @@ internal class QueryTeamsParameterValidator : IQueryTeamParameterValidator
         }
     }
 
-    private static void ValidateTeamStandingsSorting(string? fieldParameter, string? orderParameter,
-        List<string> errors)
+    private static void ValidateDriverStandingsSorting(string? fieldParameter,
+        string? orderParameter, List<string> errors)
     {
         var validSortFields = new[]
         {
-            nameof(TeamStanding.Id),
-            nameof(TeamStanding.Year),
-            nameof(TeamStanding.Position),
-            nameof(TeamStanding.Points),
+            nameof(DriverStanding.Id),
+            nameof(DriverStanding.Year),
+            nameof(DriverStanding.Position),
+            nameof(DriverStanding.Points),
         };
 
         if (!string.IsNullOrWhiteSpace(fieldParameter))
@@ -116,14 +129,14 @@ internal class QueryTeamsParameterValidator : IQueryTeamParameterValidator
         }
     }
 
-    private static void ValidateTeamRaceResultsSorting(string? fieldParameter, string? orderParameter,
+    private static void ValidateDriverRaceResultsSorting(string? fieldParameter, string? orderParameter,
         List<string> errors)
     {
         var validSortFields = new[]
         {
             nameof(RaceResult.Date).ToLower(),
-            nameof(TeamStanding.Position).ToLower(),
-            nameof(TeamStanding.Points).ToLower(),
+            nameof(RaceResult.Position).ToLower(),
+            nameof(RaceResult.Points).ToLower(),
         };
 
         if (!string.IsNullOrWhiteSpace(fieldParameter?.ToLower()))

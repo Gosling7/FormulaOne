@@ -1,8 +1,9 @@
 ﻿using FormulaOne.Application.Constants;
+using FormulaOne.Application.Interfaces;
 
 namespace FormulaOne.Application.Parameters;
 
-public record GetTeamResultsParameters(
+public record GetTeamStandingsParameter(
     string? Id,
     string? TeamId,
     string? TeamName,
@@ -10,4 +11,4 @@ public record GetTeamResultsParameters(
     string? SortOrder,
     string? Year,
     int Page = QueryParameterConstant.DefaultPage,
-    int PageSize = QueryParameterConstant.DefaultPageSize);
+    int PageSize = QueryParameterConstant.DefaultPageSize) : IParameters;
