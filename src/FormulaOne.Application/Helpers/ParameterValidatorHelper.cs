@@ -1,9 +1,10 @@
 ﻿using FormulaOne.Application.Interfaces;
 using FormulaOne.Core.Entities;
+using System.Reflection.Metadata;
 
 namespace FormulaOne.Application.Helpers;
 
-internal class ParameterValidatorHelper : IParameterValidatorHelper
+public class ParameterValidatorHelper : IParameterValidatorHelper
 {
     public void ValidateId(string? idParameter, List<string> errors,
         string? nameOfIdParameter = "Id")
@@ -52,7 +53,7 @@ internal class ParameterValidatorHelper : IParameterValidatorHelper
         }
     }
 
-    public void ValidatePagination(int? pageParameter, List<string> errors)
+    public void ValidatePagination(int pageParameter, List<string> errors)
     {
         if (pageParameter <= 0)
         {
@@ -61,34 +62,68 @@ internal class ParameterValidatorHelper : IParameterValidatorHelper
         }
     }
 
-    public void ValidateYear(string? yearString, List<string> errors,
+    public void ValidateYear(string? yearsParameter, List<string> errors,
         bool isTeamStanding = false)
     {
-        // TODO: year w walidacji do poprawy
-        if (yearString is null)
+        if (yearsParameter is null)
         {
             return;
         }
 
-        if (!int.TryParse(yearString, out var year))
+        var yearParts = yearsParameter.Split("-");
+        if (yearParts.Length != 2)
         {
-            // TODO: error gdy nie uda się zparsować inta w YearParameter
+            errors.Add($"Invalid year format: {yearsParameter}. " +
+                GetValidYearsFormatMessagePart(yearsParameter));
+            return;
         }
 
-        if (isTeamStanding)
+        if (!int.TryParse(yearParts[0], out var startYear))
         {
-            //if (year < 1958)
-            //{
-            //    errors.Add($"Invalid year: {yearString}," +
-            //    $"Valid years are between 1958 and 2024.");
-            //}
+            errors.Add($"Start year is not a number: {yearsParameter}. " +
+                GetValidYearsFormatMessagePart(yearsParameter));
+        }
+        if (!int.TryParse(yearParts[1], out var endYear))
+        {
+            errors.Add($"End year is not a number: {yearsParameter}. " +
+                GetValidYearsFormatMessagePart(yearsParameter));
         }
 
-        //if (year < 1950)
-        //{
-        //    errors.Add($"Invalid year: {yearString}," +
-        //        $"Valid years are between 1950 and 2024.");
-        //}
+        if (startYear == default || endYear == default)
+        {
+            return;
+        }
+
+        var validEndYear = DateTime.Now.Year;
+        var validStartYear = isTeamStanding ? 1958 : 1950;
+        if (startYear > endYear)
+        {
+            errors.Add(GetInvalidYearRangeMessagePart(yearsParameter) +
+                $"The start year ({startYear}) cannot be greater than the end year ({endYear}). " +
+                GetValidRangeMessagePart(validStartYear, validEndYear));
+        }
+
+        if (startYear < validStartYear)
+        {
+            errors.Add(GetInvalidYearRangeMessagePart(yearsParameter) +
+                $"The start year ({startYear}) cannot be greater than {validStartYear}. " +
+                GetValidRangeMessagePart(validStartYear, validEndYear));
+        }
+        if (endYear > validEndYear)
+        {
+            errors.Add(GetInvalidYearRangeMessagePart(yearsParameter) +
+                $"The end year ({endYear}) cannot be less than the {validEndYear}). " +
+                GetValidRangeMessagePart(validStartYear, validEndYear));
+        }
+
+        static string GetValidYearsFormatMessagePart(string yearsParameter) 
+            => $"Valid format is: StartYear-EndYear, e.g., 2000-2024. ";
+
+        static string GetInvalidYearRangeMessagePart(string yearsParameter) 
+            => $"Invalid year range: {yearsParameter}. ";
+
+        static string GetValidRangeMessagePart(int validStartYear, int validEndYear) 
+            => $"Valid range is between {validStartYear} and {validEndYear}. ";
     }
 
     public void ValidateResultSorting(string? fieldParameter,
