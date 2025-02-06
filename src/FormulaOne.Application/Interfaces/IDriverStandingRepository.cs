@@ -5,5 +5,5 @@ namespace FormulaOne.Application.Interfaces;
 
 public interface IDriverStandingRepository
 {
-    Task<(int, IEnumerable<DriverStandingDto>)> GetDriverStandings(GetDriverStandingsParameter parameters);
+    Task<(int, IEnumerable<DriverStandingDto>)> GetItemsAsync(GetDriverStandingsParameter parameters);
 }

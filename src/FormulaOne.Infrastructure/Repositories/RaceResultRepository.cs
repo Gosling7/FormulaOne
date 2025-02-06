@@ -16,7 +16,7 @@ public class RaceResultRepository : IRaceResultRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<RaceResultDto>)> GetRaceResultsAsync(
+    public async Task<(int, IEnumerable<RaceResultDto>)> GetItemsAsync(
         GetTeamResultsParameter parameters)
     {
         IQueryable<RaceResult> query = _context.RaceResults;
@@ -48,7 +48,7 @@ public class RaceResultRepository : IRaceResultRepository
         }
     }
 
-    public async Task<(int, IEnumerable<RaceResultDto>)> GetRaceResultsAsync(
+    public async Task<(int, IEnumerable<RaceResultDto>)> GetItemsAsync(
         GetDriverResultsParameter parameters)
     {
         IQueryable<RaceResult> query = _context.RaceResults;
@@ -71,6 +71,43 @@ public class RaceResultRepository : IRaceResultRepository
             if (!string.IsNullOrWhiteSpace(parameters.DriverName))
             {
                 query = query.Where(rr => (rr.Driver.FirstName + " " + rr.Driver.LastName).Contains(parameters.DriverName));
+            }
+            if (!string.IsNullOrWhiteSpace(parameters.Year))
+            {
+                query = ApplyYearFilter(parameters.Year, query);
+            }
+
+            return query;
+        }
+    }
+
+    public async Task<(int, IEnumerable<RaceResultDto>)> GetItemsAsync(
+        GetCircuitResultsParameter parameters)
+    {
+        IQueryable<RaceResult> query = _context.RaceResults;
+        query = ApplyCircuitFilters(parameters, query);
+        query = ApplySorting(parameters, query);
+        return await ExecuteQueryAsync(query, parameters.Page, parameters.PageSize);
+
+        // TODO: GetDriversRaceResultsAsync() z Chatu - do sprawdzenia
+        IQueryable<RaceResult> ApplyCircuitFilters(GetCircuitResultsParameter parameters,
+            IQueryable<RaceResult> query)
+        {
+            if (!string.IsNullOrWhiteSpace(parameters.Id))
+            {
+                query = query.Where(c => parameters.Id.Contains(c.Id.ToString()));
+            }
+            if (!string.IsNullOrWhiteSpace(parameters.CircuitId))
+            {
+                query = query.Where(c => parameters.CircuitId.Contains(c.CircuitId.ToString()));
+            }
+            if (!string.IsNullOrWhiteSpace(parameters.CircuitName))
+            {
+                query = query.Where(c => c.Circuit.Name.Contains(parameters.CircuitName));
+            }
+            if (!string.IsNullOrWhiteSpace(parameters.CircuitLocation))
+            {
+                query = query.Where(c => c.Circuit.Location.Contains(parameters.CircuitLocation));
             }
             if (!string.IsNullOrWhiteSpace(parameters.Year))
             {

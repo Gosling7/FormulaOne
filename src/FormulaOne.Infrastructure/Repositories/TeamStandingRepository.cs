@@ -21,7 +21,7 @@ public class TeamStandingRepository : ITeamStandingRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<TeamStandingDto>)> GetStandingsAsync(GetTeamStandingsParameter parameters)
+    public async Task<(int, IEnumerable<TeamStandingDto>)> GetItemsAsync(GetTeamStandingsParameter parameters)
     {
         IQueryable<TeamStanding> query = _context.TeamStandings;
         query = BuildQueryFilter(parameters, query);

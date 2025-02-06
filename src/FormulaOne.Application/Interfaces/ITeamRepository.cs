@@ -5,5 +5,5 @@ namespace FormulaOne.Application.Interfaces;
 
 public interface ITeamRepository
 {
-    Task<(int, IEnumerable<TeamDto>)> GetTeamsAsync(GetTeamsParameter parameters);
+    Task<(int, IEnumerable<TeamDto>)> GetItemsAsync(GetTeamsParameter parameters);
 }

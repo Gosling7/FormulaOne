@@ -4,11 +4,11 @@ using FormulaOne.Core.Entities;
 
 namespace FormulaOne.Application.Validators;
 
-internal class QueryTeamsParameterValidator : IQueryTeamParameterValidator
+internal class QueryTeamParameterValidator : IQueryTeamParameterValidator
 {
     private readonly IParameterValidatorHelper _validatorHelper;
 
-    public QueryTeamsParameterValidator(IParameterValidatorHelper validatorHelper)
+    public QueryTeamParameterValidator(IParameterValidatorHelper validatorHelper)
     {
         _validatorHelper = validatorHelper;
     }

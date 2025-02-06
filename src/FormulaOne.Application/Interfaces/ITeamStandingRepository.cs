@@ -5,5 +5,5 @@ namespace FormulaOne.Application.Interfaces;
 
 public interface ITeamStandingRepository
 {
-    Task<(int, IEnumerable<TeamStandingDto>)> GetStandingsAsync(GetTeamStandingsParameter parameters);
+    Task<(int, IEnumerable<TeamStandingDto>)> GetItemsAsync(GetTeamStandingsParameter parameters);
 }

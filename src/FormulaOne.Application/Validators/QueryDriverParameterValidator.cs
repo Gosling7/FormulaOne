@@ -31,7 +31,8 @@ internal class QueryDriverParameterValidator : IQueryDriverParameterValidator
 
         _validatorHelper.ValidateYear(parameter.Year, errors);
         _validatorHelper.ValidateId(parameter.Id, errors);
-        _validatorHelper.ValidateId(parameter.DriverId, errors, nameof(GetDriverStandingsParameter.DriverId));
+        _validatorHelper.ValidateId(parameter.DriverId, errors, 
+            nameof(GetDriverStandingsParameter.DriverId));
         _validatorHelper.ValidatePagination(parameter.Page, errors);
         ValidateDriverStandingsSorting(parameter.SortField, parameter.SortOrder, errors);
 

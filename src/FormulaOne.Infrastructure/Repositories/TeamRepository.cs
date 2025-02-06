@@ -16,7 +16,7 @@ public class TeamRepository : ITeamRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<TeamDto>)> GetTeamsAsync(GetTeamsParameter parameters)
+    public async Task<(int, IEnumerable<TeamDto>)> GetItemsAsync(GetTeamsParameter parameters)
     {
         IQueryable<Team> query = _context.Teams;
         query = BuildQueryFilter(parameters, query);

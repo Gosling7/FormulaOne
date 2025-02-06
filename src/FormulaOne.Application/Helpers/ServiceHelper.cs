@@ -12,7 +12,7 @@ internal class ServiceHelper
         where TQueryParameter : IQueryParameter
     {
         var errors = validateQueryParmeters(parameters);
-        if (errors.Any())
+        if (errors.Count > 0)
         {
             return new PagedResult<TDto>(
                 CurrentPage: parameters.Page,

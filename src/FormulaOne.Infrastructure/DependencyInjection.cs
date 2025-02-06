@@ -25,7 +25,8 @@ public static class DependencyInjection
             .AddTransient<ITeamStandingRepository, TeamStandingRepository>()
             .AddTransient<IDriverRepository, DriverRepository>()
             .AddTransient<IDriverStandingRepository, DriverStandingRepository>()
-            .AddTransient<IRaceResultRepository, RaceResultRepository>();
+            .AddTransient<IRaceResultRepository, RaceResultRepository>()
+            .AddTransient<ICircuitRepository, CircuitRepository>();
 
         return services;
     }
