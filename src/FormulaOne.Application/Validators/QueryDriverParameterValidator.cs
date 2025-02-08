@@ -13,40 +13,42 @@ internal class QueryDriverParameterValidator : IQueryDriverParameterValidator
         _validatorHelper = validatorHelper;
     }
 
-    public List<string> Validate(GetDriversParameter parameter)
+    public List<string> Validate(GetDriversParameter parameters)
     {
         var errors = new List<string>();
 
-        _validatorHelper.ValidateId(parameter.Id, errors);
-        _validatorHelper.ValidatePagination(parameter.Page, errors);
-        ValidateNationality(parameter.Nationality, errors);
-        ValidateDriverSorting(parameter.SortField, parameter.SortOrder, errors);
+        _validatorHelper.ValidateId(parameters.Id, errors);
+        _validatorHelper.ValidatePagination(parameters.Page, errors);
+        ValidateNationality(parameters.Nationality, errors);
+        ValidateDriverSorting(parameters.SortField, parameters.SortOrder, errors);
 
         return errors;
     }
 
-    public List<string> Validate(GetDriverStandingsParameter parameter)
+    public List<string> Validate(GetDriverStandingsParameter parameters)
     {
         var errors = new List<string>();
 
-        _validatorHelper.ValidateYear(parameter.Year, errors);
-        _validatorHelper.ValidateId(parameter.Id, errors);
-        _validatorHelper.ValidateId(parameter.DriverId, errors, 
+        _validatorHelper.ValidateYear(parameters.Year, errors);
+        _validatorHelper.ValidateId(parameters.Id, errors);
+        _validatorHelper.ValidateId(parameters.DriverId, errors, 
             nameof(GetDriverStandingsParameter.DriverId));
-        _validatorHelper.ValidatePagination(parameter.Page, errors);
-        ValidateDriverStandingsSorting(parameter.SortField, parameter.SortOrder, errors);
+        _validatorHelper.ValidatePagination(parameters.Page, errors);
+        ValidateDriverStandingsSorting(parameters.SortField, parameters.SortOrder, errors);
 
         return errors;
     }
 
-    public List<string> Validate(GetDriverResultsParameter parameter)
+    public List<string> Validate(GetDriverResultsParameter parameters)
     {
         var errors = new List<string>();
 
-        _validatorHelper.ValidateYear(parameter.Year, errors);
-        _validatorHelper.ValidateId(parameter.Id, errors);
-        _validatorHelper.ValidatePagination(parameter.Page, errors);
-        ValidateDriverRaceResultsSorting(parameter.SortField, parameter.SortOrder, errors);
+        _validatorHelper.ValidateYear(parameters.Year, errors);
+        _validatorHelper.ValidateId(parameters.Id, errors);
+        _validatorHelper.ValidatePagination(parameters.Page, errors);
+        _validatorHelper.ValidateResultSorting(parameters.SortField, 
+            parameters.SortOrder, errors);
+        //ValidateDriverRaceResultsSorting(parameter.SortField, parameter.SortOrder, errors);
 
         return errors;
     }
@@ -55,11 +57,15 @@ internal class QueryDriverParameterValidator : IQueryDriverParameterValidator
     {
         if (!string.IsNullOrWhiteSpace(nationalityParameter))
         {
-            if (nationalityParameter.Length != 3)
+            var nationalities = nationalityParameter.Split(',');
+            foreach (var nationality in nationalities)
             {
-                errors.Add($"Invalid nationality filter: {nationalityParameter}. " +
-                    $"Valid values are three-letter codes, e.g. POL.");
-            }
+                if (nationality.Trim().Length != 3)
+                {
+                    errors.Add($"Invalid nationality filter: {nationality}. " +
+                        $"Valid values are three-letter codes, e.g. POL.");
+                }
+            }            
         }
     }
 
@@ -68,23 +74,25 @@ internal class QueryDriverParameterValidator : IQueryDriverParameterValidator
     {
         var validSortFields = new[]
         {
-            nameof(Driver.Id),
-            nameof(Driver.Nationality),
-            "name"
+            nameof(Driver.Nationality).ToLower(),
+            nameof(Driver.FirstName).ToLower(),
+            nameof(Driver.LastName).ToLower(),
         };
 
-        if (!string.IsNullOrWhiteSpace(fieldParameter))
+        var field = fieldParameter?.ToLower();
+
+        if (!string.IsNullOrWhiteSpace(field))
         {
-            if (!validSortFields.Contains(fieldParameter))
+            if (!validSortFields.Contains(field))
             {
-                errors.Add($"Invalid sorting field: {fieldParameter}. " +
+                errors.Add($"Invalid sorting field: {field}. " +
                     $"Valid values: {string.Join(", ", validSortFields)}.");
             }
         }
 
         if (!string.IsNullOrWhiteSpace(orderParameter))
         {
-            if (string.IsNullOrWhiteSpace(fieldParameter))
+            if (string.IsNullOrWhiteSpace(field))
             {
                 errors.Add($"Explicit sorting direction requires sorting field. " +
                     $"Valid SortField values: {string.Join(", ", validSortFields)}.");
@@ -104,24 +112,25 @@ internal class QueryDriverParameterValidator : IQueryDriverParameterValidator
     {
         var validSortFields = new[]
         {
-            nameof(DriverStanding.Id),
-            nameof(DriverStanding.Year),
-            nameof(DriverStanding.Position),
-            nameof(DriverStanding.Points),
+            nameof(DriverStanding.Year).ToLower(),
+            nameof(DriverStanding.Position).ToLower(),
+            nameof(DriverStanding.Points).ToLower(),
         };
 
-        if (!string.IsNullOrWhiteSpace(fieldParameter))
+        var field = fieldParameter?.ToLower();
+
+        if (!string.IsNullOrWhiteSpace(field))
         {
-            if (!validSortFields.Contains(fieldParameter))
+            if (!validSortFields.Contains(field))
             {
-                errors.Add($"Invalid sorting field: {fieldParameter}. " +
+                errors.Add($"Invalid sorting field: {field}. " +
                     $"Valid values: {string.Join(", ", validSortFields)}.");
             }
         }
 
         if (!string.IsNullOrWhiteSpace(orderParameter))
         {
-            if (string.IsNullOrWhiteSpace(fieldParameter))
+            if (string.IsNullOrWhiteSpace(field))
             {
                 errors.Add($"Explicit sorting direction requires sorting field. " +
                     $"Valid SortField values: {string.Join(", ", validSortFields)}.");

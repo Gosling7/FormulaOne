@@ -56,7 +56,6 @@ public class RaceResultRepository : IRaceResultRepository
         query = ApplySorting(parameters, query);
         return await ExecuteQueryAsync(query, parameters.Page, parameters.PageSize);
 
-        // TODO: GetDriversRaceResultsAsync() z Chatu - do sprawdzenia
         IQueryable<RaceResult> ApplyDriverFilters(GetDriverResultsParameter parameters,
             IQueryable<RaceResult> query)
         {
@@ -89,7 +88,6 @@ public class RaceResultRepository : IRaceResultRepository
         query = ApplySorting(parameters, query);
         return await ExecuteQueryAsync(query, parameters.Page, parameters.PageSize);
 
-        // TODO: GetDriversRaceResultsAsync() z Chatu - do sprawdzenia
         IQueryable<RaceResult> ApplyCircuitFilters(GetCircuitResultsParameter parameters,
             IQueryable<RaceResult> query)
         {
@@ -118,7 +116,8 @@ public class RaceResultRepository : IRaceResultRepository
         }
     }
 
-    private static IQueryable<RaceResult> ApplyYearFilter(string yearParam, IQueryable<RaceResult> query)
+    private static IQueryable<RaceResult> ApplyYearFilter(string yearParam,
+        IQueryable<RaceResult> query)
     {
         var yearParts = yearParam.Split("-");
         var yearStart = int.Parse(yearParts[0]);
@@ -157,8 +156,11 @@ public class RaceResultRepository : IRaceResultRepository
                 break;
             case QueryRepositoryConstant.PositionField:
                 query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
-                    ? query.OrderByDescending(rr => rr.Position)
-                    : query.OrderBy(rr => rr.Position);
+                    // Push Position==0 (DNFs, DNSs etc) towards the bottom
+                    ? query.OrderByDescending(rr => rr.Position == 0)
+                        .ThenByDescending(rr => rr.Position)
+                    : query.OrderBy(rr => rr.Position == 0)
+                        .ThenBy(rr => rr.Position);
                 break;
             default:
                 break;
@@ -167,11 +169,8 @@ public class RaceResultRepository : IRaceResultRepository
         return query;
     }
 
-
-
-
-
-    private async Task<(int, IEnumerable<RaceResultDto>)> ExecuteQueryAsync(IQueryable<RaceResult> query, int page, int pageSize)
+    private async Task<(int, IEnumerable<RaceResultDto>)> ExecuteQueryAsync(
+        IQueryable<RaceResult> query, int page, int pageSize)
     {
         var total = await query.CountAsync();
 
@@ -188,8 +187,11 @@ public class RaceResultRepository : IRaceResultRepository
                 rr.Id.ToString(),
                 rr.Position,
                 rr.Date,
+                rr.CircuitId.ToString(),
                 rr.Circuit.Name,
+                rr.DriverId.ToString(),
                 rr.Driver.FirstName + " " + rr.Driver.LastName,
+                rr.TeamId.ToString(),
                 rr.Team.Name,
                 rr.Laps,
                 rr.Time,
@@ -197,81 +199,5 @@ public class RaceResultRepository : IRaceResultRepository
             .ToListAsync();
 
         return (total, results);
-    }
-
-    //public async Task<(int, IEnumerable<RaceResultDto>)> GetRaceResultsAsync(
-    //    GetTeamResultsParameter parameters)
-    //{
-    //    IQueryable<RaceResult> query = _context.RaceResults;
-    //    query = BuildQueryFilter(parameters, query);
-
-    //    var queryRaceResultCount = await query.CountAsync();
-
-    //    query = query
-    //        .Include(rr => rr.Driver)
-    //        .Include(rr => rr.Team)
-    //        .Include(rr => rr.Circuit)
-    //        .Skip((parameters.Page - 1) * parameters.PageSize)
-    //        .Take(parameters.PageSize);
-
-    //    // TODO: ogarnąć null w TeamRaceResult
-    //    var raceResults = await query
-    //        .Select(rr => new RaceResultDto(
-    //            rr.Id.ToString(),
-    //            rr.Position,
-    //            rr.Date,
-    //            rr.Circuit.Name,
-    //            rr.Driver.FirstName + " " + rr.Driver.LastName,
-    //            rr.Team.Name,
-    //            rr.Laps,
-    //            rr.Time,
-    //            rr.Points))
-    //        .ToListAsync();
-
-    //    return (queryRaceResultCount, raceResults);
-    //}
-
-    private static IQueryable<RaceResult> BuildQueryFilter(GetTeamResultsParameter parameters, IQueryable<RaceResult> query)
-    {
-        query = ApplyFilters(parameters, query);
-        query = ApplySorting(parameters, query);
-
-        return query;
-    }
-
-    private static IQueryable<RaceResult> ApplyFilters(GetTeamResultsParameter parameters, IQueryable<RaceResult> query)
-    {
-        if (!string.IsNullOrWhiteSpace(parameters.Id))
-        {
-            query = query.Where(rr => parameters.Id.Contains(rr.Id.ToString()));
-        }
-
-        if (!string.IsNullOrWhiteSpace(parameters.TeamId))
-        {
-            query = query.Where(rr => parameters.TeamId.Contains(rr.TeamId.ToString()));
-        }
-
-        // Zwraca Teamy z mniej więcej podaną nazwą.
-        if (!string.IsNullOrWhiteSpace(parameters.TeamName))
-        {
-            query = query.Where(rr => rr.Team.Name.Contains(parameters.TeamName));
-        }
-
-        if (parameters.Year is not null)
-        {
-            var yearParts = parameters.Year.Split("-");
-            var yearStart = int.Parse(yearParts[0]);
-            if (yearParts.Length == 2)
-            {
-                var yearEnd = int.Parse(yearParts[1]);
-                query = query.Where(rr => rr.Date.Year >= yearStart && rr.Date.Year <= yearEnd);
-            }
-            else
-            {
-                query = query.Where(rr => rr.Date.Year == yearStart);
-            }
-        }
-
-        return query;
     }
 }

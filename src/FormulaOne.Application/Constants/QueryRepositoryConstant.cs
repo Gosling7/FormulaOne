@@ -4,6 +4,10 @@ public static class QueryRepositoryConstant
 {
     public const string IdField = "id";
     public const string NameField = "name";
+    public const string FirstNameField = "firstname";
+    public const string LastNameField = "lastname";
+    public const string NationalityField = "nationality";
+    public const string LocationField = "location";
     public const string YearField = "year";
     public const string DateField = "date";
     public const string PositionField = "position";

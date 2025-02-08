@@ -1,4 +1,5 @@
-﻿using FormulaOne.Application.DataTransferObjects;
+﻿using FormulaOne.Application.Constants;
+using FormulaOne.Application.DataTransferObjects;
 using FormulaOne.Application.Parameters;
 using FormulaOne.Core.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -59,24 +60,34 @@ public class CircuitRepository : ICircuitRepository
             query = query.Where(c => parameters.Id.Contains(c.Id.ToString()));
         }
 
+        if (!string.IsNullOrWhiteSpace(parameters.Location))
+        {
+            query = query.Where(c => parameters.Location.Contains(c.Location));
+        }
+
         return query;
     }
 
-    private static IQueryable<Circuit> ApplySorting(GetCircuitsParameter parameter, IQueryable<Circuit> query)
+    private static IQueryable<Circuit> ApplySorting(GetCircuitsParameter parameter, 
+        IQueryable<Circuit> query)
     {
-        // TODO: jak zrobić sortowanie po Name, skoro w bazie jest FirstName i LastName
         if (!string.IsNullOrWhiteSpace(parameter.SortField))
         {
-            //switch (parameter.SortField)
-            //{
-            //    case QueryRepositoryConstant.NameField:
-            //        query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
-            //            ? query.OrderByDescending(t => t.Name)
-            //            : query.OrderBy(t => t.Name);
-            //        break;
-            //    default:
-            //        break;
-            //}
+            switch (parameter.SortField)
+            {
+                case QueryRepositoryConstant.NameField:
+                    query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(c => c.Name)
+                        : query.OrderBy(c => c.Name);
+                    break;
+                case QueryRepositoryConstant.LocationField:
+                    query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(c => c.Location)
+                        : query.OrderBy(c => c.Location);
+                    break;
+                default:
+                    break;
+            }
         }
 
         return query;

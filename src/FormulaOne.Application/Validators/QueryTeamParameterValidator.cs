@@ -28,7 +28,7 @@ internal class QueryTeamParameterValidator : IQueryTeamParameterValidator
     {
         var errors = new List<string>();
 
-        _validatorHelper.ValidateYear(parameters.Year, errors);
+        _validatorHelper.ValidateYear(parameters.Year, errors, isTeamStanding: true);
         _validatorHelper.ValidateId(parameters.Id, errors);
         _validatorHelper.ValidatePagination(parameters.Page, errors);
         ValidateTeamStandingSorting(parameters.SortField, parameters.SortOrder, errors);
@@ -42,6 +42,7 @@ internal class QueryTeamParameterValidator : IQueryTeamParameterValidator
 
         _validatorHelper.ValidateYear(parameters.Year, errors);
         _validatorHelper.ValidateId(parameters.Id, errors);
+        _validatorHelper.ValidateId(parameters.TeamId, errors, nameOfIdParameter: nameof(parameters.TeamId));
         _validatorHelper.ValidatePagination(parameters.Page, errors);
         _validatorHelper.ValidateResultSorting(parameters.SortField, parameters.SortOrder, errors);
 
@@ -53,70 +54,72 @@ internal class QueryTeamParameterValidator : IQueryTeamParameterValidator
     {
         var validSortFields = new[]
         {
-            nameof(TeamStanding.Id),
-            nameof(TeamStanding.Year),
-            nameof(TeamStanding.Position),
-            nameof(TeamStanding.Points),
+            nameof(Team.Name).ToLower()
         };
 
-        if (!string.IsNullOrWhiteSpace(fieldParameter))
+        var field = fieldParameter?.ToLower();
+        var order = orderParameter?.ToLower();
+
+        if (!string.IsNullOrWhiteSpace(field))
         {
-            if (!validSortFields.Contains(fieldParameter))
+            if (!validSortFields.Contains(field))
             {
-                errors.Add($"Invalid sorting field: {fieldParameter}. " +
+                errors.Add($"Invalid sorting field: {field}. " +
                     $"Valid values: {string.Join(", ", validSortFields)}.");
             }
         }
 
-        if (!string.IsNullOrWhiteSpace(orderParameter))
+        if (!string.IsNullOrWhiteSpace(order))
         {
-            if (string.IsNullOrWhiteSpace(fieldParameter))
+            if (string.IsNullOrWhiteSpace(field))
             {
                 errors.Add($"Explicit sorting direction requires sorting field. " +
                     $"Valid SortField values: {string.Join(", ", validSortFields)}.");
             }
 
             var validSortDirections = new[] { "asc", "desc" };
-            if (!validSortDirections.Contains(orderParameter))
+            if (!validSortDirections.Contains(order))
             {
-                errors.Add($"Invalid sorting direction: {orderParameter}. " +
+                errors.Add($"Invalid sorting direction: {order}. " +
                     $"Valid values: {string.Join(", ", validSortDirections)}.");
             }
         }
-    }
+    }    
 
     private static void ValidateTeamStandingSorting(string? fieldParameter, string? orderParameter,
         List<string> errors)
     {
         var validSortFields = new[]
         {
-            nameof(TeamStanding.Id),
-            nameof(TeamStanding.Year),
-            nameof(TeamStanding.Position),
-            nameof(TeamStanding.Points),
+            nameof(TeamStanding.Year).ToLower(),
+            nameof(TeamStanding.Position).ToLower(),
+            nameof(TeamStanding.Points).ToLower(),
         };
 
-        if (!string.IsNullOrWhiteSpace(fieldParameter))
+        var field = fieldParameter?.ToLower();
+        var order = orderParameter?.ToLower();
+
+        if (!string.IsNullOrWhiteSpace(field))
         {
-            if (!validSortFields.Contains(fieldParameter))
+            if (!validSortFields.Contains(field))
             {
-                errors.Add($"Invalid sorting field: {fieldParameter}. " +
+                errors.Add($"Invalid sorting field: {field}. " +
                     $"Valid values: {string.Join(", ", validSortFields)}.");
             }
         }
 
-        if (!string.IsNullOrWhiteSpace(orderParameter))
+        if (!string.IsNullOrWhiteSpace(order))
         {
-            if (string.IsNullOrWhiteSpace(fieldParameter))
+            if (string.IsNullOrWhiteSpace(field))
             {
                 errors.Add($"Explicit sorting direction requires sorting field. " +
                     $"Valid SortField values: {string.Join(", ", validSortFields)}.");
             }
 
             var validSortDirections = new[] { "asc", "desc" };
-            if (!validSortDirections.Contains(orderParameter))
+            if (!validSortDirections.Contains(order))
             {
-                errors.Add($"Invalid sorting direction: {orderParameter}. " +
+                errors.Add($"Invalid sorting direction: {order}. " +
                     $"Valid values: {string.Join(", ", validSortDirections)}.");
             }
         }

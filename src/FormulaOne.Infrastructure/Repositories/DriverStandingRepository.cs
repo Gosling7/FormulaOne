@@ -79,8 +79,10 @@ public class DriverStandingRepository : IDriverStandingRepository
                     var yearEnd = int.Parse(yearParts[1]);
                     query = query.Where(ds => ds.Year >= yearStart && ds.Year <= yearEnd);
                 }
-
-                query = query.Where(ds => ds.Year == yearStart);
+                else
+                {
+                    query = query.Where(ds => ds.Year == yearStart);
+                }
             }
 
             return query;

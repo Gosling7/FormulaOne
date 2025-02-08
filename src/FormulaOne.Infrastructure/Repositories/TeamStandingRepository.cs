@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FormulaOne.Application.Constants;
+﻿using FormulaOne.Application.Constants;
 using FormulaOne.Application.DataTransferObjects;
 using FormulaOne.Application.Interfaces;
 using FormulaOne.Application.Parameters;
@@ -21,7 +16,8 @@ public class TeamStandingRepository : ITeamStandingRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<TeamStandingDto>)> GetItemsAsync(GetTeamStandingsParameter parameters)
+    public async Task<(int, IEnumerable<TeamStandingDto>)> GetItemsAsync(
+        GetTeamStandingsParameter parameters)
     {
         IQueryable<TeamStanding> query = _context.TeamStandings;
         query = BuildQueryFilter(parameters, query);
@@ -46,14 +42,16 @@ public class TeamStandingRepository : ITeamStandingRepository
         return (queryTeamStandingCount, teamStandings);
     }
 
-    private static IQueryable<TeamStanding> BuildQueryFilter(GetTeamStandingsParameter parameters, IQueryable<TeamStanding> query)
+    private static IQueryable<TeamStanding> BuildQueryFilter(GetTeamStandingsParameter parameters, 
+        IQueryable<TeamStanding> query)
     {
         query = ApplyFilters(parameters, query);
         query = ApplySorting(parameters, query);
 
         return query;
 
-        static IQueryable<TeamStanding> ApplyFilters(GetTeamStandingsParameter parameters, IQueryable<TeamStanding> query)
+        static IQueryable<TeamStanding> ApplyFilters(GetTeamStandingsParameter parameters, 
+            IQueryable<TeamStanding> query)
         {
             if (!string.IsNullOrWhiteSpace(parameters.Id))
             {
@@ -65,17 +63,10 @@ public class TeamStandingRepository : ITeamStandingRepository
                 query = query.Where(ts => parameters.TeamId.Contains(ts.TeamId.ToString()));
             }
 
-            // Zwraca Teamy z mniej więcej podaną nazwą.
             if (!string.IsNullOrWhiteSpace(parameters.TeamName))
             {
                 query = query.Where(ts => ts.Team.Name.Contains(parameters.TeamName));
             }
-
-            // Zwraca Teamy z dokładnie podaną nazwą.
-            //if (!string.IsNullOrWhiteSpace(parameters.TeamName))
-            //{
-            //    query = query.Where(ts => parameters.TeamName.Contains(ts.Team.Name));
-            //}
 
             if (parameters.Year is not null)
             {
@@ -86,14 +77,17 @@ public class TeamStandingRepository : ITeamStandingRepository
                     var yearEnd = int.Parse(yearParts[1]);
                     query = query.Where(ts => ts.Year >= yearStart && ts.Year <= yearEnd);
                 }
-                
-                query = query.Where(ts => ts.Year == yearStart);
+                else
+                {
+                    query = query.Where(ts => ts.Year == yearStart);
+                }
             }
 
             return query;
         }
 
-        static IQueryable<TeamStanding> ApplySorting(GetTeamStandingsParameter parameters, IQueryable<TeamStanding> query)
+        static IQueryable<TeamStanding> ApplySorting(GetTeamStandingsParameter parameters, 
+            IQueryable<TeamStanding> query)
         {
             if (!string.IsNullOrWhiteSpace(parameters.SortField))
             {
@@ -101,18 +95,18 @@ public class TeamStandingRepository : ITeamStandingRepository
                 {
                     case QueryRepositoryConstant.YearField:
                         query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
-                            ? query.OrderByDescending(t => t.Year)
-                            : query.OrderBy(t => t.Year);
+                            ? query.OrderByDescending(ts => ts.Year).ThenBy(ts => ts.Position)
+                            : query.OrderBy(ts => ts.Year).ThenBy(ts => ts.Position);
                         break;
                     case QueryRepositoryConstant.PositionField:
                         query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
                             ? query.OrderByDescending(t => t.Position)
-                            : query.OrderBy(t => t.Position);
+                            : query.OrderBy(ts => ts.Position);
                         break;
                     case QueryRepositoryConstant.PointsField:
                         query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
                             ? query.OrderByDescending(t => t.Points)
-                            : query.OrderBy(t => t.Points);
+                            : query.OrderBy(ts => ts.Points);
                         break;
                     default:
                         break;

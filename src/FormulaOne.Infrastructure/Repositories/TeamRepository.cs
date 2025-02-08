@@ -65,7 +65,7 @@ public class TeamRepository : ITeamRepository
         {
             switch (parameters.SortField)
             {
-                case QueryRepositoryConstant.NameField:
+                case QueryRepositoryConstant.FirstNameField:
                     query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(t => t.Name)
                         : query.OrderBy(t => t.Name);

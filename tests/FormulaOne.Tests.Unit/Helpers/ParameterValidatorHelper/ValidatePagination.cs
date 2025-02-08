@@ -1,10 +1,8 @@
-﻿using FormulaOne.Application.Helpers;
-
-namespace FormulaOne.Tests.Unit.Helpers.ParameterValidatorHelperTests;
+﻿namespace FormulaOne.Tests.Unit.Helpers.ParameterValidatorHelper;
 
 public class ValidatePagination
 {
-    private readonly ParameterValidatorHelper _validator = new();
+    private readonly Application.Helpers.ParameterValidatorHelper _validator = new();
     private readonly List<string> _errors = [];
 
     [Fact]

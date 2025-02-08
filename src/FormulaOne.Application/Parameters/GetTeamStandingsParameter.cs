@@ -7,8 +7,8 @@ public record GetTeamStandingsParameter(
     string? Id,
     string? TeamId,
     string? TeamName,
+    string? Year,
     string? SortField,
     string? SortOrder,
-    string? Year,
     int Page = QueryParameterConstant.DefaultPage,
     int PageSize = QueryParameterConstant.DefaultPageSize) : IQueryParameter;

@@ -60,32 +60,43 @@ public class DriverRepository : IDriverRepository
 
         if (!string.IsNullOrWhiteSpace(parameter.Id))
         {
-            query = query.Where(t => parameter.Id.Contains(t.Id.ToString()));
+            query = query.Where(d => parameter.Id.Contains(d.Id.ToString()));
         }
 
         if (!string.IsNullOrWhiteSpace(parameter.Nationality))
         {
-            query = query.Where(t => parameter.Nationality.Contains(t.Nationality.ToString()));
+            query = query.Where(d => parameter.Nationality.Contains(d.Nationality.ToString()));
         }
 
         return query;
     }
 
-    private static IQueryable<Driver> ApplySorting(GetDriversParameter parameter, IQueryable<Driver> query)
+    private static IQueryable<Driver> ApplySorting(GetDriversParameter parameter, 
+        IQueryable<Driver> query)
     {
         // TODO: jak zrobić sortowanie po Name, skoro w bazie jest FirstName i LastName
         if (!string.IsNullOrWhiteSpace(parameter.SortField))
         {
-            //switch (parameter.SortField)
-            //{
-            //    case QueryRepositoryConstant.NameField:
-            //        query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
-            //            ? query.OrderByDescending(t => t.Name)
-            //            : query.OrderBy(t => t.Name);
-            //        break;
-            //    default:
-            //        break;
-            //}
+            switch (parameter.SortField)
+            {
+                case QueryRepositoryConstant.FirstNameField:
+                    query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(d => d.FirstName)
+                        : query.OrderBy(d => d.FirstName);
+                    break;
+                case QueryRepositoryConstant.LastNameField:
+                    query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(d => d.LastName)
+                        : query.OrderBy(d => d.LastName);
+                    break;
+                case QueryRepositoryConstant.NationalityField:
+                    query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(d => d.Nationality)
+                        : query.OrderBy(d => d.Nationality);
+                    break;
+                default:
+                    break;
+            }
         }
 
         return query;

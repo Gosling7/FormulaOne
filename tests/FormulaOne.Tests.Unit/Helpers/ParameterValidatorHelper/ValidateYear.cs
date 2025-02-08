@@ -1,14 +1,12 @@
-﻿using FormulaOne.Application.Helpers;
-
-namespace FormulaOne.Tests.Unit.Helpers.ParameterValidatorHelperTests;
+﻿namespace FormulaOne.Tests.Unit.Helpers.ParameterValidatorHelper;
 
 public class ValidateYear
 {
-    private readonly ParameterValidatorHelper _validator = new();
+    private readonly Application.Helpers.ParameterValidatorHelper _validator = new();
     private readonly List<string> _errors = [];
 
     [Fact]
-    public void Should_not_add_errors_when_years_is_valid()
+    public void Should_not_add_errors_when_input_range_year_is_valid()
     {
         // Arrange
         var validYears = "2020-2024";
@@ -21,23 +19,76 @@ public class ValidateYear
     }
 
     [Fact]
-    public void Should_not_add_errors_when_years_is_null()
+    public void Should_not_add_errors_when_input_single_year_is_valid()
     {
         // Arrange
-        string? nullYear = null;
+        var validYears = "2020";
 
         // Act
-        _validator.ValidateYear(nullYear, _errors);
+        _validator.ValidateYear(validYears, _errors);
 
         // Assert
         Assert.Empty(_errors);
     }
 
     [Fact]
-    public void Should_add_error_when_years_format_is_invalid()
+    public void Should_not_add_errors_when_input_year_is_null_or_whitespace()
     {
         // Arrange
-        var invalidYearsFormat = "a";
+        string? nullYear = null;
+        string? emptyYear = "";
+        string? whiteSpaceYear = " ";
+
+        // Act
+        _validator.ValidateYear(nullYear, _errors);
+        _validator.ValidateYear(emptyYear, _errors);
+        _validator.ValidateYear(whiteSpaceYear, _errors);
+
+        // Assert
+        Assert.Empty(_errors);
+    }
+
+    [Fact]
+    public void Should_add_error_when_input_single_year_is_less_than_valid_start_year()
+    {
+        // Arrange
+        var invalidYear = "1949";
+
+        // Act
+        _validator.ValidateYear(invalidYear, _errors);
+
+        // Assert
+        Assert.Single(_errors);
+
+        var validStartYear = 1950;
+        var message = $"Invalid year filer: {invalidYear}. " +
+            $"The year cannot be less than {validStartYear}.";
+        Assert.Contains(message, _errors);
+    }
+
+    [Fact]
+    public void Should_add_error_when_input_single_year_is_greater_than_valid_end_year()
+    {
+        // Arrange
+        var invalidYear = "3000";
+
+        // Act
+        _validator.ValidateYear(invalidYear, _errors);
+
+        // Assert
+        Assert.Single(_errors);
+
+        var validEndYear = DateTime.UtcNow.Year;
+        var message = $"Invalid year filer: {invalidYear}. " +
+            $"The year cannot be greater than {validEndYear}.";
+        Assert.Contains(message, _errors);
+    }
+
+    [Fact]
+    public void Should_add_error_when_input_year_format_is_neither_single_nor_range()
+    {
+        // Arrange
+        var invalidYearsFormat = "2022-2022-444";
 
         // Act
         _validator.ValidateYear(invalidYearsFormat, _errors);
@@ -51,7 +102,7 @@ public class ValidateYear
     }
 
     [Fact]
-    public void Should_add_error_when_years_start_year_has_non_numeric_values()
+    public void Should_add_error_when_input_range_year_start_year_has_non_numeric_values()
     {
         // Arrange
         var nonNumericYears = "1x5x-2000";
@@ -68,7 +119,7 @@ public class ValidateYear
     }
 
     [Fact]
-    public void Should_add_error_when_years_start_end_has_non_numeric_values()
+    public void Should_add_error_when_input_range_year_end_year_has_non_numeric_values()
     {
         // Arrange
         var nonNumericYears = "2000-20x0";
@@ -85,7 +136,7 @@ public class ValidateYear
     }
 
     [Fact]
-    public void Should_add_2_error_when_years_start_and_end_have_non_numeric_values()
+    public void Should_add_2_errors_when_input_range_year_start_and_end_year_have_non_numeric_values()
     {
         // Arrange
         var nonNumericYears = "20xy-20x0";
@@ -99,13 +150,13 @@ public class ValidateYear
         var startYearMessage = $"Start year is not a number: {nonNumericYears}. " +
             $"Valid format is: StartYear-EndYear, e.g., 2000-2024. ";
         var endYearMessage = $"End year is not a number: {nonNumericYears}. " +
-            $"Valid format is: StartYear-EndYear, e.g., 2000-2024. ";        
+            $"Valid format is: StartYear-EndYear, e.g., 2000-2024. ";
         Assert.Contains(startYearMessage, _errors);
         Assert.Contains(endYearMessage, _errors);
     }
 
     [Fact]
-    public void Should_add_error_when_years_start_is_greater_than_end_year()
+    public void Should_add_error_when_input_range_year_start_is_greater_than_end_year()
     {
         // Arrange
         var yearsParameter = "2020-2000";
@@ -128,7 +179,7 @@ public class ValidateYear
     }
 
     [Fact]
-    public void Should_add_error_when_years_start_is_less_than_valid_start_year()
+    public void Should_add_error_when_input_range_year_start_year_is_less_than_valid_start_year()
     {
         // Arrange
         var yearsParameter = "1949-2000";
@@ -150,7 +201,7 @@ public class ValidateYear
     }
 
     [Fact]
-    public void Should_add_error_when_years_end_is_greater_than_valid_end_year()
+    public void Should_add_error_when_input_range_year_end_is_greater_than_valid_end_year()
     {
         // Arrange
         var yearsParameter = "2000-3000";
