@@ -16,7 +16,7 @@ public class DriverRepository : IDriverRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<DriverDto>)> GetItemsAsync(GetDriversParameter parameters)
+    public async Task<(int, IReadOnlyCollection<DriverDto>)> GetItemsAsync(GetDriversParameter parameters)
     {
         IQueryable<Driver> query = _context.Drivers;
         query = BuildQueryFilter(parameters, query);

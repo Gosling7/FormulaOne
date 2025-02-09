@@ -15,7 +15,7 @@ public class CircuitRepository : ICircuitRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<CircuitDto>)> GetItemsAsync(GetCircuitsParameter parameters)
+    public async Task<(int, IReadOnlyCollection<CircuitDto>)> GetItemsAsync(GetCircuitsParameter parameters)
     {
         IQueryable<Circuit> query = _context.Circuits;
         query = BuildQueryFilter(parameters, query);

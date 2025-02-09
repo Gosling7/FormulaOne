@@ -16,7 +16,7 @@ public class TeamRepository : ITeamRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<TeamDto>)> GetItemsAsync(GetTeamsParameter parameters)
+    public async Task<(int, IReadOnlyCollection<TeamDto>)> GetItemsAsync(GetTeamsParameter parameters)
     {
         IQueryable<Team> query = _context.Teams;
         query = BuildQueryFilter(parameters, query);
@@ -28,9 +28,11 @@ public class TeamRepository : ITeamRepository
             .Take(parameters.PageSize);
 
         var teams = await query
-            .Select(t => new TeamDto(
-                t.Id.ToString(),
-                t.Name))
+            .Select(t => new TeamDto
+            {
+                Id = t.Id.ToString(),
+                Name = t.Name,
+            })
             .ToListAsync();
 
         return (queryTeamCount, teams);

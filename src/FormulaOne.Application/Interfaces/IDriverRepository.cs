@@ -5,5 +5,5 @@ namespace FormulaOne.Application.Interfaces;
 
 public interface IDriverRepository 
 {
-    Task<(int, IEnumerable<DriverDto>)> GetItemsAsync(GetDriversParameter parameters);
+    Task<(int, IReadOnlyCollection<DriverDto>)> GetItemsAsync(GetDriversParameter parameters);
 }

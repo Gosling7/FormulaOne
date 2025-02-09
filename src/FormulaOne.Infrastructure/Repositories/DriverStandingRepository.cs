@@ -16,7 +16,7 @@ public class DriverStandingRepository : IDriverStandingRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<DriverStandingDto>)> GetItemsAsync(
+    public async Task<(int, IReadOnlyCollection<DriverStandingDto>)> GetItemsAsync(
         GetDriverStandingsParameter parameter)
     {
         IQueryable<DriverStanding> query = _context.DriverStandings;

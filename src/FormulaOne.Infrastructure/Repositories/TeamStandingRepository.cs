@@ -16,7 +16,7 @@ public class TeamStandingRepository : ITeamStandingRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<TeamStandingDto>)> GetItemsAsync(
+    public async Task<(int, IReadOnlyCollection<TeamStandingDto>)> GetItemsAsync(
         GetTeamStandingsParameter parameters)
     {
         IQueryable<TeamStanding> query = _context.TeamStandings;
@@ -30,13 +30,15 @@ public class TeamStandingRepository : ITeamStandingRepository
 
         var teamStandings = await query
             .Include(ts => ts.Team)
-            .Select(ts => new TeamStandingDto(
-                ts.Id.ToString(),
-                ts.Year,
-                ts.Position,
-                ts.TeamId.ToString(),
-                ts.Team.Name,
-                ts.Points))
+            .Select(ts => new TeamStandingDto
+            {
+                Id = ts.Id.ToString(),
+                Year = ts.Year,
+                Position = ts.Position,
+                TeamId = ts.Team.Id.ToString(),
+                TeamName = ts.Team.Name,
+                Points = ts.Points
+            })
             .ToListAsync();
 
         return (queryTeamStandingCount, teamStandings);

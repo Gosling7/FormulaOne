@@ -7,7 +7,7 @@ internal class ServiceHelper
 {
     public async Task<PagedResult<TDto>> ValidateAndReturnPagedResult<TDto, TQueryParameter>(
         TQueryParameter parameters,
-        Func<TQueryParameter, Task<(int, IEnumerable<TDto>)>> fetchDataAsync,
+        Func<TQueryParameter, Task<(int, IReadOnlyCollection<TDto>)>> fetchDataAsync,
         Func<TQueryParameter, IReadOnlyCollection<string>> validateQueryParmeters) 
         where TQueryParameter : IQueryParameter
     {

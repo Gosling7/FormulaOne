@@ -16,7 +16,7 @@ public class RaceResultRepository : IRaceResultRepository
         _context = context;
     }
 
-    public async Task<(int, IEnumerable<RaceResultDto>)> GetItemsAsync(
+    public async Task<(int, IReadOnlyCollection<RaceResultDto>)> GetItemsAsync(
         GetTeamResultsParameter parameters)
     {
         IQueryable<RaceResult> query = _context.RaceResults;
@@ -48,7 +48,7 @@ public class RaceResultRepository : IRaceResultRepository
         }
     }
 
-    public async Task<(int, IEnumerable<RaceResultDto>)> GetItemsAsync(
+    public async Task<(int, IReadOnlyCollection<RaceResultDto>)> GetItemsAsync(
         GetDriverResultsParameter parameters)
     {
         IQueryable<RaceResult> query = _context.RaceResults;
@@ -80,7 +80,7 @@ public class RaceResultRepository : IRaceResultRepository
         }
     }
 
-    public async Task<(int, IEnumerable<RaceResultDto>)> GetItemsAsync(
+    public async Task<(int, IReadOnlyCollection<RaceResultDto>)> GetItemsAsync(
         GetCircuitResultsParameter parameters)
     {
         IQueryable<RaceResult> query = _context.RaceResults;
@@ -169,12 +169,11 @@ public class RaceResultRepository : IRaceResultRepository
         return query;
     }
 
-    private async Task<(int, IEnumerable<RaceResultDto>)> ExecuteQueryAsync(
+    private static async Task<(int, IReadOnlyCollection<RaceResultDto>)> ExecuteQueryAsync(
         IQueryable<RaceResult> query, int page, int pageSize)
     {
         var total = await query.CountAsync();
 
-        // Eager load the related entities
         query = query
             .Include(rr => rr.Driver)
             .Include(rr => rr.Team)
@@ -183,19 +182,21 @@ public class RaceResultRepository : IRaceResultRepository
             .Take(pageSize);
 
         var results = await query
-            .Select(rr => new RaceResultDto(
-                rr.Id.ToString(),
-                rr.Position,
-                rr.Date,
-                rr.CircuitId.ToString(),
-                rr.Circuit.Name,
-                rr.DriverId.ToString(),
-                rr.Driver.FirstName + " " + rr.Driver.LastName,
-                rr.TeamId.ToString(),
-                rr.Team.Name,
-                rr.Laps,
-                rr.Time,
-                rr.Points))
+            .Select(rr => new RaceResultDto
+            {
+                Id = rr.Id.ToString(),
+                Position = rr.Position,
+                Date = rr.Date,
+                CircuitId = rr.CircuitId.ToString(),
+                CircuitName = rr.Circuit.Name,
+                DriverId = rr.DriverId.ToString(),
+                DriverName = rr.Driver.FirstName + " " + rr.Driver.LastName,
+                TeamId = rr.TeamId.ToString(),
+                TeamName = rr.Team.Name,
+                Laps = rr.Laps,
+                Time = rr.Time,
+                Points = rr.Points
+            })
             .ToListAsync();
 
         return (total, results);
