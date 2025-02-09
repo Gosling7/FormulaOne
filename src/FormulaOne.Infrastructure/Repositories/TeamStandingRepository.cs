@@ -50,72 +50,72 @@ public class TeamStandingRepository : ITeamStandingRepository
         query = ApplyFilters(parameters, query);
         query = ApplySorting(parameters, query);
 
+        return query;        
+    }
+
+    private static IQueryable<TeamStanding> ApplyFilters(GetTeamStandingsParameter parameters,
+            IQueryable<TeamStanding> query)
+    {
+        if (!string.IsNullOrWhiteSpace(parameters.Id))
+        {
+            query = query.Where(ts => parameters.Id.Contains(ts.Id.ToString()));
+        }
+
+        if (!string.IsNullOrWhiteSpace(parameters.TeamId))
+        {
+            query = query.Where(ts => parameters.TeamId.Contains(ts.TeamId.ToString()));
+        }
+
+        if (!string.IsNullOrWhiteSpace(parameters.TeamName))
+        {
+            query = query.Where(ts => ts.Team.Name.Contains(parameters.TeamName));
+        }
+
+        if (parameters.Year is not null)
+        {
+            var yearParts = parameters.Year.Split("-");
+            var yearStart = int.Parse(yearParts[0]);
+            if (yearParts.Length == 2)
+            {
+                var yearEnd = int.Parse(yearParts[1]);
+                query = query.Where(ts => ts.Year >= yearStart && ts.Year <= yearEnd);
+            }
+            else
+            {
+                query = query.Where(ts => ts.Year == yearStart);
+            }
+        }
+
         return query;
+    }
 
-        static IQueryable<TeamStanding> ApplyFilters(GetTeamStandingsParameter parameters, 
-            IQueryable<TeamStanding> query)
+    private static IQueryable<TeamStanding> ApplySorting(GetTeamStandingsParameter parameters,
+        IQueryable<TeamStanding> query)
+    {
+        if (!string.IsNullOrWhiteSpace(parameters.SortField))
         {
-            if (!string.IsNullOrWhiteSpace(parameters.Id))
+            switch (parameters.SortField)
             {
-                query = query.Where(ts => parameters.Id.Contains(ts.Id.ToString()));
+                case QueryRepositoryConstant.YearField:
+                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(ts => ts.Year).ThenBy(ts => ts.Position)
+                        : query.OrderBy(ts => ts.Year).ThenBy(ts => ts.Position);
+                    break;
+                case QueryRepositoryConstant.PositionField:
+                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(t => t.Position)
+                        : query.OrderBy(ts => ts.Position);
+                    break;
+                case QueryRepositoryConstant.PointsField:
+                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(t => t.Points)
+                        : query.OrderBy(ts => ts.Points);
+                    break;
+                default:
+                    break;
             }
-
-            if (!string.IsNullOrWhiteSpace(parameters.TeamId))
-            {
-                query = query.Where(ts => parameters.TeamId.Contains(ts.TeamId.ToString()));
-            }
-
-            if (!string.IsNullOrWhiteSpace(parameters.TeamName))
-            {
-                query = query.Where(ts => ts.Team.Name.Contains(parameters.TeamName));
-            }
-
-            if (parameters.Year is not null)
-            {
-                var yearParts = parameters.Year.Split("-");
-                var yearStart = int.Parse(yearParts[0]);
-                if (yearParts.Length == 2)
-                {
-                    var yearEnd = int.Parse(yearParts[1]);
-                    query = query.Where(ts => ts.Year >= yearStart && ts.Year <= yearEnd);
-                }
-                else
-                {
-                    query = query.Where(ts => ts.Year == yearStart);
-                }
-            }
-
-            return query;
         }
 
-        static IQueryable<TeamStanding> ApplySorting(GetTeamStandingsParameter parameters, 
-            IQueryable<TeamStanding> query)
-        {
-            if (!string.IsNullOrWhiteSpace(parameters.SortField))
-            {
-                switch (parameters.SortField)
-                {
-                    case QueryRepositoryConstant.YearField:
-                        query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
-                            ? query.OrderByDescending(ts => ts.Year).ThenBy(ts => ts.Position)
-                            : query.OrderBy(ts => ts.Year).ThenBy(ts => ts.Position);
-                        break;
-                    case QueryRepositoryConstant.PositionField:
-                        query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
-                            ? query.OrderByDescending(t => t.Position)
-                            : query.OrderBy(ts => ts.Position);
-                        break;
-                    case QueryRepositoryConstant.PointsField:
-                        query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
-                            ? query.OrderByDescending(t => t.Points)
-                            : query.OrderBy(ts => ts.Points);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            return query;
-        }
+        return query;
     }
 }

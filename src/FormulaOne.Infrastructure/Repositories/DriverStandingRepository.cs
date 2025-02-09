@@ -54,69 +54,69 @@ public class DriverStandingRepository : IDriverStandingRepository
         query = ApplyFilters(parameter, query);
         query = ApplySorting(parameter, query);
 
-        return query;
+        return query;        
+    }
 
-        static IQueryable<DriverStanding> ApplyFilters(
+    private static IQueryable<DriverStanding> ApplyFilters(
             GetDriverStandingsParameter parameter,
             IQueryable<DriverStanding> query)
+    {
+        if (!string.IsNullOrWhiteSpace(parameter.Id))
         {
-            if (!string.IsNullOrWhiteSpace(parameter.Id))
-            {
-                query = query.Where(ds => parameter.Id.Contains(ds.Id.ToString()));
-            }
-
-            if (!string.IsNullOrWhiteSpace(parameter.DriverId))
-            {
-                query = query.Where(ds => parameter.DriverId.Contains(ds.Driver.Id.ToString()));
-            }
-
-            if (parameter.Year is not null)
-            {
-                var yearParts = parameter.Year.Split("-");
-                var yearStart = int.Parse(yearParts[0]);
-                if (yearParts.Length == 2)
-                {
-                    var yearEnd = int.Parse(yearParts[1]);
-                    query = query.Where(ds => ds.Year >= yearStart && ds.Year <= yearEnd);
-                }
-                else
-                {
-                    query = query.Where(ds => ds.Year == yearStart);
-                }
-            }
-
-            return query;
+            query = query.Where(ds => parameter.Id.Contains(ds.Id.ToString()));
         }
 
-        static IQueryable<DriverStanding> ApplySorting(
-            GetDriverStandingsParameter parameters,
-            IQueryable<DriverStanding> query)
+        if (!string.IsNullOrWhiteSpace(parameter.DriverId))
         {
-            if (!string.IsNullOrWhiteSpace(parameters.SortField))
-            {
-                switch (parameters.SortField)
-                {
-                    case QueryRepositoryConstant.YearField:
-                        query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
-                            ? query.OrderByDescending(ds => ds.Year)
-                            : query.OrderBy(ds => ds.Year);
-                        break;
-                    case QueryRepositoryConstant.PositionField:
-                        query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
-                            ? query.OrderByDescending(ds => ds.Position)
-                            : query.OrderBy(ds => ds.Position);
-                        break;
-                    case QueryRepositoryConstant.PointsField:
-                        query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
-                            ? query.OrderByDescending(ds => ds.Points)
-                            : query.OrderBy(ds => ds.Points);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            return query;
+            query = query.Where(ds => parameter.DriverId.Contains(ds.Driver.Id.ToString()));
         }
+
+        if (parameter.Year is not null)
+        {
+            var yearParts = parameter.Year.Split("-");
+            var yearStart = int.Parse(yearParts[0]);
+            if (yearParts.Length == 2)
+            {
+                var yearEnd = int.Parse(yearParts[1]);
+                query = query.Where(ds => ds.Year >= yearStart && ds.Year <= yearEnd);
+            }
+            else
+            {
+                query = query.Where(ds => ds.Year == yearStart);
+            }
+        }
+
+        return query;
+    }
+
+    private static IQueryable<DriverStanding> ApplySorting(
+        GetDriverStandingsParameter parameters,
+        IQueryable<DriverStanding> query)
+    {
+        if (!string.IsNullOrWhiteSpace(parameters.SortField))
+        {
+            switch (parameters.SortField)
+            {
+                case QueryRepositoryConstant.YearField:
+                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(ds => ds.Year)
+                        : query.OrderBy(ds => ds.Year);
+                    break;
+                case QueryRepositoryConstant.PositionField:
+                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(ds => ds.Position)
+                        : query.OrderBy(ds => ds.Position);
+                    break;
+                case QueryRepositoryConstant.PointsField:
+                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                        ? query.OrderByDescending(ds => ds.Points)
+                        : query.OrderBy(ds => ds.Points);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return query;
     }
 }

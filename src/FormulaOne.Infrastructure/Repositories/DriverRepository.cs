@@ -74,7 +74,6 @@ public class DriverRepository : IDriverRepository
     private static IQueryable<Driver> ApplySorting(GetDriversParameter parameter, 
         IQueryable<Driver> query)
     {
-        // TODO: jak zrobić sortowanie po Name, skoro w bazie jest FirstName i LastName
         if (!string.IsNullOrWhiteSpace(parameter.SortField))
         {
             switch (parameter.SortField)
