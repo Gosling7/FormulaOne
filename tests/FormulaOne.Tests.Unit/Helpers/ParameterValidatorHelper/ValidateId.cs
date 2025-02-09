@@ -1,9 +1,12 @@
-﻿namespace FormulaOne.Tests.Unit.Helpers.ParameterValidatorHelper;
+﻿using FormulaOne.Application.Constants;
+
+namespace FormulaOne.Tests.Unit.Helpers.ParameterValidatorHelper;
 
 public class ValidateId
 {
     private readonly Application.Helpers.ParameterValidatorHelper _validator = new();
     private readonly List<string> _errors = [];
+    private const string IdParameterName = "Id";
 
     [Fact]
     public void Should_not_add_errors_when_id_is_valid()
@@ -61,8 +64,8 @@ public class ValidateId
 
         // Assert
         Assert.Equal(2, _errors.Count);
-        Assert.Contains($"Id is not a valid Guid: {invalidId1}.", _errors);
-        Assert.Contains($"Id is not a valid Guid: {invalidId2}.", _errors);
+        Assert.Contains(ValidationMessage.InvalidGuid(IdParameterName, invalidId1), _errors);
+        Assert.Contains(ValidationMessage.InvalidGuid(IdParameterName, invalidId2), _errors);
     }
 
     [Fact]
@@ -78,7 +81,7 @@ public class ValidateId
 
         // Assert
         Assert.Single(_errors);
-        Assert.Equal($"Id is not a valid Guid: {invalidId}.", _errors.First());
+        Assert.Contains(ValidationMessage.InvalidGuid(IdParameterName, invalidId), _errors);
     }
 
     [Fact]
@@ -96,6 +99,6 @@ public class ValidateId
 
         // Assert
         Assert.Single(_errors);
-        Assert.Equal($"{parameterName} is not a valid Guid: {invalidId}.", _errors.First());
+        Assert.Contains(ValidationMessage.InvalidGuid(parameterName, invalidId), _errors);
     }
 }

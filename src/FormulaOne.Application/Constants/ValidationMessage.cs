@@ -1,6 +1,6 @@
 ﻿namespace FormulaOne.Application.Constants;
 
-internal static class ValidationMessage
+public static class ValidationMessage
 {
     public static string InvalidGuid(string parameterName, string value) =>
         $"{parameterName} is not a valid Guid: {value}.";
@@ -37,23 +37,23 @@ internal static class ValidationMessage
         $"The start year ({startYear}) cannot be greater than the end year ({endYear}). " +
         $"{GetValidRangeMessage(validStartYear, validEndYear)}";
 
-    public static string StartYearGreaterThanValidEndYear(int startYear, int endYear, 
+    public static string StartYearGreaterThanValidEndYear(int startYear,
         int validStartYear, int validEndYear) =>
         $"The start year ({startYear}) cannot be greater than {validEndYear}. " +
         $"{GetValidRangeMessage(validStartYear, validEndYear)}";
 
-    public static string StartYearLessThanValidStartYear(int startYear, int endYear,
+    public static string StartYearLessThanValidStartYear(int startYear,
         int validStartYear, int validEndYear) =>
         $"The start year ({startYear}) cannot be less than {validStartYear}. " +
         $"{GetValidRangeMessage(validStartYear, validEndYear)}";
 
     // End year
-    public static string EndYearGreaterThanValidStartYear(int startYear, int endYear,
+    public static string EndYearGreaterThanValidEndYear(int endYear,
         int validStartYear, int validEndYear) =>
         $"The end year ({endYear}) cannot be greater than {validEndYear}. " +
         $"{GetValidRangeMessage(validStartYear, validEndYear)}";
 
-    public static string EndYearLessThanValidStartYear(int startYear, int endYear,
+    public static string EndYearLessThanValidStartYear(int endYear,
         int validStartYear, int validEndYear) =>
         $"The end year ({endYear}) cannot be less than {validStartYear}. " +
         $"{GetValidRangeMessage(validStartYear, validEndYear)}";

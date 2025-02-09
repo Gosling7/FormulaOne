@@ -49,7 +49,9 @@ public class ParameterValidatorHelper : IParameterValidatorHelper
         }
 
         var validEndYear = DateTime.Now.Year;
-        var validStartYear = isTeamStanding ? 1958 : 1950;
+        var validStartYear = isTeamStanding 
+            ? ValidationConstant.TeamStandingStartYear 
+            : ValidationConstant.StartYear;
 
         if (yearParts.Length == 1)
         {
@@ -150,23 +152,23 @@ public class ParameterValidatorHelper : IParameterValidatorHelper
 
         if (startYear < validStartYear)
         {
-            errors.Add(ValidationMessage.StartYearLessThanValidStartYear(startYear, endYear,
+            errors.Add(ValidationMessage.StartYearLessThanValidStartYear(startYear,
                 validStartYear, validEndYear));
         }
         if (startYear > validEndYear)
         {
-            errors.Add(ValidationMessage.StartYearGreaterThanValidEndYear(startYear, endYear,
+            errors.Add(ValidationMessage.StartYearGreaterThanValidEndYear(startYear,
                 validStartYear, validEndYear));
         }
 
         if (endYear > validEndYear)
         {
-            errors.Add(ValidationMessage.EndYearGreaterThanValidStartYear(startYear, endYear,
+            errors.Add(ValidationMessage.EndYearGreaterThanValidEndYear(endYear,
                 validStartYear, validEndYear));
         }
         if (endYear < validStartYear)
         {
-            errors.Add(ValidationMessage.EndYearLessThanValidStartYear(startYear, endYear,
+            errors.Add(ValidationMessage.EndYearLessThanValidStartYear(endYear,
                 validStartYear, validEndYear));
         }
     }
