@@ -8,6 +8,12 @@ internal class QueryCircuitParameterValidator : IQueryCircuitParameterValidator
 {
     private readonly IParameterValidatorHelper _validatorHelper;
 
+    private readonly List<string> _circuitValidSortFields =
+    [
+        nameof(Circuit.Name).ToLower(),
+        nameof(Circuit.Location).ToLower()
+    ];
+
     public QueryCircuitParameterValidator(IParameterValidatorHelper validatorHelper)
     {
         _validatorHelper = validatorHelper;
@@ -19,7 +25,8 @@ internal class QueryCircuitParameterValidator : IQueryCircuitParameterValidator
 
         _validatorHelper.ValidateId(parameters.Id, errors);
         _validatorHelper.ValidatePagination(parameters.Page, errors);
-        ValidateCircuitSorting(parameters.SortField, parameters.SortOrder, errors);
+        _validatorHelper.ValidateSorting(parameters.SortField, parameters.SortOrder,
+            _circuitValidSortFields, errors);
 
         return errors;
     }
@@ -36,43 +43,5 @@ internal class QueryCircuitParameterValidator : IQueryCircuitParameterValidator
         _validatorHelper.ValidateResultSorting(parameters.SortField, parameters.SortOrder, errors);
 
         return errors;
-    }
-
-    private static void ValidateCircuitSorting(string? fieldParameter, string? orderParameter,
-        List<string> errors)
-    {
-        var validSortFields = new[]
-        {
-            nameof(Circuit.Name).ToLower(),
-            nameof(Circuit.Location).ToLower()
-        };
-
-        var field = fieldParameter?.ToLower();
-        var order = orderParameter?.ToLower();
-
-        if (!string.IsNullOrWhiteSpace(field))
-        {
-            if (!validSortFields.Contains(field))
-            {
-                errors.Add($"Invalid sorting field: {field}. " +
-                    $"Valid values: {string.Join(", ", validSortFields)}.");
-            }
-        }
-
-        if (!string.IsNullOrWhiteSpace(order))
-        {
-            if (string.IsNullOrWhiteSpace(field))
-            {
-                errors.Add($"Explicit sorting direction requires sorting field. " +
-                    $"Valid SortField values: {string.Join(", ", validSortFields)}.");
-            }
-
-            var validSortDirections = new[] { "asc", "desc" };
-            if (!validSortDirections.Contains(order))
-            {
-                errors.Add($"Invalid sorting direction: {order}. " +
-                    $"Valid values: {string.Join(", ", validSortDirections)}.");
-            }
-        }
     }
 }

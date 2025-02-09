@@ -19,6 +19,7 @@ internal static class ValidationMessage
     public static string YearFilterNotNumber(string year) =>
         $"Year filter cannot contain non-numeric values: {year}. {GetValidYearFormatExample()}";
 
+    // Sorting
     public static string InvalidSortField(string field, IEnumerable<string> validFields) =>
         $"Invalid sorting field: {field}. Valid values: {string.Join(", ", validFields)}.";
 
@@ -31,11 +32,6 @@ internal static class ValidationMessage
         $"Valid values: {string.Join(", ", validSortDirections)}.";
 
     // Start year
-    public static string StartYearGreaterThanValidStartYear(int startYear, int endYear,
-        int validStartYear, int validEndYear) =>
-        $"The start year ({startYear}) cannot be greater than {validStartYear}. " +
-        $"{GetValidRangeMessage(validStartYear, validEndYear)}";
-
     public static string StartYearGreaterThanEndYear(int startYear, int endYear, 
         int validStartYear, int validEndYear) =>
         $"The start year ({startYear}) cannot be greater than the end year ({endYear}). " +

@@ -9,15 +9,17 @@ public class ParameterValidatorHelper : IParameterValidatorHelper
     public void ValidateId(string? idParameter, List<string> errors,
         string idParameterName = "Id")
     {
-        if (!string.IsNullOrWhiteSpace(idParameter))
+        if (string.IsNullOrWhiteSpace(idParameter))
         {
-            var ids = idParameter.Split(',');
-            foreach (var id in ids)
+            return;
+        }
+
+        var ids = idParameter.Split(',');
+        foreach (var id in ids)
+        {
+            if (!Guid.TryParse(id, out _))
             {
-                if (!Guid.TryParse(id, out _))
-                {
-                    errors.Add(ValidationMessage.InvalidGuid(idParameterName, id));
-                }
+                errors.Add(ValidationMessage.InvalidGuid(idParameterName, id));
             }
         }
     }
@@ -59,38 +61,52 @@ public class ParameterValidatorHelper : IParameterValidatorHelper
         ValidateYearRange(yearParameter, errors, validEndYear, validStartYear, yearParts);
     }
 
+    public void ValidateSorting(string? fieldParameter, string? orderParameter,
+        IEnumerable<string> validSortFields, List<string> errors)
+    {
+        if (string.IsNullOrWhiteSpace(fieldParameter)
+            && string.IsNullOrWhiteSpace(orderParameter))
+        {
+            return;
+        }
+
+        var field = fieldParameter?.ToLower();
+        var order = orderParameter?.ToLower();
+
+        if (!string.IsNullOrWhiteSpace(field) && !validSortFields.Contains(field))
+        {
+            errors.Add(ValidationMessage.InvalidSortField(field, validSortFields));
+        }
+
+        if (!string.IsNullOrWhiteSpace(order) && string.IsNullOrWhiteSpace(field))
+        {
+            errors.Add(ValidationMessage.ExplicitSortingRequiresSortField(validSortFields));
+        }
+
+        var validSortDirections = new[] { "asc", "desc" };
+        if (!string.IsNullOrWhiteSpace(order) && !validSortDirections.Contains(order))
+        {
+            errors.Add(ValidationMessage.InvalidSortOrder(order, validSortDirections));
+        }
+    }
+
     public void ValidateResultSorting(string? fieldParameter,
         string? orderParameter, List<string> errors)
     {
+        if (string.IsNullOrWhiteSpace(fieldParameter)
+            && string.IsNullOrWhiteSpace(orderParameter))
+        {
+            return;
+        }
+
         var validSortFields = new[]
         {
             nameof(RaceResult.Date).ToLower(),
             nameof(RaceResult.Position).ToLower(),
             nameof(RaceResult.Points).ToLower(),
         };
-
-        var field = fieldParameter?.ToLower();
-
-        if (!string.IsNullOrWhiteSpace(field)
-            && !validSortFields.Contains(field))
-        {
-            errors.Add(ValidationMessage.InvalidSortField(field, validSortFields));
-        }
-
-        if (!string.IsNullOrWhiteSpace(orderParameter))
-        {
-            if (string.IsNullOrWhiteSpace(field))
-            {
-                errors.Add(ValidationMessage.ExplicitSortingRequiresSortField(validSortFields));
-            }
-
-            var validSortDirections = new[] { "asc", "desc" };
-            if (!validSortDirections.Contains(orderParameter))
-            {
-                errors.Add(ValidationMessage.InvalidSortOrder(orderParameter, validSortDirections));
-            }            
-        }
-    }
+        ValidateSorting(fieldParameter, orderParameter, validSortFields, errors);
+    }    
 
     private static void ValidateSingleYear(string yearParameter, List<string> errors,
         int validEndYear, int validStartYear, string[] yearParts)
@@ -125,7 +141,6 @@ public class ParameterValidatorHelper : IParameterValidatorHelper
 
             return;
         }
-
 
         if (startYear > endYear)
         {
