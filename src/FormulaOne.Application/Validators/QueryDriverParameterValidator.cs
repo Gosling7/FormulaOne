@@ -76,13 +76,11 @@ internal class QueryDriverParameterValidator : IQueryDriverParameterValidator
         var nationalities = nationalityParameter.Split(',');
         foreach (var nationality in nationalities)
         {
-            if (nationality.Trim().Length == 3)
+            if (nationality.Trim().Length != 3)
             {
-                return;
+                errors.Add($"Invalid nationality filter: {nationality}. " +
+                    $"Valid values are three-letter codes, e.g. POL.");
             }
-
-            errors.Add($"Invalid nationality filter: {nationality}. " +
-                $"Valid values are three-letter codes, e.g. POL.");
         }
     }
 }

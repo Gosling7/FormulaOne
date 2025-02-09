@@ -1,4 +1,6 @@
-﻿namespace FormulaOne.Tests.Unit.Helpers.ParameterValidatorHelper;
+﻿using FormulaOne.Application.Constants;
+
+namespace FormulaOne.Tests.Unit.Helpers.ParameterValidatorHelper;
 
 public class ValidatePagination
 {
@@ -29,8 +31,7 @@ public class ValidatePagination
 
         // Assert
         Assert.Single(_errors);
-        Assert.Equal($"Invalid page number: {pageNumber}. " +
-            $"Valid values are greater than 0.", _errors.First());
+        Assert.Contains(ValidationMessage.InvalidPageNumber(pageNumber), _errors);
     }
 
     [Fact]
@@ -44,7 +45,6 @@ public class ValidatePagination
 
         // Assert
         Assert.Single(_errors);
-        Assert.Equal($"Invalid page number: {pageNumber}. " +
-            $"Valid values are greater than 0.", _errors.First());
+        Assert.Contains(ValidationMessage.InvalidPageNumber(pageNumber), _errors);
     }
 }

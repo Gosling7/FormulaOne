@@ -168,9 +168,7 @@ public class ValidateYear
         // Assert
         Assert.Single(_errors);
 
-        var yearParts = invalidYearRange.Split("-");
-        var startYear = int.Parse(yearParts[0]);
-        var endYear = int.Parse(yearParts[1]);
+        (int startYear, int endYear) = GetStartAndEndYear(invalidYearRange);
         Assert.Contains(ValidationMessage.StartYearGreaterThanEndYear(startYear, endYear,
             ValidStartYear, ValidEndYear), _errors);
     }
@@ -187,8 +185,7 @@ public class ValidateYear
         // Assert
         Assert.Single(_errors);
 
-        var yearParts = invalidYearRange.Split("-");
-        var startYear = int.Parse(yearParts[0]);
+        var startYear = GetStartYear(invalidYearRange);
         Assert.Contains(ValidationMessage.StartYearLessThanValidStartYear(startYear,
             ValidStartYear, ValidEndYear), _errors);
     }
@@ -206,8 +203,7 @@ public class ValidateYear
         // Assert
         Assert.Single(_errors);
 
-        var yearParts = invalidYearRange.Split("-");
-        var startYear = int.Parse(yearParts[0]);
+        var startYear = GetStartYear(invalidYearRange);
         Assert.Contains(ValidationMessage.StartYearLessThanValidStartYear(startYear,
             ValidTeamStandingStartYear, ValidEndYear), _errors);
     }
@@ -224,9 +220,7 @@ public class ValidateYear
         // Assert
         Assert.Equal(2, _errors.Count);
 
-        var yearParts = invalidYearRange.Split("-");
-        var startYear = int.Parse(yearParts[0]);
-        var endYear = int.Parse(yearParts[1]);
+        (int startYear, int endYear) = GetStartAndEndYear(invalidYearRange);
 
         Assert.Contains(ValidationMessage.StartYearGreaterThanValidEndYear(startYear,
             ValidStartYear, ValidEndYear), _errors);
@@ -246,8 +240,7 @@ public class ValidateYear
         // Assert
         Assert.Single(_errors);
 
-        var yearParts = invalidYearRange.Split("-");
-        var endYear = int.Parse(yearParts[1]);
+        var endYear = GetEndYear(invalidYearRange);
         Assert.Contains(ValidationMessage.EndYearGreaterThanValidEndYear(endYear,
             ValidStartYear, ValidEndYear), _errors);
     }
@@ -264,9 +257,7 @@ public class ValidateYear
         // Assert
         Assert.Equal(2, _errors.Count);
 
-        var yearParts = invalidYearRange.Split("-");
-        var endYear = int.Parse(yearParts[1]);
-        var startYear = int.Parse(yearParts[0]);
+        (int startYear, int endYear) = GetStartAndEndYear(invalidYearRange);
 
         Assert.Contains(ValidationMessage.EndYearLessThanValidStartYear(endYear,
             ValidStartYear, ValidEndYear), _errors);
@@ -275,7 +266,7 @@ public class ValidateYear
     }
 
     [Fact]
-    public void Should_add_2_errors_when_input_range_year_is_longer_than_valid_range_on_both_sides()
+    public void Should_add_2_errors_when_input_range_year_is_longer_than_valid_range()
     {
         // Arrange
         var tooLongYearRange = $"{ValidStartYear - 1}-{ValidEndYear + 1}";
@@ -286,13 +277,32 @@ public class ValidateYear
         // Assert
         Assert.Equal(2, _errors.Count);
 
-        var yearParts = tooLongYearRange.Split("-");
-        var startYear = int.Parse(yearParts[0]);
-        var endYear = int.Parse(yearParts[1]);
+        (int startYear, int endYear) = GetStartAndEndYear(tooLongYearRange);
 
         Assert.Contains(ValidationMessage.StartYearLessThanValidStartYear(startYear,
             ValidStartYear, ValidEndYear), _errors);
         Assert.Contains(ValidationMessage.EndYearGreaterThanValidEndYear(endYear,
             ValidStartYear, ValidEndYear), _errors);
+    }
+
+    private static int GetStartYear(string yearParameter)
+    {
+        var yearParts = yearParameter.Split("-");
+        return int.Parse(yearParts[0]);
+    }
+
+    private static int GetEndYear(string yearParameter)
+    {
+        var yearParts = yearParameter.Split("-");
+        return int.Parse(yearParts[1]);
+    }
+
+    private static (int, int) GetStartAndEndYear(string yearParameter)
+    {
+        var yearParts = yearParameter.Split("-");
+        var startYear = int.Parse(yearParts[0]);
+        var endYear = int.Parse(yearParts[1]);
+
+        return (startYear, endYear);
     }
 }

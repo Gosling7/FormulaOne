@@ -85,7 +85,11 @@ public class ParameterValidatorHelper : IParameterValidatorHelper
             errors.Add(ValidationMessage.ExplicitSortingRequiresSortField(validSortFields));
         }
 
-        var validSortDirections = new[] { "asc", "desc" };
+        var validSortDirections = new[] 
+        { 
+            ValidationConstant.AscendingSortDirection, 
+            ValidationConstant.DescendingSortDirection
+        };
         if (!string.IsNullOrWhiteSpace(order) && !validSortDirections.Contains(order))
         {
             errors.Add(ValidationMessage.InvalidSortOrder(order, validSortDirections));
