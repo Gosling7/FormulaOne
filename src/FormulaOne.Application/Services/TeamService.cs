@@ -5,7 +5,7 @@ using FormulaOne.Application.Parameters;
 
 namespace FormulaOne.Application.Services;
 
-internal class TeamService : ITeamService
+public class TeamService : ITeamService
 {
     private readonly IQueryTeamParameterValidator _validator;
     private readonly ITeamRepository _teamRepository;
@@ -17,13 +17,13 @@ internal class TeamService : ITeamService
         ITeamRepository teamRepository,
         ITeamStandingRepository teamStandingRepository,
         IRaceResultRepository raceResultRepository,
-        ServiceHelper pagedResultHelper)
+        ServiceHelper serviceHelper)
     {
-        _teamRepository = teamRepository;
         _validator = validator;
+        _teamRepository = teamRepository;
         _teamStandingRepository = teamStandingRepository;
         _raceResultRepository = raceResultRepository;
-        _serviceHelper = pagedResultHelper;
+        _serviceHelper = serviceHelper;
     }
 
     public async Task<PagedResult<TeamDto>> GetTeams(GetTeamsParameter parameters)

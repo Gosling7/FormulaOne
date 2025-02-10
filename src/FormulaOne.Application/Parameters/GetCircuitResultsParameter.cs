@@ -8,8 +8,8 @@ public record GetCircuitResultsParameter(
     string? CircuitId,
     string? CircuitName,
     string? CircuitLocation,
+    string? Year,
     string? SortField,
     string? SortOrder,
-    string? Year,
     int Page = QueryParameterConstant.DefaultPage,
     int PageSize = QueryParameterConstant.DefaultPageSize) : IQueryParameter;

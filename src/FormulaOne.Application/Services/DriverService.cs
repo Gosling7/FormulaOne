@@ -5,7 +5,7 @@ using FormulaOne.Application.Parameters;
 
 namespace FormulaOne.Application.Services;
 
-internal class DriverService : IDriverService
+public class DriverService : IDriverService
 {
     private readonly IQueryDriverParameterValidator _validator;
     private readonly IRaceResultRepository _raceResultRepository;
@@ -14,16 +14,16 @@ internal class DriverService : IDriverService
     private readonly ServiceHelper _serviceHelper;
 
     public DriverService(IQueryDriverParameterValidator validator,
-        IRaceResultRepository raceResultRepository,
         IDriverRepository driverRepository,
         IDriverStandingRepository driverStandingRepository,
-        ServiceHelper getDriversHelper)
+        IRaceResultRepository raceResultRepository,
+        ServiceHelper serviceHelper)
     {
-        _raceResultRepository = raceResultRepository;
-        _driverRepository = driverRepository;
         _validator = validator;
+        _driverRepository = driverRepository;
         _driverStandingRepository = driverStandingRepository;
-        _serviceHelper = getDriversHelper;
+        _raceResultRepository = raceResultRepository;
+        _serviceHelper = serviceHelper;
     }
 
     public async Task<PagedResult<DriverDto>> GetDrivers(GetDriversParameter parameters)

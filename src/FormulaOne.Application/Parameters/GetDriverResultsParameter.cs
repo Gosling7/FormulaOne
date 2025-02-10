@@ -7,8 +7,8 @@ public record GetDriverResultsParameter(
     string? Id,
     string? DriverId,
     string? DriverName,
+    string? Year,
     string? SortField,
     string? SortOrder,
-    string? Year,
     int Page = QueryParameterConstant.DefaultPage,
     int PageSize = QueryParameterConstant.DefaultPageSize) : IQueryParameter;

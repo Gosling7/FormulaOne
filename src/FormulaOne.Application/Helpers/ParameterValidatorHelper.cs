@@ -4,7 +4,7 @@ using FormulaOne.Core.Entities;
 
 namespace FormulaOne.Application.Helpers;
 
-public class ParameterValidatorHelper : IParameterValidatorHelper
+internal class ParameterValidatorHelper : IParameterValidatorHelper
 {
     public void ValidateId(string? idParameter, List<string> errors,
         string idParameterName = "Id")

@@ -6,7 +6,7 @@ using FormulaOne.Infrastructure.Repositories;
 
 namespace FormulaOne.Application.Services;
 
-internal class CircuitService : ICircuitService
+public class CircuitService : ICircuitService
 {
     private readonly IQueryCircuitParameterValidator _validator;
     private readonly IRaceResultRepository _raceResultRepository;
@@ -14,10 +14,8 @@ internal class CircuitService : ICircuitService
     private readonly ServiceHelper _serviceHelper;
 
     public CircuitService(IQueryCircuitParameterValidator validator,
-        IRaceResultRepository raceResultRepository,
-        IDriverRepository driverRepository,
-        IDriverStandingRepository driverStandingRepository,
         ICircuitRepository circuitRepository,
+        IRaceResultRepository raceResultRepository,
         ServiceHelper getDriversHelper)
     {
         _raceResultRepository = raceResultRepository;

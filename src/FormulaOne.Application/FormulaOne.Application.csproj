@@ -14,4 +14,9 @@
     <ProjectReference Include="..\FormulaOne.Core\FormulaOne.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="FormulaOne.Tests.Unit" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+  </ItemGroup>
+
 </Project>

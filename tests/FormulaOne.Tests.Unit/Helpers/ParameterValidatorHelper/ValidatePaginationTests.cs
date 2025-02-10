@@ -2,7 +2,7 @@
 
 namespace FormulaOne.Tests.Unit.Helpers.ParameterValidatorHelper;
 
-public class ValidatePagination
+public class ValidatePaginationTests
 {
     private readonly Application.Helpers.ParameterValidatorHelper _validator = new();
     private readonly List<string> _errors = [];

@@ -1,6 +1,6 @@
 ﻿namespace FormulaOne.Application.Interfaces;
 
-internal interface IParameterValidatorHelper
+public interface IParameterValidatorHelper
 {
     void ValidateId(string? idParameter, List<string> errors, string nameOfIdParameter = "Id");
     void ValidatePagination(int pageParameter, List<string> errors);

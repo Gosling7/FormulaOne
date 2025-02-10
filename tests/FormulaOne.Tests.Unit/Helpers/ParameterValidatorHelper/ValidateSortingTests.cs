@@ -2,7 +2,7 @@
 
 namespace FormulaOne.Tests.Unit.Helpers.ParameterValidatorHelper;
 
-public class ValidateSorting
+public class ValidateSortingTests
 {
     private readonly Application.Helpers.ParameterValidatorHelper _validator = new();
     private readonly List<string> _errors = [];

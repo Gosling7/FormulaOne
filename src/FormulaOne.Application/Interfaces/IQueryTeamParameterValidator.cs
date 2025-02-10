@@ -2,7 +2,7 @@
 
 namespace FormulaOne.Application.Interfaces;
 
-internal interface IQueryTeamParameterValidator
+public interface IQueryTeamParameterValidator
 {
     public List<string> Validate(GetTeamsParameter parameters);
     public List<string> Validate(GetTeamStandingsParameter parameters);
