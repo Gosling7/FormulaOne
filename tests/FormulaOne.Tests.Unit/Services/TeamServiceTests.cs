@@ -178,7 +178,7 @@ public class TeamServiceTests : ServiceTestsBase
             SortOrder: null,
             PageSize: QueryParameterConstant.DefaultPageSize,
             Page: QueryParameterConstant.DefaultPage);
-        var teamResults = base.GetRaceResults();
+        var teamResults = GetRaceResults();
 
         _raceResultRepository.GetItemsAsync(parameters).Returns((1, teamResults));
         _validator.Validate(parameters).Returns([]);
@@ -187,13 +187,8 @@ public class TeamServiceTests : ServiceTestsBase
         var result = await _service.GetTeamResults(parameters);
 
         // Assert
-        var expectedPagedResult = new PagedResult<RaceResultDto>(
-            CurrentPage: parameters.Page,
-            TotalPages: 1,
-            PageSize: parameters.PageSize,
-            TotalResults: 1,
-            Errors: new List<string>(),
-            Items: teamResults);
+        var expectedPagedResult = GetExpectedRaceResultsWithoutErrors(
+            parameters, teamResults);
         result.ShouldBeEquivalentTo(expectedPagedResult);
     }
 
@@ -218,13 +213,7 @@ public class TeamServiceTests : ServiceTestsBase
         var result = await _service.GetTeamResults(parameters);
 
         // Assert
-        var expectedPagedResult = new PagedResult<RaceResultDto>(
-            CurrentPage: parameters.Page,
-            TotalPages: 0,
-            PageSize: parameters.PageSize,
-            TotalResults: 0,
-            Errors: errors,
-            Items: new List<RaceResultDto>());
+        var expectedPagedResult = GetExpectedRaceResultsWithErrors(parameters, errors);
         result.ShouldBeEquivalentTo(expectedPagedResult);
     }
 }

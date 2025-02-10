@@ -105,7 +105,7 @@ public class CircuitServiceTests : ServiceTestsBase
             SortOrder: null,
             PageSize: QueryParameterConstant.DefaultPageSize,
             Page: QueryParameterConstant.DefaultPage);
-        var circuitsResults = base.GetRaceResults();
+        var circuitsResults = GetRaceResults();
 
         _raceResultRepository.GetItemsAsync(parameters).Returns((1, circuitsResults));
         _validator.Validate(parameters).Returns([]);
@@ -114,13 +114,8 @@ public class CircuitServiceTests : ServiceTestsBase
         var result = await _service.GetCircuitResults(parameters);
 
         // Assert
-        var expectedPagedResult = new PagedResult<RaceResultDto>(
-            CurrentPage: parameters.Page,
-            TotalPages: 1,
-            PageSize: parameters.PageSize,
-            TotalResults: 1,
-            Errors: new List<string>(),
-            Items: circuitsResults);
+        var expectedPagedResult = GetExpectedRaceResultsWithoutErrors(
+            parameters, circuitsResults);
         result.ShouldBeEquivalentTo(expectedPagedResult);
     }
 
@@ -146,13 +141,7 @@ public class CircuitServiceTests : ServiceTestsBase
         var result = await _service.GetCircuitResults(parameters);
 
         // Assert
-        var expectedPagedResult = new PagedResult<RaceResultDto>(
-            CurrentPage: parameters.Page,
-            TotalPages: 0,
-            PageSize: parameters.PageSize,
-            TotalResults: 0,
-            Errors: errors,
-            Items: new List<RaceResultDto>());
+        var expectedPagedResult = GetExpectedRaceResultsWithErrors(parameters, errors);
         result.ShouldBeEquivalentTo(expectedPagedResult);
-    }
+    }    
 }

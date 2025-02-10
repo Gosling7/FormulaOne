@@ -181,7 +181,7 @@ public class DriverServiceTests : ServiceTestsBase
             SortOrder: null,
             PageSize: QueryParameterConstant.DefaultPageSize,
             Page: QueryParameterConstant.DefaultPage);
-        var driverResults = base.GetRaceResults();
+        var driverResults = GetRaceResults();
 
         _raceResultRepository.GetItemsAsync(parameters).Returns((1, driverResults));
         _validator.Validate(parameters).Returns([]);
@@ -190,13 +190,8 @@ public class DriverServiceTests : ServiceTestsBase
         var result = await _service.GetDriverResults(parameters);
 
         // Assert
-        var expectedPagedResult = new PagedResult<RaceResultDto>(
-            CurrentPage: parameters.Page,
-            TotalPages: 1,
-            PageSize: parameters.PageSize,
-            TotalResults: 1,
-            Errors: new List<string>(),
-            Items: driverResults);
+        var expectedPagedResult = GetExpectedRaceResultsWithoutErrors(
+            parameters, driverResults);
         result.ShouldBeEquivalentTo(expectedPagedResult);
     }
 
@@ -221,13 +216,7 @@ public class DriverServiceTests : ServiceTestsBase
         var result = await _service.GetDriverResults(parameters);
 
         // Assert
-        var expectedPagedResult = new PagedResult<RaceResultDto>(
-            CurrentPage: parameters.Page,
-            TotalPages: 0,
-            PageSize: parameters.PageSize,
-            TotalResults: 0,
-            Errors: errors,
-            Items: new List<RaceResultDto>());
+        var expectedPagedResult = GetExpectedRaceResultsWithErrors(parameters, errors);
         result.ShouldBeEquivalentTo(expectedPagedResult);
     }
 }
