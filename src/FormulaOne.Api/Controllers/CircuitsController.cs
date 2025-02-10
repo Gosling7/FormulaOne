@@ -20,6 +20,7 @@ public class CircuitsController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PagedResult<DriverDto>>> GetCitcuits(
         [FromQuery] GetCircuitsParameter parameters)
     {
@@ -27,6 +28,11 @@ public class CircuitsController : ControllerBase
         if (circuitsPagedResult.Errors.Count != 0)
         {
             return BadRequest(circuitsPagedResult);
+        }
+
+        if (!circuitsPagedResult.Items.Any())
+        {
+            return NotFound(circuitsPagedResult);
         }
 
         return Ok(circuitsPagedResult);
@@ -42,6 +48,11 @@ public class CircuitsController : ControllerBase
         if (circuitResultsPagedResult.Errors.Count != 0)
         {
             return BadRequest(circuitResultsPagedResult);
+        }
+
+        if (!circuitResultsPagedResult.Items.Any())
+        {
+            return NotFound(circuitResultsPagedResult);
         }
 
         return Ok(circuitResultsPagedResult);

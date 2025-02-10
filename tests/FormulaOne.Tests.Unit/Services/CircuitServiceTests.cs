@@ -4,6 +4,7 @@ using FormulaOne.Application.Interfaces;
 using FormulaOne.Application.Parameters;
 using FormulaOne.Application.Services;
 using FormulaOne.Infrastructure.Repositories;
+using FormulaOne.Tests.Unit.Builders;
 using NSubstitute;
 using Shouldly;
 
@@ -18,7 +19,7 @@ public class CircuitServiceTests : ServiceTestsBase
 
     private readonly ICircuitService _service;
 
-    public CircuitServiceTests() : base()
+    public CircuitServiceTests()
     {
         _service = new CircuitService(
             validator: _validator,
@@ -31,17 +32,24 @@ public class CircuitServiceTests : ServiceTestsBase
     public async void GetCircuits_should_return_paged_result_without_errors()
     {
         // Arrange 
-        var parameters = new GetCircuitsParameter(
-            Id: null,
-            Name: null,
-            Location: null,
-            SortField: null,
-            SortOrder: null,
-            PageSize: QueryParameterConstant.DefaultPageSize,
-            Page: QueryParameterConstant.DefaultPage);
+        var parameters = new GetCircuitsParameterBuilder()
+            .SetDefaultValues()
+            .SetId(null)
+            .SetName(null)
+            .SetLocation(null)
+            .SetSortField(null)
+            .SetSortOrder(null)
+            .SetPage(1)
+            .Build();
+
         List<CircuitDto> circuits =
         [
-            new CircuitDto { Id = Guid.NewGuid().ToString(), Name = "name1", Location = "location" }
+            new CircuitDto
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "name1",
+                Location = "location"
+            }
         ];
 
         _circuitRepository.GetItemsAsync(parameters).Returns((1, circuits));
@@ -65,14 +73,10 @@ public class CircuitServiceTests : ServiceTestsBase
     public async void GetCircuits_should_return_paged_result_with_error_when_validation_fails()
     {
         // Arrange 
-        var parameters = new GetCircuitsParameter(
-            Id: InvalidId,
-            Name: null,
-            Location: null,
-            SortField: null,
-            SortOrder: null,
-            PageSize: QueryParameterConstant.DefaultPageSize,
-            Page: QueryParameterConstant.DefaultPage);
+        var parameters = new GetCircuitsParameterBuilder()
+            .SetDefaultValues()
+            .SetId(InvalidId)
+            .Build();
 
         List<string> errors = [ValidationMessage.InvalidGuid("Id", InvalidId)];
         _validator.Validate(parameters).Returns(errors);
