@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOne.Core", "src\Form
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOne.Tests.Unit", "tests\FormulaOne.Tests.Unit\FormulaOne.Tests.Unit.csproj", "{80DB8D63-5982-4035-8AA6-7613C55388E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOne.Tests.Integration", "tests\FormulaOne.Tests.Integration\FormulaOne.Tests.Integration.csproj", "{C6659710-4A68-4191-B8DC-8E97D93601EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{80DB8D63-5982-4035-8AA6-7613C55388E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80DB8D63-5982-4035-8AA6-7613C55388E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80DB8D63-5982-4035-8AA6-7613C55388E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6659710-4A68-4191-B8DC-8E97D93601EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6659710-4A68-4191-B8DC-8E97D93601EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6659710-4A68-4191-B8DC-8E97D93601EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6659710-4A68-4191-B8DC-8E97D93601EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
