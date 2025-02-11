@@ -1,6 +1,6 @@
 ﻿namespace FormulaOne.Application.Constants;
 
-public static class QueryRepositoryConstant
+public static class RepositoryConstant
 {
     public const string IdField = "id";
     public const string NameField = "name";
@@ -13,4 +13,5 @@ public static class QueryRepositoryConstant
     public const string PositionField = "position";
     public const string PointsField = "points";
     public const string DescendingOrder = "desc";
+    public const string AscendingOrder = "asc";
 }

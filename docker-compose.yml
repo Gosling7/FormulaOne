@@ -14,7 +14,7 @@ services:
       - mssql
 
   mssql:
-    image: mcr.microsoft.com/mssql/server
+    image: mcr.microsoft.com/mssql/server:2022-CU17-ubuntu-22.04
     container_name: mssql  
     ports:
       - 1433:1433

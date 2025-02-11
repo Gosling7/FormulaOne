@@ -97,18 +97,18 @@ public class DriverStandingRepository : IDriverStandingRepository
         {
             switch (parameters.SortField)
             {
-                case QueryRepositoryConstant.YearField:
-                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                case RepositoryConstant.YearField:
+                    query = parameters.SortOrder == RepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(ds => ds.Year)
                         : query.OrderBy(ds => ds.Year);
                     break;
-                case QueryRepositoryConstant.PositionField:
-                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                case RepositoryConstant.PositionField:
+                    query = parameters.SortOrder == RepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(ds => ds.Position)
                         : query.OrderBy(ds => ds.Position);
                     break;
-                case QueryRepositoryConstant.PointsField:
-                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                case RepositoryConstant.PointsField:
+                    query = parameters.SortOrder == RepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(ds => ds.Points)
                         : query.OrderBy(ds => ds.Points);
                     break;

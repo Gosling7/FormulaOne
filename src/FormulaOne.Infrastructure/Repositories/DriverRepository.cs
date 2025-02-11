@@ -21,7 +21,7 @@ public class DriverRepository : IDriverRepository
         IQueryable<Driver> query = _context.Drivers;
         query = BuildQueryFilter(parameters, query);
 
-        var queryTeamCount = await query.CountAsync();
+        var queryDriverCount = await query.CountAsync();
 
         query = query
             .Skip((parameters.Page - 1) * parameters.PageSize)
@@ -36,7 +36,7 @@ public class DriverRepository : IDriverRepository
             })
             .ToListAsync();
 
-        return (queryTeamCount, drivers);
+        return (queryDriverCount, drivers);
     }
 
     private static IQueryable<Driver> BuildQueryFilter(GetDriversParameter parameters,
@@ -78,18 +78,18 @@ public class DriverRepository : IDriverRepository
         {
             switch (parameter.SortField)
             {
-                case QueryRepositoryConstant.FirstNameField:
-                    query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
+                case RepositoryConstant.FirstNameField:
+                    query = parameter.SortOrder == RepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(d => d.FirstName)
                         : query.OrderBy(d => d.FirstName);
                     break;
-                case QueryRepositoryConstant.LastNameField:
-                    query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
+                case RepositoryConstant.LastNameField:
+                    query = parameter.SortOrder == RepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(d => d.LastName)
                         : query.OrderBy(d => d.LastName);
                     break;
-                case QueryRepositoryConstant.NationalityField:
-                    query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
+                case RepositoryConstant.NationalityField:
+                    query = parameter.SortOrder == RepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(d => d.Nationality)
                         : query.OrderBy(d => d.Nationality);
                     break;

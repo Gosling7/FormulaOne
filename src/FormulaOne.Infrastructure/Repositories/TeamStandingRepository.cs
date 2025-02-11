@@ -96,18 +96,18 @@ public class TeamStandingRepository : ITeamStandingRepository
         {
             switch (parameters.SortField)
             {
-                case QueryRepositoryConstant.YearField:
-                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                case RepositoryConstant.YearField:
+                    query = parameters.SortOrder == RepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(ts => ts.Year).ThenBy(ts => ts.Position)
                         : query.OrderBy(ts => ts.Year).ThenBy(ts => ts.Position);
                     break;
-                case QueryRepositoryConstant.PositionField:
-                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                case RepositoryConstant.PositionField:
+                    query = parameters.SortOrder == RepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(t => t.Position)
                         : query.OrderBy(ts => ts.Position);
                     break;
-                case QueryRepositoryConstant.PointsField:
-                    query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+                case RepositoryConstant.PointsField:
+                    query = parameters.SortOrder == RepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(t => t.Points)
                         : query.OrderBy(ts => ts.Points);
                     break;

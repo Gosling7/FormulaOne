@@ -1,6 +1,6 @@
 ﻿namespace FormulaOne.Application.DataTransferObjects;
 
-public class CircuitDto
+public record CircuitDto
 {
     public required string Id { get; init; }
     public required string Name { get; init; }

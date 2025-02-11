@@ -7,4 +7,11 @@ public class Circuit
     public string Location { get; private set; } = string.Empty;
 
     public ICollection<RaceResult> RaceResults { get; private set; } = [];
+
+    public Circuit(Guid id, string name, string location)
+    {
+        Id = id;
+        Name = name;
+        Location = location;
+    }
 }

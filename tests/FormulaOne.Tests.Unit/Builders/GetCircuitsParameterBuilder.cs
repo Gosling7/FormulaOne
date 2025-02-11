@@ -3,7 +3,7 @@ using FormulaOne.Application.Parameters;
 
 namespace FormulaOne.Tests.Unit.Builders;
 
-internal class GetCircuitsParameterBuilder
+public class GetCircuitsParameterBuilder
 {
     private GetCircuitsParameter _parameter = null!;
 
@@ -15,7 +15,7 @@ internal class GetCircuitsParameterBuilder
             Location: null,
             SortField: null,
             SortOrder: null,
-            Page: 0,
+            Page: QueryParameterConstant.DefaultPage,
             PageSize: QueryParameterConstant.DefaultPageSize);
 
         return this;

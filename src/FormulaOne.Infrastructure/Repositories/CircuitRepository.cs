@@ -15,7 +15,8 @@ public class CircuitRepository : ICircuitRepository
         _context = context;
     }
 
-    public async Task<(int, IReadOnlyCollection<CircuitDto>)> GetItemsAsync(GetCircuitsParameter parameters)
+    public async Task<(int, IReadOnlyCollection<CircuitDto>)> GetItemsAsync(
+        GetCircuitsParameter parameters)
     {
         IQueryable<Circuit> query = _context.Circuits;
         query = BuildQueryFilter(parameters, query);
@@ -26,7 +27,7 @@ public class CircuitRepository : ICircuitRepository
             .Skip((parameters.Page - 1) * parameters.PageSize)
             .Take(parameters.PageSize);
 
-        var drivers = await query
+        var circuits = await query
             .Select(c => new CircuitDto
             {
                 Id = c.Id.ToString(),
@@ -35,7 +36,7 @@ public class CircuitRepository : ICircuitRepository
             })
             .ToListAsync();
 
-        return (queryItemsCount, drivers);
+        return (queryItemsCount, circuits);
     }
 
     private static IQueryable<Circuit> BuildQueryFilter(GetCircuitsParameter parameters,
@@ -75,13 +76,13 @@ public class CircuitRepository : ICircuitRepository
         {
             switch (parameter.SortField)
             {
-                case QueryRepositoryConstant.NameField:
-                    query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
+                case RepositoryConstant.NameField:
+                    query = parameter.SortOrder == RepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(c => c.Name)
                         : query.OrderBy(c => c.Name);
                     break;
-                case QueryRepositoryConstant.LocationField:
-                    query = parameter.SortOrder == QueryRepositoryConstant.DescendingOrder
+                case RepositoryConstant.LocationField:
+                    query = parameter.SortOrder == RepositoryConstant.DescendingOrder
                         ? query.OrderByDescending(c => c.Location)
                         : query.OrderBy(c => c.Location);
                     break;

@@ -144,18 +144,18 @@ public class RaceResultRepository : IRaceResultRepository
 
         switch (parameters.SortField)
         {
-            case QueryRepositoryConstant.DateField:
-                query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+            case RepositoryConstant.DateField:
+                query = parameters.SortOrder == RepositoryConstant.DescendingOrder
                     ? query.OrderByDescending(rr => rr.Date)
                     : query.OrderBy(rr => rr.Date);
                 break;
-            case QueryRepositoryConstant.PointsField:
-                query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+            case RepositoryConstant.PointsField:
+                query = parameters.SortOrder == RepositoryConstant.DescendingOrder
                     ? query.OrderByDescending(rr => rr.Points)
                     : query.OrderBy(rr => rr.Points);
                 break;
-            case QueryRepositoryConstant.PositionField:
-                query = parameters.SortOrder == QueryRepositoryConstant.DescendingOrder
+            case RepositoryConstant.PositionField:
+                query = parameters.SortOrder == RepositoryConstant.DescendingOrder
                     // Push Position==0 (DNFs, DNSs etc) towards the bottom
                     ? query.OrderByDescending(rr => rr.Position == 0)
                         .ThenByDescending(rr => rr.Position)
