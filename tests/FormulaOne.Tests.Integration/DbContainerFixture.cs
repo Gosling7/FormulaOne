@@ -11,6 +11,7 @@ public class DbContainerFixture : IAsyncLifetime
     public CircuitRepository CircuitRepository { get; private set; } = null!;
     public TeamRepository TeamRepository { get; private set; } = null!;
     public DriverRepository DriverRepository { get; private set; } = null!;
+    public DriverStandingRepository DriverStandingRepository { get; private set; } = null!;
 
     private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
         .WithImage("mcr.microsoft.com/mssql/server:2022-CU17-ubuntu-22.04")
@@ -43,27 +44,48 @@ public class DbContainerFixture : IAsyncLifetime
                 name: TestConstant.CircuitName2,
                 location: TestConstant.CircuitLocation2));
 
+        var team1 = new Team(
+            id: Guid.Parse(TestConstant.TeamId1),
+            name: TestConstant.TeamName1);
+        var team2 = new Team(
+            id: Guid.Parse(TestConstant.TeamId2),
+            name: TestConstant.TeamName2);
+
         TeamRepository = new TeamRepository(_dbContext);
         await _dbContext.Teams.AddRangeAsync(
-            new Team(
-                id: Guid.Parse(TestConstant.TeamId1),
-                name: TestConstant.TeamName1),
-            new Team(
-                id: Guid.Parse(TestConstant.TeamId2),
-                name: TestConstant.TeamName2));
+            team1, team2);
+
+        var driver1 = new Driver(
+            id: Guid.Parse(TestConstant.DriverId1),
+            firstName: TestConstant.DriverFirstName1,
+            lastName: TestConstant.DriverLastName1,
+            nationality: TestConstant.DriverNationality1);
+        var driver2 = new Driver(
+            id: Guid.Parse(TestConstant.DriverId2),
+            firstName: TestConstant.DriverFirstName2,
+            lastName: TestConstant.DriverLastName2,
+            nationality: TestConstant.DriverNationality2);
 
         DriverRepository = new DriverRepository(_dbContext);
         await _dbContext.Drivers.AddRangeAsync(
-            new Driver(
-                id: Guid.Parse(TestConstant.DriverId1),
-                firstName: TestConstant.DriverFirstName1,
-                lastName: TestConstant.DriverLastName1,
-                nationality: TestConstant.DriverNationality1),
-            new Driver(
-                id: Guid.Parse(TestConstant.DriverId2),
-                firstName: TestConstant.DriverFirstName2,
-                lastName: TestConstant.DriverLastName2,
-                nationality: TestConstant.DriverNationality2));
+            driver1, driver2);
+
+        DriverStandingRepository = new DriverStandingRepository(_dbContext);
+        await _dbContext.DriverStandings.AddRangeAsync(
+            new DriverStanding(
+                id: Guid.Parse(TestConstant.DriverStandingId1),
+                position: TestConstant.DriverStandingPosition1,
+                driver: driver1,
+                team: team1,
+                points: TestConstant.DriverStandingPoints1,
+                year: TestConstant.DriverStandingYear1),
+            new DriverStanding(
+                id: Guid.Parse(TestConstant.DriverStandingId2),
+                position: TestConstant.DriverStandingPosition2,
+                driver: driver2,
+                team: team2,
+                points: TestConstant.DriverStandingPoints2,
+                year: TestConstant.DriverStandingYear2));
 
         await _dbContext.SaveChangesAsync();
     }

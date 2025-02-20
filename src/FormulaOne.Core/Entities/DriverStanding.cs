@@ -8,4 +8,20 @@ public class DriverStanding
     public Team Team { get; private set; }
     public float Points { get; private set; }
     public int Year { get; private set; }
+
+    public DriverStanding(Guid id, int position, Driver driver, Team team, 
+        float points, int year)
+    {
+        Id = id;
+        Position = position;
+        Driver = driver;
+        Team = team;
+        Points = points;
+        Year = year;
+    }
+
+    // For integration tests.
+    private DriverStanding() 
+    { 
+    }
 }

@@ -25,4 +25,17 @@ internal static class TestConstant
     public const string DriverFirstName2 = "Oscar";
     public const string DriverLastName2 = "Piastri";
     public const string DriverNationality2 = "AUS";
+
+    public const int DriverStandingYear1 = 2024;
+    public const int DriverStandingYear2 = 2023;
+    public const string DriverStandingYearString1 = "2024";
+    public const string DriverStandingYearString2 = "2023";
+
+    public const string DriverStandingId1 = "8B825EA7-9574-4A3B-90F0-01A51FE09EC8";
+    public const int DriverStandingPosition1 = 4;
+    public const int DriverStandingPoints1 = 292;
+
+    public const string DriverStandingId2 = "D109211B-383B-463A-A4B2-F936CC6AAB23";
+    public const int DriverStandingPosition2 = 2;
+    public const int DriverStandingPoints2 = 374;
 }

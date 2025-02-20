@@ -27,15 +27,12 @@ public class DriverRepositoryTests : IClassFixture<DbContainerFixture>
     }
 
     [Theory]
-    // Id filter
     [InlineData(nameof(GetDriversParameter.Id), DriverId1, 1)]
     [InlineData(nameof(GetDriversParameter.Id), "incorrect id", 0)]
 
-    // Name filter
     [InlineData(nameof(GetDriversParameter.Name), TestConstant.DriverFirstName1, 1)]
     [InlineData(nameof(GetDriversParameter.Name), "incorrect name", 0)]
 
-    // Nationality filter
     [InlineData(nameof(GetDriversParameter.Nationality), DriverNationality1, 1)]
     [InlineData(nameof(GetDriversParameter.Nationality), "incorrect nationality", 0)]
     public async Task GetItemsAsync_should_return_expected_drivers_based_on_filter(
@@ -82,8 +79,10 @@ public class DriverRepositoryTests : IClassFixture<DbContainerFixture>
     [Theory]
     [InlineData(RepositoryConstant.FirstNameField, RepositoryConstant.AscendingOrder)]
     [InlineData(RepositoryConstant.FirstNameField, RepositoryConstant.DescendingOrder)]
+
     [InlineData(RepositoryConstant.LastNameField, RepositoryConstant.AscendingOrder)]
     [InlineData(RepositoryConstant.LastNameField, RepositoryConstant.DescendingOrder)]
+
     [InlineData(RepositoryConstant.NationalityField, RepositoryConstant.AscendingOrder)]
     [InlineData(RepositoryConstant.NationalityField, RepositoryConstant.DescendingOrder)]
     public async Task GetItemsAsync_should_return_drivers_sorted_based_on_filter(

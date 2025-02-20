@@ -23,11 +23,9 @@ public class TeamRepositoryTests : IClassFixture<DbContainerFixture>
     }
 
     [Theory]
-    // Id filter
     [InlineData(nameof(GetTeamsParameter.Id), TeamId1, 1)]
     [InlineData(nameof(GetTeamsParameter.Id), "incorrect id", 0)]
 
-    // Name filter
     [InlineData(nameof(GetTeamsParameter.Name), TeamName1, 1)]
     [InlineData(nameof(GetTeamsParameter.Name), "incorrect name", 0)]
     public async Task GetItemsAsync_should_return_expected_teams_based_on_filter(

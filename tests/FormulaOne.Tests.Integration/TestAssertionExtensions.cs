@@ -31,4 +31,13 @@ internal static class TestAssertionExtensions
             actualDrivers.ShouldContain(expectedDriver);
         }
     }
+
+    public static void ShouldContainAll(this IEnumerable<DriverStandingDto> actualDriverStandings,
+        IEnumerable<DriverStandingDto> expectedDriverStandings)
+    {
+        foreach (var expectedDriverStanding in expectedDriverStandings)
+        {
+            actualDriverStandings.ShouldContain(expectedDriverStanding);
+        }
+    }
 }

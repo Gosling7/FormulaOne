@@ -1,6 +1,6 @@
 ﻿namespace FormulaOne.Application.DataTransferObjects;
 
-public class DriverStandingDto
+public record DriverStandingDto
 {
     public required string Id { get; init; }
     public required int Position { get; init; }

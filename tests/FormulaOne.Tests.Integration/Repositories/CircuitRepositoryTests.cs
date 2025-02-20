@@ -25,15 +25,12 @@ public class CircuitRepositoryTests : IClassFixture<DbContainerFixture>
     }
 
     [Theory]
-    // Id filter
     [InlineData(nameof(GetCircuitsParameter.Id), CircuitId1, 1)]
     [InlineData(nameof(GetCircuitsParameter.Id), "incorrect id", 0)]
     
-    // Name filter
     [InlineData(nameof(GetCircuitsParameter.Name), CircuitName1, 1)]
     [InlineData(nameof(GetCircuitsParameter.Name), "incorrect name", 0)]
     
-    // Location filter
     [InlineData(nameof(GetCircuitsParameter.Location), CircuitLocation1, 1)]
     [InlineData(nameof(GetCircuitsParameter.Location), "incorrect location", 0)]
     public async Task GetItemsAsync_should_return_expected_circuits_based_on_filter(
@@ -80,6 +77,7 @@ public class CircuitRepositoryTests : IClassFixture<DbContainerFixture>
     [Theory]
     [InlineData(RepositoryConstant.NameField, RepositoryConstant.AscendingOrder)]
     [InlineData(RepositoryConstant.NameField, RepositoryConstant.DescendingOrder)]
+
     [InlineData(RepositoryConstant.LocationField, RepositoryConstant.AscendingOrder)]
     [InlineData(RepositoryConstant.LocationField, RepositoryConstant.DescendingOrder)]
     public async Task GetItemsAsync_should_return_circuits_sorted_based_on_filter(
