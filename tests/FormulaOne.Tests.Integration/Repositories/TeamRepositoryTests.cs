@@ -38,10 +38,10 @@ public class TeamRepositoryTests : IClassFixture<DbContainerFixture>
 
         switch (filterType)
         {
-            case "Id":
+            case nameof(GetTeamsParameter.Id):
                 builder.SetId(filterValue);
                 break;
-            case "Name":
+            case nameof(GetTeamsParameter.Name):
                 builder.SetName(filterValue);
                 break;
         }

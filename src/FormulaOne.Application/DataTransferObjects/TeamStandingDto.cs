@@ -9,11 +9,3 @@ public record TeamStandingDto
     public required string TeamName { get; init; }
     public required float Points { get; init; }
 }
-
-//public record TeamStandingDto(
-//    string Id,
-//    int Year,
-//    int Position,
-//    string TeamId,
-//    string TeamName,
-//    float Points);

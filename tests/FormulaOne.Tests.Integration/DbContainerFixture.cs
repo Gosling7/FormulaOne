@@ -10,6 +10,7 @@ public class DbContainerFixture : IAsyncLifetime
 {
     public CircuitRepository CircuitRepository { get; private set; } = null!;
     public TeamRepository TeamRepository { get; private set; } = null!;
+    public DriverRepository DriverRepository { get; private set; } = null!;
 
     private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
         .WithImage("mcr.microsoft.com/mssql/server:2022-CU17-ubuntu-22.04")
@@ -50,6 +51,19 @@ public class DbContainerFixture : IAsyncLifetime
             new Team(
                 id: Guid.Parse(TestConstant.TeamId2),
                 name: TestConstant.TeamName2));
+
+        DriverRepository = new DriverRepository(_dbContext);
+        await _dbContext.Drivers.AddRangeAsync(
+            new Driver(
+                id: Guid.Parse(TestConstant.DriverId1),
+                firstName: TestConstant.DriverFirstName1,
+                lastName: TestConstant.DriverLastName1,
+                nationality: TestConstant.DriverNationality1),
+            new Driver(
+                id: Guid.Parse(TestConstant.DriverId2),
+                firstName: TestConstant.DriverFirstName2,
+                lastName: TestConstant.DriverLastName2,
+                nationality: TestConstant.DriverNationality2));
 
         await _dbContext.SaveChangesAsync();
     }

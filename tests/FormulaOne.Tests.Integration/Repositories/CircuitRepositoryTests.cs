@@ -44,13 +44,13 @@ public class CircuitRepositoryTests : IClassFixture<DbContainerFixture>
 
         switch (filterType)
         {
-            case "Id":
+            case nameof(GetCircuitsParameter.Id):
                 builder.SetId(filterValue);
                 break;
-            case "Name":
+            case nameof(GetCircuitsParameter.Name):
                 builder.SetName(filterValue);
                 break;
-            case "Location":
+            case nameof(GetCircuitsParameter.Location):
                 builder.SetLocation(filterValue);
                 break;
         }
