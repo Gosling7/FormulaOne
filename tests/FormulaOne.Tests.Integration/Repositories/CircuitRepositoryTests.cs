@@ -11,11 +11,11 @@ public class CircuitRepositoryTests : IClassFixture<DbContainerFixture>
 {
     private readonly CircuitRepository _circuitRepository = null!;
 
-    private const string CircuitId1 = TestConstant.ValidId1;
+    private const string CircuitId1 = TestConstant.CircuitId1;
     private const string CircuitName1 = TestConstant.CircuitName1;
     private const string CircuitLocation1 = TestConstant.CircuitLocation1;
 
-    private const string CircuitId2 = TestConstant.ValidId2;
+    private const string CircuitId2 = TestConstant.CircuitId2;
     private const string CircuitName2 = TestConstant.CircuitName2;
     private const string CircuitLocation2 = TestConstant.CircuitLocation2;
 

@@ -13,4 +13,13 @@ internal static class TestAssertionExtensions
             actualCircuits.ShouldContain(expectedCircuit);
         }
     }
+
+    public static void ShouldContainAll(this IEnumerable<TeamDto> actualTeams,
+        IEnumerable<TeamDto> expectedTeams)
+    {
+        foreach (var expectedTeam in expectedTeams)
+        {
+            actualTeams.ShouldContain(expectedTeam);
+        }
+    }
 }

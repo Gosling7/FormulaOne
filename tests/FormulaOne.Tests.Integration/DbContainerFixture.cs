@@ -9,6 +9,7 @@ namespace FormulaOne.Tests.Integration;
 public class DbContainerFixture : IAsyncLifetime
 {
     public CircuitRepository CircuitRepository { get; private set; } = null!;
+    public TeamRepository TeamRepository { get; private set; } = null!;
 
     private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
         .WithImage("mcr.microsoft.com/mssql/server:2022-CU17-ubuntu-22.04")
@@ -31,16 +32,24 @@ public class DbContainerFixture : IAsyncLifetime
         await _dbContext.Database.EnsureCreatedAsync();
 
         CircuitRepository = new CircuitRepository(_dbContext);
-
         await _dbContext.Circuits.AddRangeAsync(
             new Circuit(
-                id: Guid.Parse(TestConstant.ValidId1),
+                id: Guid.Parse(TestConstant.CircuitId1),
                 name: TestConstant.CircuitName1,
                 location: TestConstant.CircuitLocation1),
             new Circuit(
-                id: Guid.Parse(TestConstant.ValidId2),
+                id: Guid.Parse(TestConstant.CircuitId2),
                 name: TestConstant.CircuitName2,
                 location: TestConstant.CircuitLocation2));
+
+        TeamRepository = new TeamRepository(_dbContext);
+        await _dbContext.Teams.AddRangeAsync(
+            new Team(
+                id: Guid.Parse(TestConstant.TeamId1),
+                name: TestConstant.TeamName1),
+            new Team(
+                id: Guid.Parse(TestConstant.TeamId2),
+                name: TestConstant.TeamName2));
 
         await _dbContext.SaveChangesAsync();
     }
