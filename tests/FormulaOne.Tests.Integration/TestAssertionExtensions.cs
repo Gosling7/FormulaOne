@@ -40,4 +40,13 @@ internal static class TestAssertionExtensions
             actualDriverStandings.ShouldContain(expectedDriverStanding);
         }
     }
+
+    public static void ShouldContainAll(this IEnumerable<TeamStandingDto> actualTeamStandings,
+        IEnumerable<TeamStandingDto> expectedTeamStandings)
+    {
+        foreach (var expectedTeamStanding in expectedTeamStandings)
+        {
+            actualTeamStandings.ShouldContain(expectedTeamStanding);
+        }
+    }
 }

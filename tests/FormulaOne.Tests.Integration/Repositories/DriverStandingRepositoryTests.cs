@@ -11,7 +11,7 @@ public class DriverStandingRepositoryTests : IClassFixture<DbContainerFixture>
 {
     private readonly DriverStandingRepository _driverStandingRepository = null!;
 
-    private const string DriverStandingYearString1 = TestConstant.DriverStandingYearString1;
+    private const string DriverStandingYearString1 = TestConstant.StandingYearString1;
 
     private const string DriverStandingId1 = TestConstant.DriverStandingId1;
     private const string DriverId1 = TestConstant.DriverId1;
@@ -26,7 +26,7 @@ public class DriverStandingRepositoryTests : IClassFixture<DbContainerFixture>
         TeamId = TestConstant.TeamId1,
         TeamName = TestConstant.TeamName1,
         Points = TestConstant.DriverStandingPoints1,
-        Year = TestConstant.DriverStandingYear1
+        Year = TestConstant.StandingYear1
     };
     private readonly DriverStandingDto ExpectedDriverStanding2 = new()
     {
@@ -38,7 +38,7 @@ public class DriverStandingRepositoryTests : IClassFixture<DbContainerFixture>
         TeamId = TestConstant.TeamId2,
         TeamName = TestConstant.TeamName2,
         Points = TestConstant.DriverStandingPoints2,
-        Year = TestConstant.DriverStandingYear2
+        Year = TestConstant.StandingYear2
     };
 
     public DriverStandingRepositoryTests(DbContainerFixture dbFixture)

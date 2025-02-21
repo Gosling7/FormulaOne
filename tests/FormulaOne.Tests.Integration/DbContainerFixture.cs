@@ -12,6 +12,7 @@ public class DbContainerFixture : IAsyncLifetime
     public TeamRepository TeamRepository { get; private set; } = null!;
     public DriverRepository DriverRepository { get; private set; } = null!;
     public DriverStandingRepository DriverStandingRepository { get; private set; } = null!;
+    public TeamStandingRepository TeamStandingRepository { get; private set; } = null!;
 
     private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
         .WithImage("mcr.microsoft.com/mssql/server:2022-CU17-ubuntu-22.04")
@@ -78,14 +79,29 @@ public class DbContainerFixture : IAsyncLifetime
                 driver: driver1,
                 team: team1,
                 points: TestConstant.DriverStandingPoints1,
-                year: TestConstant.DriverStandingYear1),
+                year: TestConstant.StandingYear1),
             new DriverStanding(
                 id: Guid.Parse(TestConstant.DriverStandingId2),
                 position: TestConstant.DriverStandingPosition2,
                 driver: driver2,
                 team: team2,
                 points: TestConstant.DriverStandingPoints2,
-                year: TestConstant.DriverStandingYear2));
+                year: TestConstant.StandingYear2));
+
+        TeamStandingRepository = new TeamStandingRepository(_dbContext);
+        await _dbContext.TeamStandings.AddRangeAsync(
+            new TeamStanding(
+                id: Guid.Parse(TestConstant.TeamStandingId1),
+                year: TestConstant.StandingYear1,
+                position: TestConstant.TeamStandingPosition1,
+                points: TestConstant.TeamStandingPoints1,
+                team: team1),
+            new TeamStanding(
+                id: Guid.Parse(TestConstant.TeamStandingId2),
+                year: TestConstant.StandingYear2,
+                position: TestConstant.TeamStandingPosition2,
+                points: TestConstant.TeamStandingPoints2,
+                team: team2));
 
         await _dbContext.SaveChangesAsync();
     }

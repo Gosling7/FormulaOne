@@ -20,7 +20,6 @@ public class DriverStanding
         Year = year;
     }
 
-    // For integration tests.
     private DriverStanding() 
     { 
     }
