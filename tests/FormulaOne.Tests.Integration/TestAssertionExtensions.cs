@@ -49,4 +49,13 @@ internal static class TestAssertionExtensions
             actualTeamStandings.ShouldContain(expectedTeamStanding);
         }
     }
+
+    public static void ShouldContainAll(this IEnumerable<RaceResultDto> actualRaceResults,
+        IEnumerable<RaceResultDto> expectedRaceResults)
+    {
+        foreach (var expectedRaceResult in expectedRaceResults)
+        {
+            actualRaceResults.ShouldContain(expectedRaceResult);
+        }
+    }
 }

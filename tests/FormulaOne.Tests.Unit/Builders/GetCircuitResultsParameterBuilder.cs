@@ -22,7 +22,7 @@ public class GetCircuitResultsParameterBuilder
             Year: null,
             SortField: null,
             SortOrder: null,
-            Page: 0,
+            Page: QueryParameterConstant.DefaultPage,
             PageSize: QueryParameterConstant.DefaultPageSize);
 
         return this;
