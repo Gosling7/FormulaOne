@@ -2,7 +2,7 @@
 using FormulaOne.Application.Constants;
 using FormulaOne.Application.DataTransferObjects;
 using FormulaOne.Application.Interfaces;
-using FormulaOne.Tests.Unit.Builders;
+using FormulaOne.Tests.Shared.Builders;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;

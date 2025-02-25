@@ -2,7 +2,7 @@
 using FormulaOne.Application.DataTransferObjects;
 using FormulaOne.Application.Parameters;
 using FormulaOne.Infrastructure.Repositories;
-using FormulaOne.Tests.Unit.Builders;
+using FormulaOne.Tests.Shared.Builders;
 using Shouldly;
 
 namespace FormulaOne.Tests.Integration.Repositories;

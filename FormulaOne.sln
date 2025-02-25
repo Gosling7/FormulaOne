@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOne.Tests.Unit", "te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOne.Tests.Integration", "tests\FormulaOne.Tests.Integration\FormulaOne.Tests.Integration.csproj", "{C6659710-4A68-4191-B8DC-8E97D93601EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaOne.Tests.Shared", "tests\FormulaOne.Tests.Shared\FormulaOne.Tests.Shared.csproj", "{EDC03227-F94F-4BAA-AB1E-C72390018B23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{C6659710-4A68-4191-B8DC-8E97D93601EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6659710-4A68-4191-B8DC-8E97D93601EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6659710-4A68-4191-B8DC-8E97D93601EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDC03227-F94F-4BAA-AB1E-C72390018B23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC03227-F94F-4BAA-AB1E-C72390018B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC03227-F94F-4BAA-AB1E-C72390018B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC03227-F94F-4BAA-AB1E-C72390018B23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

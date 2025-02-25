@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\FormulaOne.Api\FormulaOne.Api.csproj" />
     <ProjectReference Include="..\..\src\FormulaOne.Application\FormulaOne.Application.csproj" />
+    <ProjectReference Include="..\FormulaOne.Tests.Shared\FormulaOne.Tests.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

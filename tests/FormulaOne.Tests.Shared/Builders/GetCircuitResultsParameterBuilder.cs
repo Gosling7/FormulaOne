@@ -1,12 +1,7 @@
 ﻿using FormulaOne.Application.Constants;
 using FormulaOne.Application.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FormulaOne.Tests.Unit.Builders;
+namespace FormulaOne.Tests.Shared.Builders;
 
 public class GetCircuitResultsParameterBuilder
 {

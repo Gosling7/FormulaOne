@@ -1,7 +1,7 @@
 ﻿using FormulaOne.Application.Constants;
 using FormulaOne.Application.Parameters;
 
-namespace FormulaOne.Tests.Unit.Builders;
+namespace FormulaOne.Tests.Shared.Builders;
 
 public class GetCircuitsParameterBuilder
 {

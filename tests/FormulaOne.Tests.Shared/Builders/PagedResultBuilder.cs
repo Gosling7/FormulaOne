@@ -1,7 +1,7 @@
 ﻿using FormulaOne.Application.Constants;
 using FormulaOne.Application.DataTransferObjects;
 
-namespace FormulaOne.Tests.Unit.Builders;
+namespace FormulaOne.Tests.Shared.Builders;
 
 internal class PagedResultBuilder<TDataType>
 {

@@ -1,6 +1,6 @@
 ﻿using FormulaOne.Application.DataTransferObjects;
 
-namespace FormulaOne.Tests.Unit.Builders;
+namespace FormulaOne.Tests.Shared.Builders;
 
 public class RaceResultDtoBuilder
 {

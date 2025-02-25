@@ -1,18 +1,17 @@
 ﻿using FormulaOne.Application.Constants;
 using FormulaOne.Application.Parameters;
 
-namespace FormulaOne.Tests.Unit.Builders;
+namespace FormulaOne.Tests.Shared.Builders;
 
-public class GetDriversParameterBuilder
+public class GetTeamsParameterBuilder
 {
-    private GetDriversParameter _parameter = null!;
+    private GetTeamsParameter _parameter = null!;
 
-    public GetDriversParameterBuilder SetDefaultValues()
+    public GetTeamsParameterBuilder SetDefaultValues()
     {
-        _parameter = new GetDriversParameter(
+        _parameter = new GetTeamsParameter(
             Id: null,
             Name: null,
-            Nationality: null,
             SortField: null,
             SortOrder: null,
             PageSize: QueryParameterConstant.DefaultPageSize,
@@ -21,50 +20,45 @@ public class GetDriversParameterBuilder
         return this;
     }
 
-    public GetDriversParameter Build()
+    public GetTeamsParameter Build()
     {
         return _parameter;
     }
 
-    public GetDriversParameterBuilder SetId(string? id)
+    public GetTeamsParameterBuilder SetId(string? id)
     {
         _parameter = _parameter with { Id = id };
         return this;
     }
 
-    public GetDriversParameterBuilder SetName(string? name)
+    public GetTeamsParameterBuilder SetName(string? name)
     {
         _parameter = _parameter with { Name = name };
         return this;
     }
 
-    public GetDriversParameterBuilder SetNationality(string? nationality)
-    {
-        _parameter = _parameter with { Nationality = nationality };
-        return this;
-    }
-
-    public GetDriversParameterBuilder SetSortField(string? sortField)
+    public GetTeamsParameterBuilder SetSortField(string? sortField)
     {
         _parameter = _parameter with { SortField = sortField };
         return this;
     }
 
-    public GetDriversParameterBuilder SetSortOrder(string? sortOrder)
+    public GetTeamsParameterBuilder SetSortOrder(string? sortOrder)
     {
         _parameter = _parameter with { SortOrder = sortOrder };
         return this;
     }
 
-    public GetDriversParameterBuilder SetPage(int page)
+    public GetTeamsParameterBuilder SetPage(int page)
     {
         _parameter = _parameter with { Page = page };
         return this;
     }
 
-    public GetDriversParameterBuilder SetPageSize(int pageSize)
+    public GetTeamsParameterBuilder SetPageSize(int pageSize)
     {
         _parameter = _parameter with { PageSize = pageSize };
         return this;
     }
 }
+

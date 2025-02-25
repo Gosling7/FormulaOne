@@ -4,7 +4,7 @@ using FormulaOne.Application.Interfaces;
 using FormulaOne.Application.Parameters;
 using FormulaOne.Application.Services;
 using FormulaOne.Infrastructure.Repositories;
-using FormulaOne.Tests.Unit.Builders;
+using FormulaOne.Tests.Shared.Builders;
 using NSubstitute;
 using Shouldly;
 
