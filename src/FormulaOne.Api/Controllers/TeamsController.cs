@@ -17,7 +17,6 @@ public class TeamsController : ControllerBase
         _teamService = teamService;
     }
 
-    // api/teams
     [HttpGet("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -31,10 +30,14 @@ public class TeamsController : ControllerBase
             return BadRequest(teamsPagedResult);
         }
 
+        if (!teamsPagedResult.Items.Any())
+        {
+            return NotFound(teamsPagedResult);
+        }
+
         return Ok(teamsPagedResult);
     }
 
-    // api/teams/standings
     [HttpGet("Standings")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -46,6 +49,11 @@ public class TeamsController : ControllerBase
         if (teamStandingsPagedResult.Errors.Count != 0)
         {
             return BadRequest(teamStandingsPagedResult);
+        }
+
+        if (!teamStandingsPagedResult.Items.Any())
+        {
+            return NotFound(teamStandingsPagedResult);
         }
 
         return Ok(teamStandingsPagedResult);
@@ -62,6 +70,11 @@ public class TeamsController : ControllerBase
         if (teamResultsPagedResult.Errors.Count != 0)
         {
             return BadRequest(teamResultsPagedResult);
+        }
+
+        if (!teamResultsPagedResult.Items.Any())
+        {
+            return NotFound(teamResultsPagedResult);
         }
 
         return Ok(teamResultsPagedResult);
