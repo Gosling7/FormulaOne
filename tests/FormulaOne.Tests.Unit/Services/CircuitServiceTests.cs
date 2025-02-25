@@ -29,7 +29,7 @@ public class CircuitServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetCircuits_should_return_paged_result_without_errors()
+    public async Task GetCircuits_should_return_paged_result_without_errors()
     {
         // Arrange 
         var parameters = new GetCircuitsParameterBuilder()
@@ -70,7 +70,7 @@ public class CircuitServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetCircuits_should_return_paged_result_with_error_when_validation_fails()
+    public async Task GetCircuits_should_return_paged_result_with_error_when_validation_fails()
     {
         // Arrange 
         var parameters = new GetCircuitsParameterBuilder()
@@ -96,7 +96,7 @@ public class CircuitServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetCircuitResults_should_return_paged_result_without_errors()
+    public async Task GetCircuitResults_should_return_paged_result_without_errors()
     {
         // Arrange 
         var parameters = new GetCircuitResultsParameter(
@@ -124,7 +124,7 @@ public class CircuitServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetCircuitResults_should_return_paged_result_with_error_when_validation_fails()
+    public async Task GetCircuitResults_should_return_paged_result_with_error_when_validation_fails()
     {
         // Arrange 
         var parameters = new GetCircuitResultsParameter(

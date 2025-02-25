@@ -30,7 +30,7 @@ public class DriverServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetDrivers_should_return_paged_result_without_errors()
+    public async Task GetDrivers_should_return_paged_result_without_errors()
     {
         // Arrange 
         var parameters = new GetDriversParameter(
@@ -64,7 +64,7 @@ public class DriverServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetDrivers_should_return_paged_result_with_error_when_validation_fails()
+    public async Task GetDrivers_should_return_paged_result_with_error_when_validation_fails()
     {
         // Arrange 
         var parameters = new GetDriversParameter(
@@ -94,7 +94,7 @@ public class DriverServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetDriverStandings_should_return_paged_result_without_errors()
+    public async Task GetDriverStandings_should_return_paged_result_without_errors()
     {
         // Arrange 
         var parameters = new GetDriverStandingsParameter(
@@ -139,7 +139,7 @@ public class DriverServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetDriverStandings_should_return_paged_result_with_error_when_validation_fails()
+    public async Task GetDriverStandings_should_return_paged_result_with_error_when_validation_fails()
     {
         // Arrange 
         var parameters = new GetDriverStandingsParameter(
@@ -169,7 +169,7 @@ public class DriverServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetDriverResults_should_return_paged_result_without_errors()
+    public async Task GetDriverResults_should_return_paged_result_without_errors()
     {
         // Arrange 
         var parameters = new GetDriverResultsParameter(
@@ -196,7 +196,7 @@ public class DriverServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetDriverResults_should_return_paged_result_with_error_when_validation_fails()
+    public async Task GetDriverResults_should_return_paged_result_with_error_when_validation_fails()
     {
         // Arrange 
         var parameters = new GetDriverResultsParameter(

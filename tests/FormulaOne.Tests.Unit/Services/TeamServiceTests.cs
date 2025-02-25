@@ -30,7 +30,7 @@ public class TeamServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetTeams_should_return_paged_result_without_errors()
+    public async Task GetTeams_should_return_paged_result_without_errors()
     {
         // Arrange 
         var parameters = new GetTeamsParameter(
@@ -63,7 +63,7 @@ public class TeamServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetTeams_should_return_paged_result_with_error_when_validation_fails()
+    public async Task GetTeams_should_return_paged_result_with_error_when_validation_fails()
     {
         // Arrange 
         var parameters = new GetTeamsParameter(
@@ -92,7 +92,7 @@ public class TeamServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetTeamStandings_should_return_paged_result_without_errors()
+    public async Task GetTeamStandings_should_return_paged_result_without_errors()
     {
         // Arrange 
         var parameters = new GetTeamStandingsParameter(
@@ -135,7 +135,7 @@ public class TeamServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetTeamStandings_should_return_paged_result_with_error_when_validation_fails()
+    public async Task GetTeamStandings_should_return_paged_result_with_error_when_validation_fails()
     {
         // Arrange 
         var parameters = new GetTeamStandingsParameter(
@@ -166,7 +166,7 @@ public class TeamServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetTeamResults_should_return_paged_result_without_errors()
+    public async Task GetTeamResults_should_return_paged_result_without_errors()
     {
         // Arrange 
         var parameters = new GetTeamResultsParameter(
@@ -193,7 +193,7 @@ public class TeamServiceTests : ServiceTestsBase
     }
 
     [Fact]
-    public async void GetTeamResults_should_return_paged_result_with_error_when_validation_fails()
+    public async Task GetTeamResults_should_return_paged_result_with_error_when_validation_fails()
     {
         // Arrange 
         var parameters = new GetTeamResultsParameter(

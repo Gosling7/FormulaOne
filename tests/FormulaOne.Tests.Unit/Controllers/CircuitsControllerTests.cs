@@ -23,7 +23,7 @@ public class CircuitsControllerTests
     }
 
     [Fact]
-    public async void GetCircuits_should_return_200OK_when_circuits_found()
+    public async Task GetCircuits_should_return_200OK_when_circuits_found()
     {
         var parameters = new GetCircuitsParameterBuilder()
             .SetDefaultValues()
@@ -55,7 +55,7 @@ public class CircuitsControllerTests
     }
 
     [Fact]
-    public async void GetCircuits_should_return_400BadRequest_when_paged_result_has_error()
+    public async Task GetCircuits_should_return_400BadRequest_when_paged_result_has_error()
     {
         // Assert
         var parameters = new GetCircuitsParameterBuilder()
@@ -80,7 +80,7 @@ public class CircuitsControllerTests
     }
 
     [Fact]
-    public async void GetCircuits_should_return_404NotFound_when_circuits_not_found()
+    public async Task GetCircuits_should_return_404NotFound_when_circuits_not_found()
     {
         // Assert
         var parameters = new GetCircuitsParameterBuilder()
@@ -104,7 +104,7 @@ public class CircuitsControllerTests
     }
 
     [Fact]
-    public async void GetCircuitResults_should_return_200OK_when_results_found()
+    public async Task GetCircuitResults_should_return_200OK_when_results_found()
     {
         var parameters = new GetCircuitResultsParameterBuilder()
             .SetDefaultValues()
@@ -131,7 +131,7 @@ public class CircuitsControllerTests
     }
 
     [Fact]
-    public async void GetCircuitResults_should_return_400BadRequest_when_paged_result_has_error()
+    public async Task GetCircuitResults_should_return_400BadRequest_when_paged_result_has_error()
     {
         var parameters = new GetCircuitResultsParameterBuilder()
             .SetDefaultValues()
@@ -154,7 +154,7 @@ public class CircuitsControllerTests
     }
 
     [Fact]
-    public async void GetCircuitResults_should_return_404NotFound_when_results_not_found()
+    public async Task GetCircuitResults_should_return_404NotFound_when_results_not_found()
     {
         var parameters = new GetCircuitResultsParameterBuilder()
             .SetDefaultValues()
