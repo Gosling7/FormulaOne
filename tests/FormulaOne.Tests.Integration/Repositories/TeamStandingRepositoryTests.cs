@@ -7,9 +7,9 @@ using Shouldly;
 
 namespace FormulaOne.Tests.Integration.Repositories;
 
-public class TeamStandingRepositoryTests : IClassFixture<DbContainerFixture>
+public class TeamStandingRepositoryTests : RepositoryTestsBase
 {
-    private readonly TeamStandingRepository _teamStandingRepository = null!;
+    private readonly TeamStandingRepository _teamStandingRepository;
 
     private const string TeamStandingYearString1 = TestConstant.StandingYearString1;
 
@@ -36,9 +36,9 @@ public class TeamStandingRepositoryTests : IClassFixture<DbContainerFixture>
         Year = TestConstant.StandingYear2
     };
 
-    public TeamStandingRepositoryTests(DbContainerFixture dbFixture)
+    public TeamStandingRepositoryTests()
     {
-        _teamStandingRepository = dbFixture.TeamStandingRepository;
+        _teamStandingRepository = new TeamStandingRepository(base._dbContext);
     }
 
     [Theory]

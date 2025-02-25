@@ -7,9 +7,9 @@ using Shouldly;
 
 namespace FormulaOne.Tests.Integration.Repositories;
 
-public class CircuitRepositoryTests : IClassFixture<DbContainerFixture>
+public class CircuitRepositoryTests : RepositoryTestsBase
 {
-    private readonly CircuitRepository _circuitRepository = null!;
+    private readonly CircuitRepository _circuitRepository;
 
     private const string CircuitId1 = TestConstant.CircuitId1;
     private const string CircuitName1 = TestConstant.CircuitName1;
@@ -19,9 +19,9 @@ public class CircuitRepositoryTests : IClassFixture<DbContainerFixture>
     private const string CircuitName2 = TestConstant.CircuitName2;
     private const string CircuitLocation2 = TestConstant.CircuitLocation2;
 
-    public CircuitRepositoryTests(DbContainerFixture dbFixture)
+    public CircuitRepositoryTests()
     {
-        _circuitRepository = dbFixture.CircuitRepository;
+        _circuitRepository = new CircuitRepository(base._dbContext);
     }
 
     [Theory]

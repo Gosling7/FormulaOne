@@ -7,9 +7,9 @@ using Shouldly;
 
 namespace FormulaOne.Tests.Integration.Repositories;
 
-public class DriverRepositoryTests : IClassFixture<DbContainerFixture>
+public class DriverRepositoryTests : RepositoryTestsBase
 {
-    private readonly DriverRepository _driverRepository = null!;
+    private readonly DriverRepository _driverRepository;
 
     private const string DriverId1 = TestConstant.DriverId1;
     private const string DriverName1 = $"{TestConstant.DriverFirstName1} " +
@@ -21,9 +21,9 @@ public class DriverRepositoryTests : IClassFixture<DbContainerFixture>
         $"{TestConstant.DriverLastName2}";
     private const string DriverNationality2 = TestConstant.DriverNationality2;
 
-    public DriverRepositoryTests(DbContainerFixture dbFixture)
+    public DriverRepositoryTests()
     {
-        _driverRepository = dbFixture.DriverRepository;
+        _driverRepository = new DriverRepository(base._dbContext);
     }
 
     [Theory]
