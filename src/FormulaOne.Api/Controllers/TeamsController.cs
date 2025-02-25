@@ -21,6 +21,7 @@ public class TeamsController : ControllerBase
     [HttpGet("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PagedResult<TeamDto>>> GetTeams(
         [FromQuery] GetTeamsParameter parameters)
     {
@@ -37,6 +38,7 @@ public class TeamsController : ControllerBase
     [HttpGet("Standings")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PagedResult<TeamStandingDto>>> GetTeamStandings(
         [FromQuery] GetTeamStandingsParameter parameters)
     {
@@ -52,6 +54,7 @@ public class TeamsController : ControllerBase
     [HttpGet("Results")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PagedResult<TeamStandingDto>>> GetTeamResults(
         [FromQuery] GetTeamResultsParameter parameters)
     {

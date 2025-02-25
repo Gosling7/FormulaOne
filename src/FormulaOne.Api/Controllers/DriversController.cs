@@ -20,6 +20,7 @@ public class DriversController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PagedResult<DriverDto>>> GetDrivers(
         [FromQuery] GetDriversParameter parameters)
     {
@@ -29,12 +30,18 @@ public class DriversController : ControllerBase
             return BadRequest(driversPagedResult);
         }
 
+        if (!driversPagedResult.Items.Any())
+        {
+            return NotFound(driversPagedResult);
+        }
+
         return Ok(driversPagedResult);
     }
 
     [HttpGet("Standings")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PagedResult<DriverStandingDto>>> GetDriverStandings(
         [FromQuery] GetDriverStandingsParameter parameter)
     {
@@ -44,12 +51,18 @@ public class DriversController : ControllerBase
             return BadRequest(driverStandingsPagedResult);
         }
 
+        if (!driverStandingsPagedResult.Items.Any())
+        {
+            return NotFound(driverStandingsPagedResult);
+        }
+
         return Ok(driverStandingsPagedResult);
     }
 
     [HttpGet("Results")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PagedResult<TeamStandingDto>>> GetDriverResults(
         [FromQuery] GetDriverResultsParameter parameters)
     {
@@ -57,6 +70,11 @@ public class DriversController : ControllerBase
         if (driverResultsPagedResult.Errors.Count != 0)
         {
             return BadRequest(driverResultsPagedResult);
+        }
+
+        if (!driverResultsPagedResult.Items.Any())
+        {
+            return NotFound(driverResultsPagedResult);
         }
 
         return Ok(driverResultsPagedResult);

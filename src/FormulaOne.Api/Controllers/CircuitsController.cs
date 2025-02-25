@@ -31,7 +31,7 @@ public class CircuitsController : ControllerBase
         }
 
         if (!circuitsPagedResult.Items.Any())
-        {
+        {         
             return NotFound(circuitsPagedResult);
         }
 
@@ -41,6 +41,7 @@ public class CircuitsController : ControllerBase
     [HttpGet("Results")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<PagedResult<TeamStandingDto>>> GetCircuitResults(
         [FromQuery] GetCircuitResultsParameter parameters)
     {

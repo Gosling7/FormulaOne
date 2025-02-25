@@ -25,6 +25,7 @@ public class CircuitsControllerTests
     [Fact]
     public async Task GetCircuits_should_return_200OK_when_circuits_found()
     {
+        // Arrange
         var parameters = new GetCircuitsParameterBuilder()
             .SetDefaultValues()
             .Build();
@@ -57,7 +58,7 @@ public class CircuitsControllerTests
     [Fact]
     public async Task GetCircuits_should_return_400BadRequest_when_paged_result_has_error()
     {
-        // Assert
+        // Arrange
         var parameters = new GetCircuitsParameterBuilder()
             .SetDefaultValues()
             .SetId(InvalidId)
@@ -82,7 +83,7 @@ public class CircuitsControllerTests
     [Fact]
     public async Task GetCircuits_should_return_404NotFound_when_circuits_not_found()
     {
-        // Assert
+        // Arrange
         var parameters = new GetCircuitsParameterBuilder()
             .SetDefaultValues()
             .Build();
@@ -106,6 +107,7 @@ public class CircuitsControllerTests
     [Fact]
     public async Task GetCircuitResults_should_return_200OK_when_results_found()
     {
+        // Arrange
         var parameters = new GetCircuitResultsParameterBuilder()
             .SetDefaultValues()
             .Build();
@@ -114,12 +116,12 @@ public class CircuitsControllerTests
             .SetDefaultValues()
             .Build();
 
-        var pagedCircuits = new PagedResultBuilder<RaceResultDto>()
+        var pagedCircuitResults = new PagedResultBuilder<RaceResultDto>()
             .SetDefaultValues()
             .SetItems([circuitResult])
             .Build();
 
-        _circuitService.GetCircuitResults(parameters).Returns(pagedCircuits);
+        _circuitService.GetCircuitResults(parameters).Returns(pagedCircuitResults);
 
         // Act
         var result = await _controller.GetCircuitResults(parameters);
@@ -133,16 +135,17 @@ public class CircuitsControllerTests
     [Fact]
     public async Task GetCircuitResults_should_return_400BadRequest_when_paged_result_has_error()
     {
+        // Arrange
         var parameters = new GetCircuitResultsParameterBuilder()
             .SetDefaultValues()
             .Build();
 
-        var pagedCircuits = new PagedResultBuilder<RaceResultDto>()
+        var pagedCircuitResults = new PagedResultBuilder<RaceResultDto>()
             .SetDefaultValues()
             .SetErrors([ValidationMessage.InvalidGuid("Id", InvalidId)])
             .Build();
 
-        _circuitService.GetCircuitResults(parameters).Returns(pagedCircuits);
+        _circuitService.GetCircuitResults(parameters).Returns(pagedCircuitResults);
 
         // Act
         var result = await _controller.GetCircuitResults(parameters);
@@ -156,16 +159,17 @@ public class CircuitsControllerTests
     [Fact]
     public async Task GetCircuitResults_should_return_404NotFound_when_results_not_found()
     {
+        // Arrange
         var parameters = new GetCircuitResultsParameterBuilder()
             .SetDefaultValues()
             .Build();
 
-        var pagedCircuits = new PagedResultBuilder<RaceResultDto>()
+        var pagedCircuitResults = new PagedResultBuilder<RaceResultDto>()
             .SetDefaultValues()
             .SetItems([])
             .Build();
 
-        _circuitService.GetCircuitResults(parameters).Returns(pagedCircuits);
+        _circuitService.GetCircuitResults(parameters).Returns(pagedCircuitResults);
 
         // Act
         var result = await _controller.GetCircuitResults(parameters);
