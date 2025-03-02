@@ -1,4 +1,5 @@
 using FormulaOne.Application;
+using FormulaOne.Application.Interfaces;
 using FormulaOne.Core;
 using FormulaOne.Infrastructure;
 
@@ -16,6 +17,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<FormulaOneDbContext>();
+    if (!dbContext.RaceResults.Any())
+    {
+        var databaseSeeder = scope.ServiceProvider.GetRequiredService<IDatabaseSeeder>();
+        await databaseSeeder.Seed();
+    }    
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

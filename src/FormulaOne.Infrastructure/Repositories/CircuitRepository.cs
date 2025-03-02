@@ -1,5 +1,6 @@
 ﻿using FormulaOne.Application.Constants;
 using FormulaOne.Application.DataTransferObjects;
+using FormulaOne.Application.Interfaces;
 using FormulaOne.Application.Parameters;
 using FormulaOne.Core.Entities;
 using Microsoft.EntityFrameworkCore;

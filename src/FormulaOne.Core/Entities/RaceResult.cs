@@ -2,18 +2,18 @@
 
 public class RaceResult
 {
-    public Guid Id { get; private set; }
-    public int Position { get; private set; }
-    public Guid CircuitId { get; private set; }
-    public Circuit Circuit { get; private set; }
-    public DateOnly Date { get; private set; }
-    public Guid DriverId { get; private set; }
-    public Driver Driver { get; private set; }
-    public Guid? TeamId { get; private set; }
-    public Team? Team { get; private set; }
-    public int Laps { get; private set; }
-    public string? Time { get; private set; }
-    public float Points { get; private set; }
+    public Guid Id { get; set; }
+    public int Position { get; set; }
+    public Guid CircuitId { get; set; }
+    public Circuit Circuit { get; set; }
+    public DateOnly Date { get; set; }
+    public Guid DriverId { get; set; }
+    public Driver Driver { get; set; }
+    public Guid? TeamId { get; set; }
+    public Team? Team { get; set; }
+    public int Laps { get; set; }
+    public string? Time { get; set; }
+    public float Points { get; set; }
 
     public RaceResult(Guid id, int position, Circuit circuit, DateOnly date, 
         Driver driver, Team? team, int laps, string? time, float points)

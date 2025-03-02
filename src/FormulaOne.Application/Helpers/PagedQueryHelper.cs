@@ -3,7 +3,7 @@ using FormulaOne.Application.Interfaces;
 
 namespace FormulaOne.Application.Helpers;
 
-public class ServiceHelper
+public class PagedQueryHelper
 {
     public async Task<PagedResult<TDto>> ValidateAndReturnPagedResult<TDto, TQueryParameter>(
         TQueryParameter parameters,

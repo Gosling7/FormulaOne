@@ -26,7 +26,7 @@ public class DriverServiceTests : ServiceTestsBase
             driverRepository: _driverRepository,
             driverStandingRepository: _driverStandingRepository,
             raceResultRepository: _raceResultRepository,
-            serviceHelper: new Application.Helpers.ServiceHelper());
+            serviceHelper: new Application.Helpers.PagedQueryHelper());
     }
 
     [Fact]

@@ -25,7 +25,7 @@ public class CircuitServiceTests : ServiceTestsBase
             validator: _validator,
             circuitRepository: _circuitRepository,
             raceResultRepository: _raceResultRepository,
-            getDriversHelper: new Application.Helpers.ServiceHelper());
+            getDriversHelper: new Application.Helpers.PagedQueryHelper());
     }
 
     [Fact]

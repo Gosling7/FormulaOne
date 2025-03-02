@@ -1,7 +1,7 @@
 ﻿using FormulaOne.Application.DataTransferObjects;
 using FormulaOne.Application.Parameters;
 
-namespace FormulaOne.Infrastructure.Repositories;
+namespace FormulaOne.Application.Interfaces;
 
 public interface ICircuitRepository
 {

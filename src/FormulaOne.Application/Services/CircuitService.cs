@@ -2,7 +2,6 @@
 using FormulaOne.Application.Helpers;
 using FormulaOne.Application.Interfaces;
 using FormulaOne.Application.Parameters;
-using FormulaOne.Infrastructure.Repositories;
 
 namespace FormulaOne.Application.Services;
 
@@ -11,12 +10,12 @@ public class CircuitService : ICircuitService
     private readonly IQueryCircuitParameterValidator _validator;
     private readonly IRaceResultRepository _raceResultRepository;
     private readonly ICircuitRepository _circuitRepository;
-    private readonly ServiceHelper _serviceHelper;
+    private readonly PagedQueryHelper _serviceHelper;
 
     public CircuitService(IQueryCircuitParameterValidator validator,
         ICircuitRepository circuitRepository,
         IRaceResultRepository raceResultRepository,
-        ServiceHelper getDriversHelper)
+        PagedQueryHelper getDriversHelper)
     {
         _raceResultRepository = raceResultRepository;
         _validator = validator;

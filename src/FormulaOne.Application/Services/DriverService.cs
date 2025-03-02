@@ -11,13 +11,13 @@ public class DriverService : IDriverService
     private readonly IRaceResultRepository _raceResultRepository;
     private readonly IDriverRepository _driverRepository;
     private readonly IDriverStandingRepository _driverStandingRepository;
-    private readonly ServiceHelper _serviceHelper;
+    private readonly PagedQueryHelper _serviceHelper;
 
     public DriverService(IQueryDriverParameterValidator validator,
         IDriverRepository driverRepository,
         IDriverStandingRepository driverStandingRepository,
         IRaceResultRepository raceResultRepository,
-        ServiceHelper serviceHelper)
+        PagedQueryHelper serviceHelper)
     {
         _validator = validator;
         _driverRepository = driverRepository;

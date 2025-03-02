@@ -11,13 +11,13 @@ public class TeamService : ITeamService
     private readonly ITeamRepository _teamRepository;
     private readonly ITeamStandingRepository _teamStandingRepository;
     private readonly IRaceResultRepository _raceResultRepository;
-    private readonly ServiceHelper _serviceHelper;
+    private readonly PagedQueryHelper _serviceHelper;
 
     public TeamService(IQueryTeamParameterValidator validator,
         ITeamRepository teamRepository,
         ITeamStandingRepository teamStandingRepository,
         IRaceResultRepository raceResultRepository,
-        ServiceHelper serviceHelper)
+        PagedQueryHelper serviceHelper)
     {
         _validator = validator;
         _teamRepository = teamRepository;

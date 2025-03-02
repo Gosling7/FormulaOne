@@ -11,14 +11,14 @@ public static class DependencyInjection
     public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
     {
         services
-            .AddTransient<ITeamService, TeamService>()
-            .AddTransient<IDriverService, DriverService>()
-            .AddTransient<ICircuitService, CircuitService>()
+            .AddScoped<ITeamService, TeamService>()
+            .AddScoped<IDriverService, DriverService>()
+            .AddScoped<ICircuitService, CircuitService>()
             .AddTransient<IParameterValidatorHelper, ParameterValidatorHelper>()
             .AddTransient<IQueryTeamParameterValidator, QueryTeamParameterValidator>()
             .AddTransient<IQueryDriverParameterValidator, QueryDriverParameterValidator>()
             .AddTransient<IQueryCircuitParameterValidator, QueryCircuitParameterValidator>()
-            .AddTransient<ServiceHelper>();
+            .AddTransient<PagedQueryHelper>();
 
         return services;
     }

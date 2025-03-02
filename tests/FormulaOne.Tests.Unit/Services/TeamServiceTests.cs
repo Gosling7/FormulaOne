@@ -26,7 +26,7 @@ public class TeamServiceTests : ServiceTestsBase
             teamRepository: _teamRepository,
             teamStandingRepository: _teamStandingRepository,
             raceResultRepository: _raceResultRepository,
-            serviceHelper: new Application.Helpers.ServiceHelper());
+            serviceHelper: new Application.Helpers.PagedQueryHelper());
     }
 
     [Fact]

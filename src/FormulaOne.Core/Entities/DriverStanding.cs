@@ -2,12 +2,12 @@
 
 public class DriverStanding
 {
-    public Guid Id { get; private set; }
-    public int Position { get; private set; }
-    public Driver Driver { get; private set; }
-    public Team Team { get; private set; }
-    public float Points { get; private set; }
-    public int Year { get; private set; }
+    public Guid Id { get; set; }
+    public int Position { get; set; }
+    public Driver Driver { get; set; }
+    public Team Team { get; set; }
+    public float Points { get; set; }
+    public int Year { get; set; }
 
     public DriverStanding(Guid id, int position, Driver driver, Team team, 
         float points, int year)
@@ -20,7 +20,7 @@ public class DriverStanding
         Year = year;
     }
 
-    private DriverStanding() 
+    public DriverStanding() 
     { 
     }
 }
