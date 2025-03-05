@@ -7,13 +7,14 @@ services:
       context: .
       dockerfile: ./src/FormulaOne.Api/Dockerfile
     ports:
-      - 5001:8081
+      - 5000:5000
+      - 5001:5001
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=https://+:8081
+      - ASPNETCORE_URLS=http://+:5000;https://+:5001
       - ASPNETCORE_Kestrel__Certificates__Default__Path=${CERTIFICATE_CONTAINER_PATH}/${CERTIFICATE_FILENAME}
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERTIFICATE_PASSWORD}
-      - ASPNETCORE_HTTPS_REDIRECTION__HTTPSPORT=5001
+      - ASPNETCORE_HTTPS_PORT=5001
       - MSSQL_HOST=${MSSQL_HOST}
       - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
       - MSSQL_DB_NAME=${MSSQL_DB_NAME}
