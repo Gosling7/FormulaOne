@@ -11,7 +11,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/FormulaOne.Api/FormulaOne.Api.csproj", "src/FormulaOne.Api/"]
 COPY ["src/FormulaOne.Application/FormulaOne.Application.csproj", "src/FormulaOne.Application/"]
-COPY ["src/FormulaOne.Core/FormulaOne.Domain.csproj", "src/FormulaOne.Core/"]
+COPY ["src/FormulaOne.Core/FormulaOne.Core.csproj", "src/FormulaOne.Core/"]
 COPY ["src/FormulaOne.Infrastructure/FormulaOne.Infrastructure.csproj", "src/FormulaOne.Infrastructure/"]
 RUN dotnet restore "./src/FormulaOne.Api/./FormulaOne.Api.csproj"
 COPY . .
