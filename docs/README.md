@@ -1,8 +1,7 @@
-# FormulaOne Web API Documentation
-
 ## Base URL
 
-`/api`
+#### `http://localhost:5000/api/[resource]`
+#### `https://localhost:5001/api/[resource]`
 
 ## Endpoints
 
@@ -21,7 +20,7 @@ Retrieves a list of teams.
 
 **Example:**
 
-* `GET /Teams?Name=Ferrari`
+* `GET http://localhost:5000/api/Teams?Name=Ferrari`
 
 **Example Response:**
 
@@ -60,7 +59,7 @@ Retrieves team standings.
 
 **Example:**
 
-* `GET /Teams/Standings?TeamName=mclaren&SortField=points&SortOrder=desc&PageSize=10`
+* `GET http://localhost:5000/api/Teams/Standings?TeamName=mclaren&SortField=points&SortOrder=desc&PageSize=10`
 
 **Example Response:**
 
@@ -107,7 +106,7 @@ Retrieves team race results.
 
 **Example:**
 
-* `GET /Teams/Results?TeamName=aston&Year=2023&SortField=date
+* `GET http://localhost:5000/api/Teams/Results?TeamName=aston&Year=2023&SortField=date`
 
 **Example Response:**
 
@@ -167,7 +166,7 @@ Retrieves a list of drivers.
 
 **Example:**
 
-* `GET /Drivers?Name=jack`
+* `GET http://localhost:5000/api/Drivers?Name=jack`
 
 **Example Response:**
 
@@ -207,7 +206,7 @@ Retrieves driver standings.
 
 **Example:**
 
-* `GET /Drivers/Standings?DriverId=54838C10-9492-4731-9B6D-F9EC8CB97864&SortField=year&SortOrder=desc`
+* `GET http://localhost:5000/api/Drivers/Standings?DriverId=54838C10-9492-4731-9B6D-F9EC8CB97864&SortField=year&SortOrder=desc`
 
 **Example Response:**
 
@@ -260,7 +259,7 @@ Retrieves driver race results.
 
 **Example:**
 
-* `GET /Drivers/Results?DriverName=Ayrton&Year=1993&SortField=points&SortOrder=desc`
+* `GET http://localhost:5000/api/Drivers/Results?DriverName=Ayrton&Year=1993&SortField=points&SortOrder=desc`
 
 **Example Response:**
 
@@ -320,7 +319,7 @@ Retrieves a list of circuits.
 
 **Example:**
 
-* `GET /Circuits?Location=australia`
+* `GET http://localhost:5000/api/Circuits?Location=australia`
 
 **Example Response:**
 
@@ -362,7 +361,7 @@ Retrieves circuit race results.
 
 **Example:**
 
-* `GET /Circuits/Results?CircuitName=Monza&Year=1999&SortField=position&SortOrder=asc`
+* `GET http://localhost:5000/api/Circuits/Results?CircuitName=Monza&Year=1999&SortField=position&SortOrder=asc`
 
 **Example Response:**
 
